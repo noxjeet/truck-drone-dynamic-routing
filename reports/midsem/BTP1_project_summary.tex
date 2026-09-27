@@ -1,0 +1,515 @@
+\documentclass[10pt,a4paper]{article}
+
+% =========================================================
+% PACKAGES
+% =========================================================
+\usepackage[a4paper,margin=0.55in]{geometry}
+\usepackage[fontsize=10.5pt]{scrextend}
+\usepackage{times}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{microtype}
+\usepackage{balance}
+\usepackage{graphicx}
+
+% =========================================================
+% TWO-COLUMN LAYOUT
+% =========================================================
+\setlength{\columnsep}{0.18in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2.2pt}
+
+% =========================================================
+% TYPOGRAPHY
+% =========================================================
+\titleformat{\section}
+  {\bfseries\normalsize}
+  {\Roman{section}.}
+  {0.35em}
+  {}
+
+\titlespacing*{\section}{0pt}{5pt}{2pt}
+
+\titleformat{\subsection}
+  {\bfseries\small}
+  {}
+  {0pt}
+  {}
+
+\titlespacing*{\subsection}{0pt}{3pt}{1pt}
+
+\setlist[itemize]{
+  leftmargin=1.2em,
+  itemsep=0pt,
+  topsep=1pt,
+  parsep=0pt
+}
+
+\setlist[enumerate]{
+  leftmargin=1.4em,
+  itemsep=0pt,
+  topsep=1pt,
+  parsep=0pt
+}
+
+% Slightly more readable tables
+\renewcommand{\arraystretch}{1.05}
+
+% =========================================================
+% DOCUMENT
+% =========================================================
+\begin{document}
+
+% =========================================================
+% TITLE PAGE
+% =========================================================
+\begin{titlepage}
+\begin{center}
+\vspace*{0.5in}
+
+{\large\bfseries BTP-I Mid-Semester Project Summary}
+
+\vspace{0.4in}
+
+{\Large\bfseries Dynamic Truck--Drone Collaborative Delivery\\[2pt] with Flexible Launch Positions}
+
+\vspace{0.55in}
+
+by
+
+\vspace{0.12in}
+
+{\large Jeet Anand}\\
+(23IM30010)
+
+\vspace{0.5in}
+
+Under the supervision of\\
+{\bfseries Prof. S. P. Sarmah}
+
+\vspace{0.5in}
+
+\includegraphics[width=1.35in]{logo_ready.png}
+
+\vspace{0.5in}
+
+Department of Industrial and Systems Engineering\\
+Indian Institute of Technology Kharagpur\\[4pt]
+{\bfseries Autumn Semester, 2026--27}\\
+September 17, 2026
+
+\vfill
+\end{center}
+\end{titlepage}
+
+% =========================================================
+% HEADER
+% =========================================================
+\twocolumn[
+\begin{@twocolumnfalse}
+
+\begin{center}
+
+{\large\bfseries
+Dynamic Truck--Drone Collaborative Delivery with Flexible Launch Positions
+}
+
+\vspace{5pt}
+
+{\bfseries Jeet Anand (23IM30010)}
+
+\vspace{2pt}
+
+{\small
+Department of Industrial and Systems Engineering,
+Indian Institute of Technology Kharagpur
+}
+
+\vspace{2pt}
+
+{\small
+BTP-I Project Summary --- Autumn 2026--27
+\quad$\bullet$\quad
+Supervisor: Prof. S. P. Sarmah
+}
+
+\end{center}
+
+\vspace{3pt}
+
+\end{@twocolumnfalse}
+]
+
+% =========================================================
+% ABSTRACT
+% =========================================================
+
+\textit{\textbf{Abstract}---Truck--drone collaborative delivery with
+flexible launch positions has been studied as a static planning
+problem and, more recently, as a dynamic problem solved through a
+learned dispatch policy; separately, dynamic re-planning of an
+already-executing delivery route has been studied for single-vehicle
+attended-delivery systems using local-search heuristics. This project
+first reproduces the static formulation of Han, Chi, and Sun [1] as a
+validated baseline, then investigates a computational mechanism for
+requests that arrive while a plan is already executing that differs
+from both dynamic references: localized modification of the unexecuted
+portion of the plan under customer-specific delay tolerances, in
+contrast to the Markov-decision-process/reinforcement-learning policy
+of Cui et al. [2] and the whole-route re-optimization used by
+Chakraborty et al. [3]. This summary states the problem, positions it
+relative to the three references, and reports current implementation
+status.}
+
+% =========================================================
+\section{Motivation and Research Context}
+% =========================================================
+
+Combining a road-based truck with air-based drones lets the two
+vehicles serve different customers in parallel. Han et al. [1]
+formalize a static version in which a drone may launch from a flexible
+point along the truck's route, not only from a customer stop, and is
+recovered at a truck-service node or the ending depot. The full
+customer set is known when the plan is built, and the objective is
+total customer waiting time, solved by an MILP-guided VNS heuristic.
+
+Cui et al. [2] address a genuinely dynamic truck--drone problem:
+requests for a fleet of multiple trucks and drones arrive randomly,
+each with its own time window and a delay penalty, and both launch and
+retrieval positions are chosen en-route. They cast the real-time
+decisions as a Markov decision process and solve them with a
+reinforcement-learning deep Q-network policy that decides, per
+request, whether and by which vehicle it is served.
+
+A separate line of work addresses dynamic re-planning without drones.
+Chakraborty, Darbhe, and Sarmah [3] study attended home delivery for
+India's public distribution system with a single vehicle per depot.
+A newly arriving request is checked against an already-planned day's
+route and, if accepted, an iterated-local-search/adaptive-large-
+neighborhood-search metaheuristic is rerun over the unexecuted route.
+
+This project poses the dynamic question differently. Rather than
+learning a policy over arrival states or re-optimizing the whole
+remaining route, Stage 2 asks how an already-executing truck--drone
+plan produced by Stage 1 should be locally repaired: the completed
+portion is held fixed, changes are confined to a bounded region around
+the new request, and previously scheduled customers are required to
+remain within their individual delay tolerances.
+
+% =========================================================
+\section{Static Baseline and Dynamic Problem}
+% =========================================================
+
+Stage 1 reproduces Han et al.'s static problem: one truck, multiple
+drones, a known customer set, flexible launch positions (FLPs) generated
+along the arcs actually traversed by the truck, drone recovery
+restricted to a truck-service node or the ending depot, drone-endurance
+and truck/drone synchronization constraints, and a total-waiting-time
+objective. Flexible recovery is therefore not introduced, unlike the
+en-route retrieval considered by Cui et al.
+
+Stage 2 begins once a plan $S$ produced by Stage 1 has been validated
+and is executing. When a new request $c_{\mathrm{new}}$ arrives, the
+executed portion of $S$ is frozen. A candidate modification $S'$ may
+only act on the remainder and is confined to an affected region around
+$c_{\mathrm{new}}$, such as nearby customers, the local route segment,
+idle drones, and nearby FLPs. Flexible launch positions are retained;
+flexible recovery is not introduced.
+
+For each existing customer $i$, with planned delivery time $T_i$ and
+modified delivery time $T_i'$, define the delivery delay as
+
+\begin{equation}
+d_i = T_i' - T_i,
+\qquad
+d_i \leq T_i^h ,
+\label{eq:tolerance}
+\end{equation}
+
+where $T_i^h$ is the customer's allowable delay tolerance relative to
+its own scheduled time.
+
+Candidates are compared using the change in total waiting time
+$\Delta W$, whether $c_{\mathrm{new}}$ is served, the number of
+existing customers affected, tolerance violations, and computation
+time. A working scalarization is
+
+\begin{equation}
+\min\quad
+\Delta W-\alpha N_{\mathrm{new}}
++
+M\sum_{i\in C_{\mathrm{old}}}v_i ,
+\label{eq:objective}
+\end{equation}
+
+where
+
+\begin{equation}
+v_i=\max\left(0,d_i-T_i^h\right).
+\label{eq:violation}
+\end{equation}
+
+Here $\alpha$ and $M$ are design parameters to be calibrated from
+baseline results; they are not established values.
+
+% =========================================================
+\section{Proposed Mathematical Formulation}
+% =========================================================
+
+Let $S$ denote the currently executing plan and $S'$ a candidate
+modified plan. The Stage-2 decision is to select a feasible local
+modification of $S$ that accommodates the new request while limiting
+the disruption to existing customers.
+
+The proposed formulation is represented compactly as
+
+\begin{equation}
+\begin{aligned}
+\min_{S'}\quad
+&\Delta W-\alpha N_{\mathrm{new}}
+ +M\sum_{i\in C_{\mathrm{old}}}v_i \\[1mm]
+\text{s.t.}\quad
+&S'_{\mathrm{executed}}=S_{\mathrm{executed}},\\
+&S'_{\mathrm{changed}}\subseteq R(c_{\mathrm{new}}),\\
+&d_i\leq T_i^h,
+\qquad i\in C_{\mathrm{old}},\\
+&\text{truck--drone synchronization},\\
+&\text{drone endurance},\\
+&\text{drone fleet capacity},\\
+&\text{route and service feasibility}.
+\end{aligned}
+\label{eq:formulation}
+\end{equation}
+
+Here $R(c_{\mathrm{new}})$ denotes the affected region selected around
+the new request. Its exact definition and size are research variables
+to be investigated experimentally. The formulation is therefore a
+working Stage-2 model rather than a finalized mathematical program.
+
+The principal design distinction is that the completed portion of the
+original plan is immutable, while only a bounded portion of the
+unexecuted plan may be changed. Candidate plans are evaluated using
+the same deterministic timing and feasibility engine developed for
+Stage 1.
+
+% =========================================================
+\section{Methodology and Implementation}
+% =========================================================
+
+\textbf{Stage-1 pipeline (implemented):}
+instance $\rightarrow$ truck-only TSP $\rightarrow$ $k$-means clustering
+$\rightarrow$ FLP generation on traversed arcs $\rightarrow$ greedy
+drone-trip construction with temporal fleet-capacity checking
+$\rightarrow$ initial solution. A VNS driver with eight local-search
+and four shake neighborhoods, following Han et al., is designed to
+refine the solution but is not yet fully implemented.
+
+Every stage calls one timing/feasibility engine that is the sole place
+computing arrival times, synchronization, endurance, fleet capacity,
+feasibility, and the objective. Thus, Stage 2 will later evaluate
+candidate modifications using the same deterministic rules.
+
+\textbf{Stage-2 pipeline (planned):}
+executing plan $\rightarrow$ new request $\rightarrow$ freeze committed
+portion $\rightarrow$ identify affected region $\rightarrow$ generate
+local modifications (truck insertion, drone assignment, launch-position
+change, local reordering) $\rightarrow$ evaluate candidates through
+the Stage-1 timing engine $\rightarrow$ select a feasible modification
+within tolerance, or reject.
+
+Neighborhood-based and clustering-based affected-region definitions
+are candidate strategies to be compared experimentally. Unlike the
+day-level acceptance test of Chakraborty et al. [3], the decision unit
+here is a bounded region rather than the entire remaining route.
+
+% =========================================================
+\section{Current Progress}
+% =========================================================
+
+\begin{center}
+\footnotesize
+\textbf{TABLE I.} Current Implementation Status
+
+\vspace{2pt}
+
+\begin{tabular}{p{0.65\columnwidth}c}
+\toprule
+\textbf{Component} & \textbf{Status}\\
+\midrule
+Core data model, geometry \& travel-time layer & \textbf{Done}\\
+Flexible launch point generation & \textbf{Done}\\
+Timing \& feasibility engine & \textbf{Done}\\
+Initial-solution construction & \textbf{Done}\\
+VNS driver and neighborhoods & \textit{In progress}\\
+Experiment runner \& validation vs. Han et al. & Planned\\
+Stage-2 dynamic layer & Planned\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The completed components are exercised by a regression suite of 339
+passing assertions covering the data model, geometry, FLP generation,
+timing/feasibility, and initial-solution construction. The VNS driver
+and downstream components are not yet covered because they are still
+under development.
+
+% =========================================================
+\section{Positioning Relative to Reference Studies}
+% =========================================================
+
+\begin{center}
+\footnotesize
+\textbf{TABLE II.} Feature Comparison with Reference Studies
+
+\vspace{2pt}
+
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{lcccccccc}
+\toprule
+ & SP & DR & TD & FL & FR & RL & LR & DT\\
+\midrule
+Han et al. [1]
+ & \checkmark & -- & \checkmark & \checkmark
+ & -- & -- & -- & --\\
+
+Cui et al. [2]
+ & \checkmark & \checkmark & \checkmark & \checkmark
+ & \checkmark & \checkmark & -- & --\\
+
+Chakraborty et al. [3]
+ & \checkmark & \checkmark & -- & --
+ & -- & -- & WR & --\\
+
+\textbf{This work}
+ & \checkmark\,(S1) & \checkmark\,(S2) & \checkmark & \checkmark
+ & -- & -- & \checkmark & \checkmark\\
+
+\bottomrule
+\end{tabular}
+\end{center}
+
+\footnotesize
+\textbf{SP}: static planning; \textbf{DR}: dynamic requests;
+\textbf{TD}: truck--drone coordination; \textbf{FL}: flexible launch;
+\textbf{FR}: flexible recovery; \textbf{RL}: learned RL/MDP policy;
+\textbf{LR}: localized repair; \textbf{WR}: whole remaining route;
+\textbf{DT}: per-customer delay tolerance. For \textbf{This work},
+\textbf{(S1)} and \textbf{(S2)} indicate the project stage: S1 is the
+static Stage-1 baseline, already implemented and tested, while S2 is
+the proposed dynamic Stage-2 extension.
+
+% =========================================================
+\section{Research Direction and Remaining Work}
+% =========================================================
+
+The immediate task is finishing the VNS driver and its twelve
+neighborhoods, followed by an experiment runner that reproduces Han
+et al.'s synthetic instances and checks objective values and runtime
+against their reported results. Mismatches arising from unspecified
+paper details will be distinguished from implementation errors.
+
+Only after this baseline is validated will Stage 2 be implemented. The
+next components are the event layer, affected-region strategies, and
+local-modification generator, followed by single-request experiments.
+These experiments will compare region definitions and sizes using
+$\Delta W$, tolerance violations, number of affected customers, and
+computation time.
+
+The Stage-2 direction differs from Cui et al.'s trained dispatch policy
+because no policy is learned across episodes. It also differs from
+Chakraborty et al. [3] because acceptance and modification are confined
+to a bounded region around the arriving request rather than the whole
+remaining route.
+
+% =========================================================
+\section{Conclusion}
+% =========================================================
+
+Stage 1 reproduces Han et al.'s static flexible-launch problem, with
+the core computational pipeline implemented and independently tested;
+VNS refinement and paper-level validation remain. Stage 2 will
+investigate a different dynamic mechanism: localized modification of
+an already-executing truck--drone plan under customer-specific delay
+tolerances. The objective is to accommodate newly arriving requests
+while limiting disruption to the existing plan, using the validated
+Stage-1 timing and feasibility framework as its computational
+foundation.
+
+% =========================================================
+% REFERENCES
+% =========================================================
+
+\balance
+
+\begin{thebibliography}{3}
+\setlength{\itemsep}{0pt}
+\setlength{\parsep}{0pt}
+\footnotesize
+
+\bibitem{han}
+B. Han, T. Chi, and Z. Sun,
+``Collaborative delivery problem of trucks and multiple drones:
+an en-route operation with flexible launch positions,''
+\textit{International Transactions in Operational Research},
+vol. 33, pp. 4072--4109, 2026,
+doi: 10.1111/itor.70085.
+
+\bibitem{cui}
+H. Cui, K. Li, S. Jia, and Q. Meng,
+``Dynamic collaborative truck-drone delivery with en-route
+synchronization and random requests,''
+\textit{Transportation Research Part E: Logistics and
+Transportation Review}, vol. 192, p. 103802, 2024,
+doi: 10.1016/j.tre.2024.103802.
+
+\bibitem{chakraborty}
+S. Chakraborty, K. Darbhe, and S. Sarmah,
+``Attended home delivery in Indian public distribution system:
+an iterated local search approach,''
+\textit{Journal of Modelling in Management},
+vol. 16, no. 4, pp. 1279--1301, 2021,
+doi: 10.1108/JM2-06-2020-0148.
+
+\end{thebibliography}
+
+% =========================================================
+% SIGNATURES
+% =========================================================
+
+\vspace{3pt}
+
+\begin{center}
+
+\begin{tabular}{
+>{\centering\arraybackslash}p{0.40\columnwidth}
+@{\hspace{0.12\columnwidth}}
+>{\centering\arraybackslash}p{0.40\columnwidth}
+}
+
+\rule{0.90\linewidth}{0.4pt}
+&
+\rule{0.90\linewidth}{0.4pt}
+\\[3pt]
+
+\textbf{Jeet Anand (23IM30010)}
+&
+\textbf{Prof.\ S.\ P.\ Sarmah}
+\\[2pt]
+
+Student
+&
+Supervisor
+\\[5pt]
+
+Date: \rule{0.55\linewidth}{0.4pt}
+&
+Date: \rule{0.55\linewidth}{0.4pt}
+
+\end{tabular}
+
+\end{center}
+
+\end{document}

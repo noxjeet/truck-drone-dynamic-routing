@@ -637,9 +637,11 @@ assertions) continue to pass unchanged.
 4-step initial-solution procedure (`paper1-understanding.md` Sec 5,
 `paper1-implementation-plan.md` Sec 10-11): (a) the optimal truck-only
 route, (b) K-means customer clustering, (c) flexible-launch-point
-insertion, (d) feasible drone-trip construction. Three files: `truck_only_route.hpp`
-(F1), `customer_clustering.hpp` (F2), `initial_solution_builder.hpp` (F3
-+ F4 + top-level orchestration, `build_initial_solution()`). This phase
+insertion, (d) feasible drone-trip construction. Four files: `truck_only_route.hpp`
+(F1), `customer_clustering.hpp` (F2), `drone_fleet_capacity.hpp` (the
+global drone-fleet-capacity check used by F4, added by the post-approval
+correctness patch described below), and `initial_solution_builder.hpp`
+(F3 + F4 + top-level orchestration, `build_initial_solution()`). This phase
 adds **no** dynamic-customer machinery, **no** objective changes, and
 **no** VNS/local-search/shake code of any kind -- it only produces one
 concrete `Solution` for the VNS driver (a later, not-yet-built phase) to
@@ -743,19 +745,25 @@ inefficiency the (out-of-scope) VNS local search exists to improve later,
 and inventing route-repair logic here would exceed this phase's mandate
 ("do not invent a more sophisticated algorithm").
 
-**[INFERENCE/ASSUMPTION] Each customer's launch candidate is looked up
-directly** as the FLP generated on the arc that entered it in `r0` (the
-generated point whose `data.arc_to == customer_id`) -- an O(1) lookup,
-never a route search. This is the narrowest defensible reading of
-Algorithm 2's OCR-corrupted "adjacent nodes" wording (see F4 below for
-the parallel reasoning on the recovery side). **When
-`points_per_arc > 1`,** several FLPs share the same arc (hence the same
-`arc_to`); because Phase D emits them in increasing ratio order per arc
-and this lookup keeps the LAST one written, the launch candidate that
-results is deliberately the FLP CLOSEST to the customer (highest ratio)
--- a defensible, deliberate choice (it minimizes the drone's necessary
-outbound leg among the same-arc candidates), called out explicitly here
-rather than left as an unremarked side effect of iteration order.
+**[INFERENCE/ASSUMPTION] Each customer's launch candidates are looked up
+directly** as the FLPs generated on the arc that entered it in `r0` (the
+generated points whose `data.arc_to == customer_id`) -- a map lookup
+(`launch_candidates_for`), never a route search. This is the narrowest
+defensible reading of Algorithm 2's OCR-corrupted "adjacent nodes"
+wording (see F4 below for the parallel reasoning on the recovery side);
+it does not search earlier arcs or a geometric radius.
+
+**ACTUAL CURRENT IMPLEMENTATION (post-approval correctness patch, Issue
+2): ALL same-arc FLPs are launch candidates.** When `points_per_arc > 1`,
+several FLPs share the same arc (hence the same `arc_to`), and every one
+of them is kept as a separate candidate; F4 builds and evaluates one
+candidate trip per launch FLP (see F4). *Superseded original behavior,
+kept here for history only:* the first Phase F version kept only the
+LAST FLP written per arc, i.e. only the FLP closest to the customer.
+That was an unintended narrowing: the closest point is not always the
+best one (e.g. when the drone is faster than the truck, launching
+earlier from a farther point can give an earlier customer arrival).
+`tests/test_init.cpp` Block 10 is the regression for this.
 
 ### F4: feasible drone-trip construction
 
@@ -773,36 +781,68 @@ reliable; nothing about the pseudocode's line-level detail is assumed.
 Not specified by the paper; a simple, deterministic, arbitrary-but-fixed
 choice.
 
-**[ASSUMPTION] `available_drones` resets to `|U|` at the start of EACH
-cluster's processing**, rather than being a single budget shared across
-the whole construction. This is the narrowest reading of Algorithm 2's
-own "while unassigned drones remain" loop, which is nested inside the
-per-cluster outer loop with no stated cross-cluster drone bookkeeping.
-**Acknowledged limitation:** this caps the *count* of trips built per
-cluster at `|U|`; it is NOT a true concurrent-flight-count check across
-the whole route's timeline (i.e. it does not verify that at every real
-instant, no more than `|U|` drones are simultaneously airborne across
-ALL clusters combined). Modeling genuine cross-cluster concurrent-flight
-scheduling is a materially harder problem the source's own recoverable
-Algorithm 2 pseudocode gives no basis for solving here, and building it
-would violate the explicit instruction not to invent a more
-sophisticated algorithm than the source supports. Every trip actually
-constructed is still fully temporally and endurance feasible (verified
-by Phase E on every candidate) -- what is not verified is a global
-simultaneous-flight-count bound across cluster boundaries.
+**ACTUAL CURRENT IMPLEMENTATION (post-approval correctness patch, Issue
+1): drone-fleet capacity is checked GLOBALLY across all accepted trips,
+and drones can be reused sequentially across clusters.** There is no
+per-cluster drone budget. `fleet_size` (= `|U|`, i.e.
+`DroneParameters::num_drones`) and the trip counter are single running
+values shared by the whole construction; nothing is reset when a new
+cluster starts. A candidate trip is accepted only if the set of ALL
+trips accepted so far (in every cluster processed up to that point) plus
+the candidate never needs more than `|U|` drones in the air at the same
+instant. `tdr::init::check_drone_fleet_capacity()`
+(`drone_fleet_capacity.hpp`) decides this.
+- **What the check does:** each trip occupies one drone over the interval
+  [`launch_time`, `recovery_complete_time`]. Both values are read
+  unchanged from Phase E's `DroneTripTiming`; no timing is recomputed.
+  A sweep over these intervals finds the maximum number that overlap at
+  any instant, and the check passes iff that maximum is at most `|U|`.
+- **[INFERENCE]** Max overlap ≤ `|U|` is necessary and sufficient for the
+  trips to be assignable to `|U|` physical drones with no drone flying
+  two trips at once. This is the standard interval-scheduling result
+  applied to [PAPER] constraint 28 (a drone cannot be relaunched before
+  it is recovered) and the fixed fleet size `|U|`.
+- **[ASSUMPTION]** Touching intervals do not overlap: a drone whose
+  recovery completes at time t can launch again at exactly t. At tied
+  timestamps, releases are processed before acquisitions (with
+  `kTimeEpsilon` tolerance).
+- **Consequence -- sequential reuse:** because the check is time-aware
+  rather than a count of trips, one physical drone can fly a trip in one
+  cluster and then another trip in a later cluster, as long as the two
+  intervals do not overlap (`tests/test_init.cpp` Block 9). A candidate
+  that would need a second simultaneous drone in a 1-drone fleet is
+  rejected even if it comes from a different cluster (Block 8).
+- **Scope:** this check exists only inside F4.
+  `tdr::timing::evaluate_solution()` does NOT enforce `num_drones` (see
+  "Pre-Phase-G baseline" at the end of this file).
+
+*Superseded original behavior, kept here for history only:* the first
+Phase F version reset an `available_drones = |U|` budget at the start of
+EACH cluster. That capped the NUMBER of trips per cluster but did not
+check simultaneous flights across the whole timeline, so it could accept
+more than `|U|` drones airborne at once across cluster boundaries, and
+it could also block legitimate sequential reuse. The post-approval patch
+replaced it with the global, time-aware check above.
 
 **[INFERENCE/ASSUMPTION] Recovery candidate selection** mirrors the
 launch side's "narrowest adjacent reading": for a candidate customer `j`
 at its current route position, the recovery candidate is the nearest
 FOLLOWING node of type Customer or Depot still on the working route
-(skipping over any already-inserted FLP entries). Exactly one candidate
-trip `(i, j, k)` is built per customer per round -- no search over
-multiple launch/recovery combinations -- avoiding an invented, paper-
-unsupported combinatorial search.
+(skipping over any already-inserted FLP entries). Exactly one recovery
+node `k` is used per customer per round. One candidate trip `(i, j, k)`
+is built for EACH launch candidate `i` of `j` (every same-arc FLP, see
+F3), so a customer yields as many candidate trips per round as its
+entering arc has FLPs. No search is made over alternative recovery
+nodes, which avoids an invented, paper-unsupported combinatorial search
+on the recovery side.
 
 **[ASSUMPTION] `BestRoute()` scoring: the candidate with the LOWEST
 resulting drone customer-arrival time wins**, ties broken by lowest
-customer `NodeId`. The paper names a `BestRoute()` selection step but
+customer `NodeId`, then by lowest launch-FLP `NodeId` (needed now that
+one customer can have several candidates). Exactly one candidate is
+committed per round. The committed trip gets `drone_slot =` a running
+per-trip counter (0, 1, 2, ...); this is a trip identifier, not a
+physical drone assignment. The paper names a `BestRoute()` selection step but
 never gives its scoring formula (`paper1-implementation-plan.md` Sec 10:
 "exact `BestRoute` scoring formula not stated for this step"). Minimizing
 the customer's own arrival time directly serves Paper 1's own stated
@@ -818,9 +858,11 @@ could convert a node that an earlier-accepted trip already depends on as
 its truck-served recovery point, silently invalidating that earlier
 trip. This does not restrict recovery-node REUSE across multiple
 different trips (Fig 6 explicitly permits multiple drones converging on
-shared infrastructure; Phase E already supports and tests shared-SR
-simultaneous recovery) -- it only prevents converting an in-use recovery
-target itself.
+shared infrastructure; Phase E's timing model supports simultaneous
+recovery at one node, though no current test exercises 2+ recoveries at
+the same node) -- it only prevents converting an in-use recovery target
+itself. The depot is never recovery-locked, so in the current
+construction simultaneous recoveries can occur only at the end depot.
 
 **Every feasibility decision is made by Phase E, not reimplemented
 here.** For each candidate, F4 builds a trial `Solution` (working route
@@ -828,8 +870,10 @@ with the candidate customer's slot replaced by its launch FLP, trip
 appended to the already-accepted trips) and calls
 `tdr::timing::evaluate_solution()`. A candidate is kept only if: the new
 trip's own `DroneTripTiming::feasible` is true, the candidate customer's
-own `CustomerServiceRecord` shows `served_by_drone && feasible`, AND the
-whole trial solution's `feasible` is true. This directly satisfies every
+own `CustomerServiceRecord` shows `served_by_drone && feasible`, the
+whole trial solution's `feasible` is true, AND
+`check_drone_fleet_capacity()` over all of the trial's trip timings
+passes (see above). This directly satisfies every
 numbered feasibility requirement in the phase brief (valid FLP launch,
 recovery later on the route, endurance, synchronization) without
 duplicating any of Phase E's logic -- "recovery occurs later on the
@@ -846,8 +890,21 @@ customer in neither state, and Phase E's own customer-record resolution
 (already tested in Phase E) independently confirms this for every built
 solution.
 
-**Tests.** `tests/test_init.cpp` (6 blocks, 64 assertions) covers all 10
-required categories. Block 1 checks `compute_cluster_count()` against
+**Final independent evaluation.** After construction ends, the finished
+`Solution` (final working route + all accepted trips) is evaluated once
+more from scratch by `tdr::timing::evaluate_solution()`. Its result is
+stored in `InitialSolutionResult::evaluation`, and `feasible` /
+`objective_value` are copied from it. If it is infeasible, every
+violation reason is added to `diagnostics` with an `F4:` prefix. The
+Block 6/8/9/10 tests also cross-check this by rebuilding a
+`SpatialNetwork` from the result's own `node_registry` and re-running
+`evaluate_solution()`.
+
+**Tests.** `tests/test_init.cpp` currently has **10 blocks and 107
+runtime assertions** (Blocks 1-6: 64 assertions from the original Phase F
+version; Blocks 7-10: 43 assertions added by the post-approval
+correctness patch). Blocks 1-6 cover all 10 originally required
+categories. Block 1 checks `compute_cluster_count()` against
 the paper's formula on seven `(|C|, |U|)` pairs, including the `|C|=0`
 and `|U|=0` edges. Block 2 hand-traces `run_kmeans()` on a 4-point
 colinear layout (customers at x=10/20/30/40, k=2) to its exact expected
@@ -886,7 +943,95 @@ omissions), that the truck/drone service split is exactly 2/2, and --
 as an independent cross-check -- that rebuilding a `SpatialNetwork` from
 the result's own `node_registry` and re-running `evaluate_solution()`
 from scratch agrees with the result's stored feasibility and objective
-value. All prior Phase A-E tests (29 + 43 + 26 + 35 + 99 = 232
-assertions, the last figure reflecting the Phase E audit's added Block 9)
-continue to pass unchanged; the full suite is 296 assertions across 6
-executables, 100% passing.
+value. Blocks 7-10 cover the post-approval correctness patch:
+Block 7 unit-tests `check_drone_fleet_capacity()` directly (zero trips,
+touching intervals, an overlapping pair with 1 vs 2 drones, a staggered
+triple needing at most 2). Block 8 is a full pipeline run where a
+different cluster's candidate is rejected because accepting it would
+need 2 simultaneous drones from a 1-drone fleet (objective
+172.360679774998). Block 9 is a full pipeline run where two different
+clusters' trips do not overlap in time and share one drone sequentially
+(objective 2732.5). Block 10 uses 2 FLPs per arc and a drone faster than
+the truck to prove that every same-arc candidate is tried: the FARTHER
+FLP wins (objective 60 instead of 75). Blocks 8-10 each also re-run
+`evaluate_solution()` independently.
+
+**Current suite totals:** Phase A-E tests 29 + 43 + 26 + 35 + 99 = 232
+assertions (the last figure includes the Phase E audit's Block 9), plus
+107 in `test_init`: **339 assertions across 6 executables, 100% passing**
+(verified 27 Sep 2026 on a fresh build of commit aebc03f). *Superseded
+figure, for history only:* the original Phase F entry reported 64
+`test_init` assertions and a 296-assertion suite, from before the
+post-approval patch.
+
+## Pre-Phase-G baseline (recorded 27 Sep 2026)
+
+This entry freezes what the repository actually contains before any
+optimization work starts. It records facts about the current code. It
+does not decide any open interpretation question: those are listed
+explicitly as UNRESOLVED below.
+
+**Baseline identity.** Commit `aebc03f`. Phases A-F are implemented, and
+all 6 test executables (339 assertions) pass on a fresh build. An
+uncommitted 26 Sep 2026 attempt to continue Stage 1 with another tool
+was reverted in full on 27 Sep 2026; none of that work is part of this
+baseline.
+
+**Frozen scope.**
+- Phases A-F (TSP, data model, geometry, FLP generation, timing engine,
+  initial solution) are **frozen** as the baseline for optimization work.
+  Any later change to them should get its own `DECISIONS.md` entry.
+- Phases G (8 local-search neighborhoods), H (4 shake mechanisms), I
+  (VNS driver), J (instance generation / experiment runner) and K
+  (validation against Paper 1) are **not implemented**. `config/`,
+  `instances/`, `results/` and `scripts/` are empty, and the only
+  executables are the 6 test programs.
+
+**Current behavior of `tdr::timing::evaluate_solution()`:**
+- **Multiple launches at one FLP use one SHARED SL.** Truck departure =
+  arrival + SL, and every launching trip gets `launch_time` = that
+  departure, however many drones launch there.
+- **Multiple recoveries at one node are CONCURRENT with one SR window.**
+  Each recovering trip completes at max(truck arrival, its own landing)
+  + SR. Truck departure = the max of these and the truck's own service
+  completion (arrival + Se1), so it equals the latest landing (or truck
+  arrival) + one SR.
+- **`num_drones` is NOT enforced.** The engine never reads
+  `DroneParameters::num_drones`, so a solution needing more simultaneous
+  drones than the fleet has can still be reported `feasible`.
+
+**Phase F separately enforces fleet capacity.** Global, time-aware
+checking via `tdr::init::check_drone_fleet_capacity()` happens only
+inside F4 construction (see Phase F above). Nothing outside
+`build_initial_solution()` checks it.
+
+**Data-model fields with limited meaning today:**
+- `DroneTrip::drone_slot` is a **per-trip identifier/counter** (F4
+  assigns 0, 1, 2, ... in acceptance order). It is **not** a physical
+  drone assignment and can exceed `num_drones - 1`. No module maps trips
+  to physical drones.
+- `DroneTrip::launch_position_in_route` and
+  `DroneTrip::recovery_position_in_route` are **currently unused**. They
+  stay at their default (`kUnknownRoutePosition`) everywhere, and
+  `evaluate_solution()` finds route positions itself.
+
+**Not covered by current tests:** 2+ drones launching at the same FLP;
+2+ recoveries at the same node; any fleet-capacity check inside
+`evaluate_solution()`.
+
+**UNRESOLVED interpretation questions (deliberately NOT decided here):**
+1. **UNRESOLVED:** simultaneous launches at one FLP: one shared SL
+   (current code) or one SL per drone (k x SL)?
+2. **UNRESOLVED:** simultaneous recoveries at one node: one concurrent SR
+   window (current code) or SR per drone, one after another (k x SR)?
+3. **UNRESOLVED:** should `evaluate_solution()` itself enforce
+   `num_drones`, or should fleet capacity stay a separate check?
+4. **UNRESOLVED:** what drone identity must mean for Phase H's
+   Random_Drone_Remove (the current `drone_slot` is not a physical drone).
+5. **UNRESOLVED (carried over from Phase E):** whether theta applies to
+   the outbound leg only (current code) or the whole trip, and whether
+   truck service (Se1) and recovery (SR) at the same node run
+   concurrently (current code) or in sequence.
+
+Until these are decided and recorded here, the current code's behavior
+is the baseline.
