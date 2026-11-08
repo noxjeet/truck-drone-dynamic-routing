@@ -117,6 +117,11 @@ main-experiment convention of setting every customer's value equal --
 that is a property of how a given experiment's data is populated (Phase
 D), not of the data structure.
 
+> **SUPERSEDED (29 Sep 2026):** `drone_slot` was replaced by a physical
+> drone id `DroneTrip::drone_id` (u in U, 0 <= u < |U|), enforced by the
+> evaluator via (28) and |U|. The paragraph below is kept for history;
+> see "Paper-conformance corrections (29 Sep 2026)", C4.
+
 **Nominal per-trip drone identity (`DroneTrip::drone_slot`).** The MILP
 formulation only needs the drone *count* |U| as a concurrency cap --
 individual drones are otherwise interchangeable, so no drone-identity
@@ -281,6 +286,15 @@ per the review instructions for this phase.
   the distances between two locations" (Sec 2.3) -- i.e. an even,
   proportional spacing along the arc, not an arbitrary or random one.
 
+> **SUPERSEDED IN PART (29 Sep 2026):** the fixed count per arc is no
+> longer the default. Generation now follows the structure of eq. (41),
+> n = floor(D/d) per arc (the printed (41) uses floor; the "ceil" below
+> was a transcription error), with d configurable and NO default, because
+> the paper does not give the main-experiment d. Launch points are now
+> generated for every arc of the depot/customer graph, not only the arcs
+> of one route. The fixed count survives only as an opt-in rule that is
+> not paper-supported. See "Paper-conformance corrections (29 Sep 2026)", C7.
+
 **[ASSUMPTION] -- our choice, because the source does not specify this
 for the main synthetic experiments:**
 - The exact **count** of points placed per traversed arc
@@ -406,6 +420,11 @@ code.
   a drone-served customer this is `DroneTripTiming::customer_arrival_time`
   (the moment the drone reaches the customer), **never**
   `recovery_arrival_time` or `recovery_complete_time`.
+- > **SUPERSEDED (29 Sep 2026):** endurance now follows (36)/(37)
+  > literally (loaded portion l^_j - l^_i includes Se_j^D and is scaled by
+  > (1 + theta_j); (36) includes the drone waiting for a late truck). The
+  > bullets below on the outbound-only theta and on waits not counting
+  > are superseded. See "Paper-conformance corrections (29 Sep 2026)", C3.
 - Eq. 35's generalized flight time `t_j = f_j * (1 + theta_j)` is
   implemented literally as `DroneTripTiming::generalized_flight_time`,
   using the raw flight times already produced by Phase C and each
@@ -490,6 +509,12 @@ choice:**
   with the drone's own arrival placed before, during, and after the
   truck's service window, and documents in comments what the additive
   alternative would have produced at each point for contrast.
+
+> **SUPERSEDED IN PART (29 Sep 2026):** the time-0 start is [PAPER]
+> (p15: "this paper assumes that operating time starts at 0"); the shared
+> SL is replaced by (21) + (18) (each drone launches at t_i + SL, the truck
+> leaves at t_i + n_i SL). The SR handling is unchanged and is now marked
+> PAPER AMBIGUITY -- PROFESSOR DECISION PENDING. See "Paper-conformance corrections (29 Sep 2026)", C1, C2.
 
 **[ASSUMPTION] -- a choice made because the paper does not specify this at
 all, and a different implementation could reasonably choose otherwise:**
@@ -633,6 +658,13 @@ assertions) continue to pass unchanged.
 
 ## Initial-solution construction (Phase F)
 
+> **UPDATED (29 Sep 2026):** F3 and F4 were changed to respect launch-point
+> arc membership, and F4 now assigns physical drone ids and no longer uses
+> `drone_fleet_capacity.hpp` (fleet limits are enforced by the evaluator).
+> Passages below that describe r0-only FLP generation, entering-arc launch
+> candidates, the time-sweep fleet check inside F4, `drone_slot`, and the
+> old Block 4/6/8/9/10 numbers are superseded; see "Paper-conformance corrections (29 Sep 2026)", C4, C5, C7.
+
 `include/init/` (header-only, namespace `tdr::init`) implements Paper 1's
 4-step initial-solution procedure (`paper1-understanding.md` Sec 5,
 `paper1-implementation-plan.md` Sec 10-11): (a) the optimal truck-only
@@ -719,6 +751,13 @@ no-randomness choice for each, rather than a more sophisticated variant
   trigger in practice.
 
 ### F3: flexible-launch-point insertion
+
+> **SUPERSEDED (29 Sep 2026):** F3 now generates L_(a,b) for every ordered
+> pair of truck nodes (depot + customers) with n = floor(D/d), and F4's
+> launch candidates for customer j are the points of the arc (a, b) the
+> route traverses once j is removed. The text below describes the earlier
+> r0-only / entering-arc design, which produced launch points outside
+> their own arc. See "Paper-conformance corrections (29 Sep 2026)", C5.
 
 **Phase D's generator is reused completely unchanged** -- no new
 placement rule, no eq. 41, nothing. `build_initial_solution()` calls
@@ -956,6 +995,9 @@ the truck to prove that every same-arc candidate is tried: the FARTHER
 FLP wins (objective 60 instead of 75). Blocks 8-10 each also re-run
 `evaluate_solution()` independently.
 
+> **SUPERSEDED (29 Sep 2026):** current totals are 480 assertions; see
+> "Paper-conformance corrections (29 Sep 2026)", "Tests".
+
 **Current suite totals:** Phase A-E tests 29 + 43 + 26 + 35 + 99 = 232
 assertions (the last figure includes the Phase E audit's Block 9), plus
 107 in `test_init`: **339 assertions across 6 executables, 100% passing**
@@ -964,74 +1006,426 @@ figure, for history only:* the original Phase F entry reported 64
 `test_init` assertions and a 296-assertion suite, from before the
 post-approval patch.
 
-## Pre-Phase-G baseline (recorded 27 Sep 2026)
+## Paper-conformance corrections (29 Sep 2026)
 
-This entry freezes what the repository actually contains before any
-optimization work starts. It records facts about the current code. It
-does not decide any open interpretation question: those are listed
-explicitly as UNRESOLVED below.
+This pass implements ONLY the corrections confirmed by the forensic paper
+audit (`docs/paper1_full_implementation_audit.md`,
+`docs/paper1_decision_register.md`), where the paper's behaviour is
+unambiguous. It does not start Phase G, does not implement any paper
+ambiguity or professor-pending decision, and does not choose any missing
+paper parameter. Paper page numbers are PDF pages (journal page = 4071 +
+PDF page) of Han, Chi & Sun (2026), ITOR 33:4072-4109.
 
-**Baseline identity.** Commit `aebc03f`. Phases A-F are implemented, and
-all 6 test executables (339 assertions) pass on a fresh build. An
-uncommitted 26 Sep 2026 attempt to continue Stage 1 with another tool
-was reverted in full on 27 Sep 2026; none of that work is part of this
-baseline.
+Classification used below: **[PAPER]** = stated by an equation or the
+text; **[INFERENCE]** = forced by combining paper statements;
+**[IMPLEMENTATION ASSUMPTION]** = our choice where the paper is silent;
+**PAPER AMBIGUITY / PROFESSOR DECISION PENDING** = deliberately not
+decided.
+
+### C1. Multiple launches at one launch point: (18) and (21)
+
+- **Paper evidence.** (21): t_i + SL <= l^_{i,u} for every drone u
+  launched at i. (19): l^_{i,u} <= l_i. (18): the truck's departure
+  l_i >= t_i + Se_i^T + sum_u sum_{s in P_i^+} y_s^u * SL (+ an SR term,
+  see C2). With n_i drones launched at i, the SL sum is n_i * SL.
+  Neither (19) nor (21) orders the drones against each other.
+- **Old behaviour.** One shared SL: the truck left at t_i + SL and every
+  drone launched at that same instant, however many launched.
+- **New behaviour.** Each launched drone departs at t_i + SL (no
+  staggering); the truck departs at t_i + n_i * SL. Se_i^T is 0 at a
+  launch point (Se^T is defined only for truck service nodes).
+- **Files / functions.** `include/timing/timing_engine.hpp`,
+  `evaluate_solution()` forward pass (launch-point branch) and header.
+- **Tests.** `test_timing` A: SL = 5, two drones at one FLP reached at
+  t = 10 both launch at 15; the truck leaves at 20; objective 68.
+- **[IMPLEMENTATION ASSUMPTION] launch-delay slack.** (19)/(21) allow
+  any l^_{i,u} in [t_i + SL, l_i], and the MILP may also hold the truck
+  longer. The evaluator uses the earliest schedule (earliest launch, truck
+  leaving as soon as (18) allows). Delaying a launch never makes a
+  customer arrive earlier, but it can shorten the drone's wait in (36);
+  the evaluator therefore may reject a trip that a delayed launch would
+  make endurance-feasible. Recorded, not resolved.
+
+### C2. SR -- PAPER AMBIGUITY, PROFESSOR DECISION PENDING (unchanged)
+
+- **Paper evidence.** (18) prints its SR sum over P_i^+ (routes LAUNCHED
+  at i). The explanatory text (p15) says (18) accounts for drone launch
+  and recovery tasks at a node, and (20) separately imposes
+  l_k >= l^_{j,u} + d^_{jk} + SR for each drone u recovered at k.
+- **Reading (A), literal.** n_i * SR is charged at the launch point i as
+  printed; recovery at k is governed only by (20):
+  l_k = max(t_k + Se_k^T, max_u(drone arrival_u + SR)).
+- **Reading (B), index slip (P_k^- intended).** At a recovery node k,
+  l_k = max(t_k + Se_k^T + r_k * SR, max_u(drone arrival_u + SR)), with
+  r_k the number of drones recovered at k.
+- **Current code (NOT changed).** recovery_complete = max(t_k, drone
+  arrival) + SR per trip and l_k = max(t_k + Se_k^T, all recovery
+  completions). It matches neither reading exactly. It stays as the
+  baseline until the professor decides; no new rule was implemented.
+- **Files.** `timing_engine.hpp` header ("PAPER AMBIGUITY: SR") and the
+  recovery branch comment. The existing Se1/SR audit test (test_timing
+  audit Block 9) is unchanged and now notes that its value is pending.
+
+### C3. Battery endurance exactly as (36)/(37)
+
+- **Paper evidence.** (36): e >= (t_k - l^_{j,u}) + (l^_{j,u} -
+  l^_{i,u})(1 + theta_j). (37): e >= (l^_{j,u} - l^_{i,u})(1 + theta_j)
+  + d^_{jk}. With (17) t^_{j,u} = l^_{i,u} + d^_{ij} and (22)
+  l^_{j,u} = t^_{j,u} + Se_j^D. Text p15: "the flight duration of a
+  drone, while awaiting the truck, must not exceed the permissible
+  battery capacity"; p30: "including waiting for the truck at the merging
+  point".
+- **Old behaviour.** generalized = outbound * (1 + theta) + return. It
+  dropped Se_j^D (and its theta scaling) from the loaded part and ignored
+  the drone's wait for a late truck.
+- **New behaviour.** Both expressions are evaluated literally with the
+  schedule (l^_i = launch time, l^_j = departure from the customer, t_k =
+  truck arrival at the recovery node). Feasible iff both <= e (+1e-9).
+  `DroneTripTiming` exposes `endurance_value_36`, `endurance_value_37`
+  and `truck_arrival_at_recovery`; `generalized_flight_time` = the larger
+  of the two. Consequences of the equations (not added rules): theta
+  scales outbound flight AND Se_j^D; the return leg is unscaled; waiting
+  for a late truck counts via (36); SL and SR are in neither expression.
+- **Files / functions.** `timing_engine.hpp`: `DroneTripTiming`,
+  per-trip feasibility assembly, header.
+- **Tests.** `test_timing` B (Se2 = 2, theta = 1: (36) = 15, (37) = 19;
+  e = 17 infeasible although the old formula gave 15, e = 19 feasible) and
+  C (the drone lands at 12, the truck arrives at 18: (36) = 13 > (37) = 7;
+  e = 10 infeasible, e = 13 feasible). Updated expectations: Block 2
+  (generalized 9 -> 12: (36) = 1.2, (37) = 12), Block 8 ((36) = 12,
+  (37) = 6), Block 9 boundary comment, Block 11 (theta sweep re-derived:
+  e = 13; theta = 0 gives 12, feasible; theta = 0.5 gives 15.5,
+  infeasible). All re-derived by hand.
+- **Supersedes** the Phase E [INFERENCE] bullets "theta applies only to
+  the outbound leg" and "a synchronization wait does not count", and
+  resolves Pre-Phase-G UNRESOLVED item 5 (theta part).
+
+### C4. Physical drone identity u in U, (28) and |U|
+
+- **Paper evidence.** Drone-indexed variables y_s^u, t^_{i,u}, l^_{i,u}
+  for u in U (Table 2); (28) and its text (p15): it prevents "the
+  relaunching of drones without truck recovery"; |U| is the fleet size;
+  p9: drones are capable of multiple takeoffs and recoveries (Fig. 3).
+- **Old behaviour.** `DroneTrip::drone_slot` was a per-trip counter, not
+  a drone. The evaluator never read `num_drones`; only F4 checked fleet
+  capacity, with a time-interval sweep.
+- **New behaviour.** `DroneTrip::drone_id` (default `kUnassignedDroneId
+  = -1`) names the physical drone. The evaluator rejects: an id outside
+  {0, ..., |U|-1}; a drone relaunched before its previous trip is
+  recovered ((28)); more than |U| trips in flight at once
+  (`SolutionEvaluationResult::max_simultaneous_drones`). Sequential reuse
+  is valid: the number of trips is not bounded by |U|.
+- **[INFERENCE] route-order form of (28).** Because the truck visits
+  route positions in increasing time and every drone is launched and
+  recovered by the truck, "relaunch before recovery" is equivalent to:
+  for each drone, trips taken in launch-position order, the next launch
+  position is strictly after the previous recovery position. Assumes
+  positive travel times between distinct positions.
+- **[IMPLEMENTATION ASSUMPTION] id assignment in Phase F.**
+  `detail::assign_drone_ids_by_route_order`: trips in launch-position
+  order take the lowest-numbered drone already recovered. For intervals
+  processed by start this uses the minimum number of drones, so it fails
+  only when more than |U| trips genuinely overlap. Which free drone is
+  chosen is not specified by the paper (Algorithm 2's per-drone loop is
+  professor-pending).
+- **Files / functions.** `include/model/drone_trip.hpp` (`drone_id`,
+  `kUnassignedDroneId`); `timing_engine.hpp` (`drone_id_valid`, (28)
+  and |U| checks); `include/init/initial_solution_builder.hpp`
+  (`assign_drone_ids_by_route_order`, used in F4);
+  `include/init/drone_fleet_capacity.hpp` is no longer used by F4 and is
+  retained only as a standalone utility (status note in its header).
+- **Tests.** `test_timing` D/D2 (valid sequential reuse: one drone, three
+  trips, |U| = 1), E (INVALID overlapping reuse: same id relaunched before
+  recovery -> (28); the same trips on two ids are feasible), F (id 1 with
+  |U| = 1 and id -1 rejected), G (three trips airborne at once with
+  |U| = 2 -> "3 drones are simultaneously in flight but |U| = 2");
+  `test_model` renamed field check; `test_init` Blocks 6, 8, 9 assert the
+  ids (Block 9: both trips on drone 0).
+
+### C5. Launch-point arc membership (evaluator AND construction)
+
+- **Paper evidence.** p9: "If the truck does not pass through arc (i,j),
+  it cannot access the launch point in set L_ij"; L_ij is defined for
+  every i in C0, j in C_E (Table 2); (13)-(15) and their text (p14).
+- **Old behaviour.** The evaluator never checked which arc a launch point
+  belonged to. F3 generated points only on the arcs of r0, and F4 put a
+  point of L_(a,j) (the arc entering customer j in r0) in j's place when
+  converting j -- after which the truck drives a -> point -> b, an arc
+  (a, b) the point does not belong to. Phase F could therefore build
+  solutions the paper forbids.
+- **New behaviour (evaluator).** Every launch point on the route must
+  have arc-ownership data, and its owning arc (i, j) must equal the
+  truck (non-launch-point) nodes immediately before and after it; several
+  points of the same arc may sit next to each other. Order among points
+  of one arc is not constrained by the paper and not checked.
+  `evaluate_solution` takes a 4th argument `FlpDataMap flp_data`.
+- **New behaviour (construction).** F3 generates L_(a,b) once for every
+  ordered pair of truck nodes (depot + customers). In F4, for customer j
+  with truck neighbours a and b, the candidates are the points of
+  L_(a,b) -- the arc the route traverses once j is removed -- placed in
+  j's slot, recovery at b. `InitialSolutionResult::flp_data` returns the
+  ownership map. The evaluator was not weakened; construction now
+  satisfies it.
+- **[IMPLEMENTATION ASSUMPTION]** generating L for all arcs up front is
+  equivalent to generating it lazily (a pure function of the arc and the
+  policy). Using the bridging arc (a, b) is the narrowest reading of step
+  (c) "insert launch points on the current truck route" (p19) that obeys
+  the membership rule; recovery at b is the unchanged narrow recovery
+  reading.
+- **Consequence (disclosed, not a new rule).** Once a point of L_(a,b) is
+  on the route, F4 cannot later convert a (the point would end up between
+  a's predecessor and b), and b is recovery-locked. With recovery at b,
+  F4-built trips therefore never overlap in route positions, so F4 never
+  uses more than one drone at a time even when |U| > 1. Richer
+  multi-drone construction depends on the professor-pending Algorithm 2
+  recovery/per-drone details.
+- **Files / functions.** `timing_engine.hpp` (membership check);
+  `initial_solution_builder.hpp` (F3 `all_arcs`, `flps_on_arc`, F4
+  candidate loop).
+- **Tests.** `test_timing` H (a point of L_(1,2) used while the truck
+  drives 1 -> 3; control: on its own arc it is accepted) and I (a point of
+  L_(1,2) between C3 and C4; a point without ownership data). `test_init`
+  Block 11 = test L and `check_phase_f_invariants` (applied to Blocks 6,
+  8, 9, 10, 11).
+
+### C6. Launch-point visit rules (6), (8), (9)
+
+- **Paper evidence.** (6): a launch point the truck visits launches at
+  least one drone. (8)/(9): a launch point is entered at most once and
+  left at most once.
+- **Old behaviour.** Not checked: an idle or repeated launch point was
+  accepted.
+- **New behaviour.** The evaluator rejects a launch point with no launch
+  ("... is visited but no drone is launched there (constraint (6))") and
+  a launch point appearing more than once in the route ("... appears more
+  than once ... (constraints (8)-(9) ...)").
+- **Files.** `timing_engine.hpp`.
+- **Tests.** `test_timing` J (idle point) and K (repeated point; control:
+  two different points of the same arc pass the membership check, only
+  the idle one fails (6)). Existing fixtures were adjusted so no test
+  relies on an idle point.
+
+### C7. Launch-point generation: distance-dependent, d unresolved
+
+- **Paper evidence.** Sec 2.3: points divide an arc "by equal proportions
+  of the distances"; p18: "the number of flexible points inserted is
+  proportional to the truck's driving distance"; eq. (41), n = floor(D/d),
+  given in the launch-point-division sensitivity analysis (Sec 6.3.4,
+  p33).
+- **Old behaviour.** A fixed number of points per arc (default 1, the
+  midpoint), independent of arc length.
+- **New behaviour.** `FlpCountRule::UnitDivisionLength` (default):
+  n = floor(D/d) points at ratios m/(n+1) (a 1e-9 guard keeps exact
+  multiples exact). `unit_division_length` (d) has **no default**: it is
+  0, and generation fails with an explanatory error (`ok = false`) until
+  the caller sets it; the builder surfaces it as an `F3:` diagnostic.
+  `FlpCountRule::FixedCountPerArc` is kept as an opt-in rule, labelled not
+  paper-supported. New pure `generate_flexible_launch_points_on_arcs()`
+  plus `flp_count_for_arc()`; the route-based overload remains.
+- **UNRESOLVED: the main-experiment d.** The paper does not state it. The
+  sensitivity-analysis d values are NOT treated as the main value, and
+  Table 4's 214 / 837 / 3493 counts are NOT used as a target. Tests use
+  explicitly labelled test-fixture values of d only.
+- **Files.** `include/flp/flexible_launch_point_generator.hpp`,
+  `initial_solution_builder.hpp` (F3).
+- **Tests.** `test_flp` blocks 10-15 (unset or negative d refused;
+  floor(5/2) = 2 at ratios 1/3 and 2/3; exact multiple 10/2.5 = 4; d
+  longer than the arc gives 0; 7.99 -> 3 vs 8 -> 4 at d = 2;
+  proportionality; depot and closing arcs; arc-list ownership and ids);
+  blocks 1-9 now use the opt-in fixed-count rule explicitly. `test_init`
+  Block 12 (default policy -> F3 error, no solution).
+
+### C8. Launch / recovery location model (unchanged)
+
+Launch only at a flexible launch point; recovery only at a truck-served
+customer or the ending depot, as in the formal model. Some figures and
+neighbourhood descriptions show launches from customers or the depot:
+**PAPER CONTRADICTION -- PROFESSOR DISCUSSION**. No customer launches
+were introduced.
+
+### C9. Literal printing errors: coherent interpretation implemented
+
+- **(16)** prints "l_j + d_ij - (1 - x_ij)M <= t_j"; relating node j's
+  departure to its own arrival makes (16) meaningless, so l_i is
+  implemented (arrival = previous departure + travel time). Documented in
+  the `timing_engine.hpp` header.
+- **(13)-(15)**: read literally, their quantifiers would forbid every arc
+  into or out of any launch point; the text's meaning (a point of L_ij is
+  accessible only while the truck drives (i, j)) is implemented (C5).
+- **Time origin**: reclassified from [ASSUMPTION] to **[PAPER]** (p15:
+  "this paper assumes that operating time starts at 0").
+
+### Tests
+
+Every expected value was derived by hand. The Phase F values were also
+cross-checked against an independent Python re-implementation of F3, F4
+and the corrected evaluator (written from the equations, not from the
+C++); both agree on every block. New or rewritten:
+
+- `test_timing`: regression blocks A-K (above), plus updated Blocks 2,
+  8, 9, 11-14 and the audit block (drone ids, arc-ownership data,
+  (36)/(37) values).
+- `test_flp`: blocks 10-15 (d-based count and errors).
+- `test_model`: `drone_id` default and per-trip id.
+- `test_init`: Blocks 4, 6, 8, 9, 10 re-derived under the corrected F3/F4
+  with test-fixture d (objectives 250, 142.0833, 170.2453052010712,
+  2575.6667, 468; the old 100 / 157.5 / 172.36 / 2732.5 / 60 came from
+  the superseded design); Block 5 now passes ids and ownership data;
+  Block 7 retained (utility no longer used by F4); new Block 11 = test L
+  (7 customers, |U| = 2, non-zero SL/SR/Se/theta, objective
+  820.1434959367223, every invariant checked directly); new Block 12
+  (unset d).
+
+Test-to-requirement map: A two launches at one FLP; B endurance with
+Se^D and theta; C drone waiting for the truck; D valid sequential reuse;
+E invalid overlapping reuse (relaunch before recovery); F invalid id;
+G too many simultaneous drones; H launch point from an untraversed arc;
+I launch point between unrelated nodes; J idle launch point; K repeated
+launch point; L Phase F solution with valid launch-point arc membership
+(`test_init` Block 11 plus `check_phase_f_invariants`).
+
+**Suite result (29 Sep 2026).** Fresh `-Wall -Wextra -Wpedantic` build:
+no warnings; `ctest` 6/6. Per executable: test_tsp 29, test_model 43,
+test_graph 26, test_flp 59, test_timing 152, test_init 171 = **480
+assertions, 0 failures**. The same 480 pass under
+AddressSanitizer + UndefinedBehaviorSanitizer with no findings. (Before
+this pass: 339.)
+
+## Pre-Phase-G baseline (updated 29 Sep 2026)
+
+This entry records what the repository actually contains before any
+optimization work starts. First recorded 27 Sep 2026 at commit `aebc03f`;
+updated 29 Sep 2026 for the paper-conformance corrections above
+(uncommitted working-tree changes on top of commit `3f1130e`).
 
 **Frozen scope.**
 - Phases A-F (TSP, data model, geometry, FLP generation, timing engine,
-  initial solution) are **frozen** as the baseline for optimization work.
-  Any later change to them should get its own `DECISIONS.md` entry.
+  initial solution) form the baseline for optimization work. Any later
+  change to them gets its own `DECISIONS.md` entry.
 - Phases G (8 local-search neighborhoods), H (4 shake mechanisms), I
   (VNS driver), J (instance generation / experiment runner) and K
   (validation against Paper 1) are **not implemented**. `config/`,
   `instances/`, `results/` and `scripts/` are empty, and the only
   executables are the 6 test programs.
 
-**Current behavior of `tdr::timing::evaluate_solution()`:**
-- **Multiple launches at one FLP use one SHARED SL.** Truck departure =
-  arrival + SL, and every launching trip gets `launch_time` = that
-  departure, however many drones launch there.
-- **Multiple recoveries at one node are CONCURRENT with one SR window.**
-  Each recovering trip completes at max(truck arrival, its own landing)
-  + SR. Truck departure = the max of these and the truck's own service
-  completion (arrival + Se1), so it equals the latest landing (or truck
-  arrival) + one SR.
-- **`num_drones` is NOT enforced.** The engine never reads
-  `DroneParameters::num_drones`, so a solution needing more simultaneous
-  drones than the fleet has can still be reported `feasible`.
+**Current behaviour of `tdr::timing::evaluate_solution(solution,
+network, customers, flp_data)`:**
+- Start at time 0 [PAPER]; arrival = previous departure + travel time
+  ((16), l_i reading).
+- Launch point: each drone launches at t_i + SL; the truck leaves at
+  t_i + n_i * SL ((18), (21)).
+- Recovery: max(t_k, drone arrival) + SR per trip, concurrent with truck
+  service (PAPER AMBIGUITY: SR -- PROFESSOR DECISION PENDING).
+- Endurance: (36) and (37) literally.
+- Physical drones: id range, (28) route-order form, and |U| enforced.
+- Launch points: arc membership, (6), (8), (9) enforced.
+- Customer service and objective unchanged.
 
-**Phase F separately enforces fleet capacity.** Global, time-aware
-checking via `tdr::init::check_drone_fleet_capacity()` happens only
-inside F4 construction (see Phase F above). Nothing outside
-`build_initial_solution()` checks it.
+**Phase F.** F3 builds L_(a,b) for every arc with n = floor(D/d) (d must
+be supplied); F4 uses bridging-arc candidates, assigns drone ids, and
+delegates every feasibility decision to the evaluator.
 
-**Data-model fields with limited meaning today:**
-- `DroneTrip::drone_slot` is a **per-trip identifier/counter** (F4
-  assigns 0, 1, 2, ... in acceptance order). It is **not** a physical
-  drone assignment and can exceed `num_drones - 1`. No module maps trips
-  to physical drones.
-- `DroneTrip::launch_position_in_route` and
-  `DroneTrip::recovery_position_in_route` are **currently unused**. They
-  stay at their default (`kUnknownRoutePosition`) everywhere, and
-  `evaluate_solution()` finds route positions itself.
+**Data-model fields.** `DroneTrip::drone_id` is the physical drone.
+`DroneTrip::launch_position_in_route` / `recovery_position_in_route`
+remain unused.
 
-**Not covered by current tests:** 2+ drones launching at the same FLP;
-2+ recoveries at the same node; any fleet-capacity check inside
-`evaluate_solution()`.
+**Open items -- deliberately NOT decided:**
+1. **PROFESSOR DECISION PENDING -- SR** (C2): readings (A) literal and
+   (B) index slip; the current rule is neither. This also covers several
+   recoveries at one node and Se^T/SR concurrency.
+2. **UNRESOLVED -- main-experiment d** (C7). No default; Table 4 counts
+   not targeted.
+3. **PAPER CONTRADICTION -- launch locations** (C8): figures showing
+   customer/depot launches vs the formal FLP-only model.
+4. **PROFESSOR DECISION PENDING -- Algorithm 2 details**: the per-drone
+   loop, recovery-node choice (currently the next truck node) and
+   `BestRoute()` scoring. With the narrow recovery reading F4 never flies
+   two drones at once (C5 consequence).
+5. **IMPLEMENTATION ASSUMPTION -- launch-delay slack** (C1): earliest
+   launch used; may be conservative for (36).
+6. **Phase H**: Random_Drone_Remove can now use `drone_id`; its exact
+   semantics are decided when Phase H is designed.
 
-**UNRESOLVED interpretation questions (deliberately NOT decided here):**
-1. **UNRESOLVED:** simultaneous launches at one FLP: one shared SL
-   (current code) or one SL per drone (k x SL)?
-2. **UNRESOLVED:** simultaneous recoveries at one node: one concurrent SR
-   window (current code) or SR per drone, one after another (k x SR)?
-3. **UNRESOLVED:** should `evaluate_solution()` itself enforce
-   `num_drones`, or should fleet capacity stay a separate check?
-4. **UNRESOLVED:** what drone identity must mean for Phase H's
-   Random_Drone_Remove (the current `drone_slot` is not a physical drone).
-5. **UNRESOLVED (carried over from Phase E):** whether theta applies to
-   the outbound leg only (current code) or the whole trip, and whether
-   truck service (Se1) and recovery (SR) at the same node run
-   concurrently (current code) or in sequence.
+Items resolved by this pass: shared vs per-drone SL (now (18)/(21));
+whether the evaluator enforces |U| (it does); what drone identity means
+(u in U); theta scope (now (36)/(37)).
 
-Until these are decided and recorded here, the current code's behavior
-is the baseline.
+---
+
+## Stage 1 (8 Nov 2026) -- evaluator input validation
+
+**Scope.** `tdr::timing::evaluate_solution` now validates its inputs and
+reports violations instead of accepting malformed solutions or throwing.
+No timing, objective, endurance, SR, launch-scheduling, FLP, initializer
+or VNS rule was changed. Files: `include/timing/timing_engine.hpp`,
+`tests/test_timing.cpp` (tests S1-a ... S1-l, +41 assertions).
+
+**Rules enforced (each produces a violation string; the call never throws).**
+1. Every node id in the truck route exists in the network. Unknown ids
+   return an infeasible result immediately (no timing is attempted).
+2. One depot identity: the route starts and ends at the same depot node,
+   and the depot appears nowhere in between (constraints (2)-(3)).
+3. No customer is visited twice by the truck (constraint (10)).
+4. Every network Customer node has a CustomerData entry.
+5. Every CustomerData key is a Customer node of the network and its
+   `node_id` equals its key. Entries keyed by an unknown node, a depot or
+   an FLP are reported and excluded (their service times are not applied).
+6. Each customer is served exactly once across truck and drone trips
+   (pre-existing branches, now covered by tests).
+
+**Known, deliberately unchanged.** The objective sums over the unordered
+`customers` map, so floating-point summation order is not deterministic
+across platforms. Not altered under the Stage 1 "no objective changes"
+rule; flagged for a later decision.
+
+---
+
+## Stage 2 (8 Nov 2026) -- SR timing, Option B (decision D1)
+
+**Status of the earlier open item.** "PROFESSOR DECISION PENDING -- SR"
+(C2, open item 1 above) is now DECIDED by the user as Option B. The text
+above that describes the previous rule (`recovery_complete = max(t_k,
+drone arrival) + SR`, concurrent with truck service) is history.
+
+**Implemented rule** (`tdr::timing::evaluate_solution`, forward pass):
+
+    l_k = max( t_k + Se^T_k + r_k * SR ,  max_{u in R_k} (a_u + SR) )
+
+- `t_k` truck arrival, `Se^T_k` truck service (0 at the depot), `r_k` the
+  number of drones recovered at k, `a_u` drone u's own arrival at k.
+- Recovery service is additive to truck service; each recovered drone
+  costs SR of truck time; each drone also bounds l_k from below by its own
+  arrival plus SR (constraint (20)).
+- SR is never charged at a launch FLP: `l_i = t_i + n_i*SL`, every drone
+  launches at `t_i + SL` (no staggering). Unchanged.
+- With SR = 0 the new and old rules coincide, so every SR = 0 fixture is
+  unaffected.
+
+**Interpretation, not a paper value.** The paper prints (18) with its SR
+sum over P_i^+ (routes launched at i). Option B reads this as an index
+slip for P_k^- (routes recovered at k), consistent with the text on p15
+and with (20). The literal alternative (Option A) was not adopted.
+
+**Design point -- `DroneTripTiming::recovery_complete_time` is NOT changed.**
+It remains `max(t_k, a_u) + SR`: the earliest time the drone is physically
+free (it cannot be recovered before the truck is present). It is read by
+`init/drone_fleet_capacity.hpp`, so changing it would alter initializer
+behaviour, which Stage 2 forbids. Under Option B it is always <= l_k
+(l_k >= t_k+SR and l_k >= a_u+SR), asserted in the tests. It is not the
+truck-departure rule.
+
+**Effect on existing expectations (all hand re-derived).**
+- test_timing Block 9 sub-cases A and B: departure at the recovery
+  customer 16 -> 21 and 17 -> 21 (t=10, Se1=6, SR=5, r=1: 10+6+5 = 21);
+  sub-case C stays 27. Block 1 and the two-trip block are unchanged
+  (the drone term already bound).
+- test_init Block 11: route and trips unchanged, objective 820.1434959367223
+  -> 828.143495936722. Both values reproduced by an independent Python
+  evaluator (no shared code).
+- Mutation check: the new Stage 2 tests were run against the Stage 1
+  engine and the cases with differing old/new values fail there (17
+  assertions); the ones where the rules agree pass.
+
+**Known, not addressed here.** The objective sums over an unordered map
+(floating-point summation order is not fixed) -- recorded as a Stage 3
+reproducibility task.

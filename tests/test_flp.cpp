@@ -7,6 +7,7 @@
 #include <iostream>
 #include <set>
 #include <string>
+#include <vector>
 
 using namespace tdr::flp;
 using namespace tdr::model;
@@ -38,6 +39,23 @@ bool lies_on_segment_at_ratio(const Point2D& point, const Point2D& from, const P
     return std::fabs(point.x - expected_x) <= tol && std::fabs(point.y - expected_y) <= tol;
 }
 
+// The pre-29-Sep-2026 fixed-count baseline, now an explicit opt-in mode
+// (FlpCountRule::FixedCountPerArc is NOT paper-supported; blocks 1-9
+// below exercise the shared geometry/ownership machinery through it).
+FlpGenerationPolicy fixed_count_policy(int points_per_arc = 1) {
+    FlpGenerationPolicy policy;
+    policy.count_rule = FlpCountRule::FixedCountPerArc;
+    policy.points_per_arc = points_per_arc;
+    return policy;
+}
+
+FlpGenerationPolicy unit_division_policy(double d) {
+    FlpGenerationPolicy policy;
+    policy.count_rule = FlpCountRule::UnitDivisionLength;
+    policy.unit_division_length = d;
+    return policy;
+}
+
 } // namespace
 
 int main() {
@@ -50,7 +68,7 @@ int main() {
     // 1. A simple straight truck-route arc produces launch points lying on that arc.
     {
         TruckRoute route = {0, 1}; // (0,0) -> (3,4), length 5
-        FlpGenerationPolicy policy;
+        FlpGenerationPolicy policy = fixed_count_policy();
         policy.points_per_arc = 1;
         FlpGenerationResult result = generate_flexible_launch_points(route, nodes, policy, /*next_id=*/100);
 
@@ -69,7 +87,7 @@ int main() {
     // 3. No launch point is generated on an untraversed edge (here, (0,2) is never an arc).
     {
         TruckRoute route = {0, 1, 2}; // arcs (0,1) and (1,2), NOT (0,2)
-        FlpGenerationPolicy policy;
+        FlpGenerationPolicy policy = fixed_count_policy();
         policy.points_per_arc = 1;
         FlpGenerationResult result = generate_flexible_launch_points(route, nodes, policy, 100);
 
@@ -92,7 +110,7 @@ int main() {
     // 4. Generated launch points have valid unique IDs and correct NodeType.
     {
         TruckRoute route = {0, 1, 2, 3, 0};
-        FlpGenerationPolicy policy;
+        FlpGenerationPolicy policy = fixed_count_policy();
         policy.points_per_arc = 2;
         FlpGenerationResult result = generate_flexible_launch_points(route, nodes, policy, 100);
 
@@ -109,7 +127,7 @@ int main() {
     // 5. Generated coordinates are geometrically consistent with their associated arc.
     {
         TruckRoute route = {0, 3}; // (0,0) -> (-3,4), length 5
-        FlpGenerationPolicy policy;
+        FlpGenerationPolicy policy = fixed_count_policy();
         policy.points_per_arc = 1;
         FlpGenerationResult result = generate_flexible_launch_points(route, nodes, policy, 100);
 
@@ -125,7 +143,7 @@ int main() {
     // (including the last-node-to-depot arc, treated the same as any other).
     {
         TruckRoute route = {0, 1, 2, 3, 0}; // 4 arcs: (0,1),(1,2),(2,3),(3,0)
-        FlpGenerationPolicy policy;
+        FlpGenerationPolicy policy = fixed_count_policy();
         policy.points_per_arc = 1;
         FlpGenerationResult result = generate_flexible_launch_points(route, nodes, policy, 100);
 
@@ -140,7 +158,7 @@ int main() {
     // 10. The same deterministic input and configuration produces the same launch points.
     {
         TruckRoute route = {0, 1, 2};
-        FlpGenerationPolicy policy;
+        FlpGenerationPolicy policy = fixed_count_policy();
         policy.points_per_arc = 2;
 
         FlpGenerationResult first = generate_flexible_launch_points(route, nodes, policy, 100);
@@ -167,7 +185,7 @@ int main() {
     {
         // Same node id twice in a row.
         TruckRoute route_same_id = {0, 0, 1};
-        FlpGenerationPolicy policy;
+        FlpGenerationPolicy policy = fixed_count_policy();
         policy.points_per_arc = 1;
         FlpGenerationResult result_same_id = generate_flexible_launch_points(route_same_id, nodes, policy, 100);
         check(result_same_id.points.size() == 1,
@@ -190,8 +208,7 @@ int main() {
     // 9. The configured density/count policy produces the expected number of launch points.
     {
         TruckRoute route = {0, 1};
-        FlpGenerationPolicy policy_three;
-        policy_three.points_per_arc = 3;
+        FlpGenerationPolicy policy_three = fixed_count_policy(3);
         FlpGenerationResult result_three = generate_flexible_launch_points(route, nodes, policy_three, 100);
 
         check(result_three.points.size() == 3, "points_per_arc=3 on one arc produces exactly 3 points");
@@ -199,16 +216,98 @@ int main() {
         check_near(result_three.points[1].data.position_ratio, 0.50, 1e-12, "Second of 3 points sits at ratio 2/4");
         check_near(result_three.points[2].data.position_ratio, 0.75, 1e-12, "Third of 3 points sits at ratio 3/4");
 
-        FlpGenerationPolicy policy_zero;
-        policy_zero.points_per_arc = 0;
+        FlpGenerationPolicy policy_zero = fixed_count_policy(0);
         FlpGenerationResult result_zero = generate_flexible_launch_points(route, nodes, policy_zero, 100);
         check(result_zero.points.empty(), "points_per_arc=0 generates no points at all");
         check(result_zero.next_available_id == 100, "next_available_id is unchanged when points_per_arc=0");
 
-        FlpGenerationPolicy policy_negative;
-        policy_negative.points_per_arc = -5;
+        FlpGenerationPolicy policy_negative = fixed_count_policy(-5);
         FlpGenerationResult result_negative = generate_flexible_launch_points(route, nodes, policy_negative, 100);
         check(result_negative.points.empty(), "A negative points_per_arc is treated as generating no points, not a crash");
+    }
+
+    // ---------------------------------------------------------------------
+    // 10-15. Distance-dependent generation (29 Sep 2026 correction).
+    // [PAPER] p18: "the number of flexible points inserted is proportional
+    // to the truck's driving distance"; count form of eq. (41):
+    // n = floor(D / d). The value of d is UNRESOLVED for the main
+    // experiments, so every test here sets d explicitly.
+    // Fixture arcs: 0->1 and 1->2 have length 5; 0->2 has length 10.
+    // ---------------------------------------------------------------------
+
+    // 10. d not configured (default policy) is an error, not a silent default.
+    {
+        TruckRoute route = {0, 1};
+        FlpGenerationPolicy unconfigured; // default: UnitDivisionLength with d = 0
+        FlpGenerationResult r = generate_flexible_launch_points(route, nodes, unconfigured, 100);
+        check(unconfigured.count_rule == FlpCountRule::UnitDivisionLength,
+              "Default FLP policy is the paper's distance-dependent rule");
+        check(!r.ok, "Distance rule with unconfigured d (=0) reports an error (no paper default for d)");
+        check(r.points.empty(), "Distance rule with unconfigured d generates no points");
+        check(!r.error.empty(), "Distance rule with unconfigured d explains the error");
+        FlpGenerationResult neg = generate_flexible_launch_points(route, nodes, unit_division_policy(-1.0), 100);
+        check(!neg.ok, "Distance rule with negative d reports an error");
+    }
+
+    // 11. n = floor(D/d): D = 5, d = 2 -> 2 points at ratios 1/3 and 2/3.
+    {
+        TruckRoute route = {0, 1};
+        FlpGenerationResult r = generate_flexible_launch_points(route, nodes, unit_division_policy(2.0), 100);
+        check(r.ok, "Distance rule with d = 2 is valid");
+        check(r.points.size() == 2, "Arc of length 5 with d = 2 gets floor(5/2) = 2 points");
+        check_near(r.points[0].data.position_ratio, 1.0 / 3.0, 1e-12, "First point at ratio 1/3 (equal division)");
+        check_near(r.points[1].data.position_ratio, 2.0 / 3.0, 1e-12, "Second point at ratio 2/3 (equal division)");
+        check(lies_on_segment_at_ratio(r.points[1].node.coordinates, nodes.at(0).coordinates,
+                                       nodes.at(1).coordinates, 2.0 / 3.0, 1e-9),
+              "Distance-rule point lies on its arc at its recorded ratio");
+        check(r.points[0].data.arc_from == 0 && r.points[0].data.arc_to == 1,
+              "Distance-rule point records its owning arc L_(0,1)");
+    }
+
+    // 12. Exact multiple and arc shorter than d.
+    {
+        FlpGenerationResult exact = generate_flexible_launch_points(TruckRoute{0, 2}, nodes, unit_division_policy(2.5), 100);
+        check(exact.points.size() == 4, "Arc of length 10 with d = 2.5 gets floor(10/2.5) = 4 points (exact multiple)");
+        check_near(exact.points[3].data.position_ratio, 0.8, 1e-12, "Fourth of 4 points sits at ratio 4/5");
+        FlpGenerationResult shorter = generate_flexible_launch_points(TruckRoute{0, 1}, nodes, unit_division_policy(6.0), 100);
+        check(shorter.ok && shorter.points.empty(), "Arc of length 5 with d = 6 gets floor(5/6) = 0 points (valid, empty)");
+        check(flp_count_for_arc(7.99, unit_division_policy(2.0)) == 3, "flp_count_for_arc(7.99, d=2) = floor(3.995) = 3");
+        check(flp_count_for_arc(8.0, unit_division_policy(2.0)) == 4, "flp_count_for_arc(8, d=2) = 4");
+    }
+
+    // 13. The number of points grows with arc length (p18 proportionality).
+    {
+        FlpGenerationResult two_arcs = generate_flexible_launch_points(TruckRoute{0, 1, 2}, nodes, unit_division_policy(1.0), 100);
+        FlpGenerationResult one_long = generate_flexible_launch_points(TruckRoute{0, 2}, nodes, unit_division_policy(1.0), 100);
+        std::size_t on_first = 0;
+        for (const auto& g : two_arcs.points) if (g.route_arc_index == 0) ++on_first;
+        check(on_first == 5, "Arc 0->1 (length 5) with d = 1 gets 5 points");
+        check(one_long.points.size() == 10, "Arc 0->2 (length 10) with d = 1 gets 10 points: twice the length, twice the points");
+    }
+
+    // 14. Depot arcs are included, including the closing arc back to the depot (p8).
+    {
+        FlpGenerationResult r = generate_flexible_launch_points(TruckRoute{0, 1, 0}, nodes, unit_division_policy(2.0), 100);
+        std::size_t outbound = 0, closing = 0;
+        for (const auto& g : r.points) {
+            if (g.data.arc_from == 0 && g.data.arc_to == 1) ++outbound;
+            if (g.data.arc_from == 1 && g.data.arc_to == 0) ++closing;
+        }
+        check(outbound == 2, "Depot->customer arc receives floor(5/2) = 2 points");
+        check(closing == 2, "Closing customer->depot arc receives floor(5/2) = 2 points, owned by L_(1,0)");
+    }
+
+    // 15. Arc-list generation: points for arcs that are not route arcs, with
+    // ownership and next id bookkeeping.
+    {
+        std::vector<Arc> arcs = {{0, 2}, {3, 0}};
+        FlpGenerationResult r = generate_flexible_launch_points_on_arcs(arcs, nodes, unit_division_policy(5.0), 500);
+        check(r.points.size() == 3, "Arc list {(0,2) len 10, (3,0) len 5} with d = 5 gives 2 + 1 = 3 points");
+        check(r.points[0].data.arc_from == 0 && r.points[0].data.arc_to == 2 && r.points[0].route_arc_index == 0,
+              "First point owned by L_(0,2), arc index 0");
+        check(r.points[2].data.arc_from == 3 && r.points[2].data.arc_to == 0 && r.points[2].route_arc_index == 1,
+              "Last point owned by L_(3,0), arc index 1");
+        check(r.points[0].node.id == 500 && r.next_available_id == 503, "Ids start at next_id and next_available_id advances by 3");
     }
 
     std::cout << "\n" << (g_failures == 0 ? "ALL TESTS PASSED" : std::to_string(g_failures) + " TEST(S) FAILED") << "\n";

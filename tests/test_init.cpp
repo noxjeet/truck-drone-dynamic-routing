@@ -29,6 +29,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 using namespace tdr::model;
 using namespace tdr::graph;
@@ -50,6 +51,71 @@ void check(bool condition, const std::string& description) {
 void check_near(double a, double b, double tol, const std::string& description) {
     check(std::fabs(a - b) <= tol,
           description + " (got " + std::to_string(a) + ", expected " + std::to_string(b) + ")");
+}
+
+// Test-fixture FLP policy: eq. (41) structure n = floor(D/d) with a d chosen
+// by the TEST. The paper gives no main-experiment d; none of the values
+// used in this file is a paper value.
+InitialSolutionPolicy unit_division_policy(double d) {
+    InitialSolutionPolicy policy;
+    policy.flp_policy.count_rule = tdr::flp::FlpCountRule::UnitDivisionLength;
+    policy.flp_policy.unit_division_length = d;
+    return policy;
+}
+
+// Test L helper: the structural invariants the corrected Phase F must
+// guarantee, checked DIRECTLY on the result (not only via the evaluator):
+//  - every launch point on the route belongs to L_(a,b) of the truck nodes
+//    a / b immediately around it (p9; (13)-(15));
+//  - no launch point is visited twice ((8)-(9));
+//  - every visited launch point launches at least one drone ((6));
+//  - every trip launches at an FLP of the route and carries a physical
+//    drone id 0 <= u < |U|;
+//  - no physical drone is relaunched before its previous trip's recovery
+//    position ((28), route-order form);
+//  - the builder's own evaluation is feasible.
+void check_phase_f_invariants(const InitialSolutionResult& r, int num_drones, const std::string& lbl) {
+    const auto& route = r.solution.truck_route;
+    const auto is_flp = [&](NodeId v) { return r.node_registry.at(v).type == NodeType::FlexibleLaunchPoint; };
+    bool membership = true, once = true, launches = true, ids = true, reuse = true, launch_on_route = true;
+    std::unordered_map<NodeId, int> count;
+    for (std::size_t p = 0; p < route.size(); ++p) {
+        if (!is_flp(route[p])) continue;
+        if (++count[route[p]] > 1) once = false;
+        NodeId a = kInvalidNodeId, b = kInvalidNodeId;
+        for (std::size_t q = p; q-- > 0;) { if (!is_flp(route[q])) { a = route[q]; break; } }
+        for (std::size_t q = p + 1; q < route.size(); ++q) { if (!is_flp(route[q])) { b = route[q]; break; } }
+        const auto it = r.flp_data.find(route[p]);
+        if (it == r.flp_data.end() || it->second.arc_from != a || it->second.arc_to != b) membership = false;
+        bool any = false;
+        for (const auto& t : r.solution.drone_trips) any = any || t.launch_node == route[p];
+        if (!any) launches = false;
+    }
+    struct Interval { int u; std::size_t lp; std::size_t rp; };
+    std::vector<Interval> intervals;
+    for (const auto& t : r.solution.drone_trips) {
+        if (t.drone_id < 0 || t.drone_id >= num_drones) ids = false;
+        const auto lp = std::find(route.begin(), route.end(), t.launch_node);
+        if (lp == route.end() || !is_flp(t.launch_node)) { launch_on_route = false; continue; }
+        const auto rp = std::find(lp + 1, route.end(), t.recovery_node);
+        if (rp == route.end()) { launch_on_route = false; continue; }
+        intervals.push_back(Interval{t.drone_id, static_cast<std::size_t>(lp - route.begin()),
+                                     static_cast<std::size_t>(rp - route.begin())});
+    }
+    for (std::size_t x = 0; x < intervals.size(); ++x) {
+        for (std::size_t y = 0; y < intervals.size(); ++y) {
+            if (x == y || intervals[x].u != intervals[y].u) continue;
+            if (intervals[x].lp < intervals[y].lp && intervals[y].lp <= intervals[x].rp) reuse = false;
+        }
+    }
+    check(membership, lbl + " (test L): every route launch point belongs to L_(a,b) of the truck nodes a, b around it");
+    check(once, lbl + " (test L): no launch point is visited twice (constraints (8)-(9))");
+    check(launches, lbl + " (test L): every visited launch point launches a drone (constraint (6))");
+    check(launch_on_route, lbl + " (test L): every trip launches at a route FLP and recovers later on the route");
+    check(ids, lbl + " (test L): every trip carries a physical drone id 0 <= u < |U|");
+    check(reuse, lbl + " (test L): no physical drone is relaunched before its previous recovery (constraint (28))");
+    check(r.evaluation.max_simultaneous_drones <= num_drones, lbl + " (test L): never more than |U| drones in flight");
+    check(r.feasible && r.evaluation.violation_reasons.empty(), lbl + " (test L): the builder's own evaluation is feasible");
 }
 
 } // namespace
@@ -178,22 +244,42 @@ int main() {
     }
 
     // =====================================================================
-    // Block 4 (F4 endurance rejection): a single customer far enough from
-    // its only candidate launch point, under a deliberately tight
-    // endurance budget, that no feasible drone trip can be built for it.
-    // Depot=(0,0), Customer=1=(100,0). One arc (depot,1), FLP at its
-    // midpoint (50,0). truck_speed=1, drone_speed=1, endurance=10.
-    //   outbound: dist(50,0)-(100,0)=50 -> 50s
-    //   return:   dist(100,0)-(0,0) [recovery=depot] = 100 -> 100s
-    //   generalized_flight_time (theta=0) = 150 >> 10 -> infeasible
-    // Expected: the builder leaves the customer TRUCK-SERVED (no drone
-    // trip at all), and the resulting trivial solution is fully feasible
-    // with objective = truck arrival at the customer = 100.
+    // Conventions for Blocks 4-12 (paper-conformance corrections, 29 Sep
+    // 2026). F3 now generates L_(a,b) for EVERY ordered pair of truck nodes
+    // (depot + customers) with n = floor(D/d) points at ratios m/(n+1)
+    // (eq. (41) structure). The paper does NOT give the main-experiment d,
+    // so there is no default: every block below sets a TEST-FIXTURE d
+    // chosen only to keep the hand arithmetic small. None of these d values
+    // is a paper value. FLP ids start at max(depot, customers) + 1 and are
+    // assigned arc by arc in the order (a, b) for a, b in [depot, sorted
+    // customers], a != b. F4's launch candidates for customer j are the
+    // points of L_(a,b), where a / b are the truck nodes before / after j
+    // (the arc the route traverses once j is removed); recovery is b.
+    // Every expected value was derived by hand and cross-checked against an
+    // independent Python re-implementation of F3/F4 and constraints
+    // (6), (8)-(9), (13)-(15)/p9, (18), (21), (28), (36), (37) and |U|.
+    // =====================================================================
+
+    // =====================================================================
+    // Block 4 (F4 endurance rejection). Depot 0=(0,0), customers 1=(50,0),
+    // 2=(100,0). truck=drone speed 1, e=10, |U|=1, SL=SR=Se=theta=0,
+    // test-fixture d=25.
+    // F1: r0 = [0,2,1,0] (frozen deterministic solver; F1 is unchanged).
+    // F2: k = ceil(2/3) = 1, one cluster {1,2}.
+    // F3: floor(D/25): |01|=50 -> 2, |02|=100 -> 4, |12|=50 -> 2, per
+    //     direction 8 -> 16 launch points.
+    // F4: customer 1 (a=2, b=0): L_(2,0) = x in {80,60,40,20}, recovery at
+    //     the depot: the return leg alone is d^(1,0) = 50 > e, so (37)
+    //     >= 50 > 10 for every candidate. Customer 2 (a=0, b=1): L_(0,1) =
+    //     x in {16.7, 33.3}: the outbound leg alone is >= 66.7 > 10.
+    //     Every candidate violates (36)/(37); nothing is converted.
+    // Result: the truck-only r0; objective = 100 (cust 2) + 150 (cust 1).
     // =====================================================================
     {
         NodeRegistry nodes;
         nodes.add(Node{0, NodeType::Depot, Point2D{0.0, 0.0}});
-        nodes.add(Node{1, NodeType::Customer, Point2D{100.0, 0.0}});
+        nodes.add(Node{1, NodeType::Customer, Point2D{50.0, 0.0}});
+        nodes.add(Node{2, NodeType::Customer, Point2D{100.0, 0.0}});
         TruckParameters truck; truck.speed = 1.0;
         DroneParameters drone;
         drone.speed = 1.0;
@@ -203,16 +289,18 @@ int main() {
 
         std::unordered_map<NodeId, CustomerData> customers;
         customers[1] = CustomerData{1, 0.0, 0.0, 0.0};
+        customers[2] = CustomerData{2, 0.0, 0.0, 0.0};
 
-        InitialSolutionResult result = build_initial_solution(0, {1}, customers, network);
+        InitialSolutionResult result = build_initial_solution(0, {1, 2}, customers, network, unit_division_policy(25.0));
 
+        check(result.candidate_flps.size() == 16, "Block 4: F3 generates floor(D/25) points on each of the 6 ordered arcs (16)");
         check(result.solution.drone_trips.empty(),
-              "F4 endurance rejection: no drone trip is constructed for the endurance-infeasible customer");
-        check(result.solution.truck_route.size() == 3 && result.solution.truck_route[1] == 1,
-              "F4 endurance rejection: the customer remains on the truck route (truck-served)");
-        check(result.feasible, "F4 endurance rejection: the resulting truck-only solution is fully feasible");
-        check_near(result.objective_value, 100.0, 1e-9,
-                   "F4 endurance rejection: objective is the truck's arrival time at the customer (100)");
+              "Block 4 (endurance rejection): no drone trip is constructed -- every candidate violates (36)/(37)");
+        check(result.solution.truck_route == result.truck_only_route,
+              "Block 4 (endurance rejection): the truck route is r0 unchanged (every customer truck-served)");
+        check(result.truck_only_route == TruckRoute({0, 2, 1, 0}), "Block 4: r0 = [0,2,1,0]");
+        check(result.feasible, "Block 4 (endurance rejection): the resulting truck-only solution is feasible");
+        check_near(result.objective_value, 250.0, 1e-9, "Block 4 (endurance rejection): objective = 100 + 150 = 250");
     }
 
     // =====================================================================
@@ -221,8 +309,8 @@ int main() {
     // precedes its launch position (recovery is always found by scanning
     // FORWARD from the launch position -- see initial_solution_builder.hpp
     // F4). What this test verifies instead is the feasibility gate F4
-    // depends on: that tdr::timing::evaluate_solution (unchanged from
-    // Phase E, reused here rather than reimplemented) correctly rejects
+    // depends on: that tdr::timing::evaluate_solution (reused here rather
+    // than reimplemented) correctly rejects
     // such a trip if one were ever proposed, so F4's reliance on it is
     // sound. Route: depot(0) -> custA(1, recovery target) -> FLP(2) ->
     // custB(3, drone-served, NOT on the truck route) -> depot(0). Trip:
@@ -236,7 +324,7 @@ int main() {
         nodes.add(Node{2, NodeType::FlexibleLaunchPoint, Point2D{10.0, 0.0}});
         nodes.add(Node{3, NodeType::Customer, Point2D{15.0, 0.0}});
         TruckParameters truck; truck.speed = 1.0;
-        DroneParameters drone; drone.speed = 1.0; drone.endurance_seconds = 1000.0;
+        DroneParameters drone; drone.speed = 1.0; drone.endurance_seconds = 1000.0; drone.num_drones = 1;
         SpatialNetwork network(nodes, truck, drone);
 
         Solution sol;
@@ -245,13 +333,14 @@ int main() {
         trip.launch_node = 2;
         trip.service_customer = 3;
         trip.recovery_node = 1; // position 1, before launch's position 2
+        trip.drone_id = 0;
         sol.drone_trips = {trip};
 
         std::unordered_map<NodeId, CustomerData> customers;
         customers[1] = CustomerData{1, 0.0, 0.0, 0.0};
         customers[3] = CustomerData{3, 0.0, 0.0, 0.0};
 
-        tdr::timing::SolutionEvaluationResult eval = tdr::timing::evaluate_solution(sol, network, customers);
+        tdr::timing::SolutionEvaluationResult eval = tdr::timing::evaluate_solution(sol, network, customers, {{2, FlexibleLaunchPointData{2, 1, 0, 0.5}}});
         check(!eval.drone_trip_timings[0].on_route,
               "Recovery-before-launch: the feasibility gate marks the trip as not on-route");
         check(!eval.drone_trip_timings[0].feasible,
@@ -260,72 +349,43 @@ int main() {
     }
 
     // =====================================================================
-    // Block 6: full end-to-end initial-solution construction on 4 colinear
-    // customers, 1 drone. Covers F1-F4 together, plus items 5 ("simple
-    // feasible drone trip construction"), 8 ("duplicate customer-service
-    // prevention"), 9 ("all customers served exactly once"), and 10
-    // ("final initial solution validated through the Phase E engine").
+    // Block 6: full end-to-end construction on 4 colinear customers, 1
+    // drone. Depot 0=(0,0), customers 1..4 at x = 10, 20, 30, 40 (y=0).
+    // truck speed 1, drone speed 2, SL=SR=Se=theta=0, e=100, |U|=1,
+    // test-fixture d=10.
     //
-    // Depot=0=(0,0), customers 1=(10,0), 2=(20,0), 3=(30,0), 4=(40,0).
-    // truck_speed=1, drone_speed=2, SL=SR=Se1=Se2=theta=0, endurance=100
-    // (generous -- not the point of this test), num_drones=1.
+    // F1: r0 = [0,4,3,2,1,0], cost 80 (frozen deterministic solver).
+    // F2: k=2: cluster0 = {1,2}, cluster1 = {3,4}.
+    // F3: floor(D/10) on each of the 20 ordered arcs. Per direction:
+    //     0-1..0-4: 1+2+3+4; 1-2..1-4: 1+2+3; 2-3, 2-4: 1+2; 3-4: 1 -> 20,
+    //     so 40 launch points, ids 5..44. The ones that matter:
+    //     L_(0,3) = {8, 9, 10} at x = 7.5, 15, 22.5;
+    //     L_(2,0) = {22, 23} at x = 13.33, 6.67;
+    //     L_(3,1) = {31, 32} at x = 23.33, 16.67.
     //
-    // F1: HeldKarpSolver is exact and fully deterministic (no RNG). For
-    // this instance it returns r0 = [0,4,3,2,1,0] (cost 80 = 2*40, the
-    // known-optimal cost for colinear points -- this specific direction,
-    // among the two equal-cost optimal tours, was observed by running
-    // this exact frozen solver once and is reproduced by it every time).
+    // F4 cluster0, round 1 (route r0):
+    //   j=1 (a=2, b=0): f22: truck at f22 = 40+10+10+6.667 = 66.667,
+    //     t_1 = 66.667 + 3.333/2 = 68.333;  f23: 73.333 + 1.667 = 75.
+    //   j=2 (a=3, b=1): f31: truck at f31 = 40+10+6.667 = 56.667,
+    //     t_2 = 56.667 + 3.333/2 = 58.333;  f32: 63.333 + 1.667 = 65.
+    //   BestRoute: j=2 via f31 (58.333), recovery at customer 1 (locked).
+    //   Round 2: nothing left (1 locked, 2 converted).
+    // F4 cluster1 (route [0,4,3,31,1,0]):
+    //   j=3 (a=4, b=1 -- f31 is skipped as an FLP): a trip over route
+    //     positions 2..4 overlaps trip(2) at positions 3..4, so it needs 2
+    //     drones > |U|=1 (and f31, owned by L_(3,1), would then sit between
+    //     4 and 1): rejected.
+    //   j=4 (a=0, b=3): f8: t_4 = 7.5 + 32.5/2 = 23.75; f9: 15 + 12.5 =
+    //     27.5; f10: 22.5 + 8.75 = 31.25. BestRoute: f8.
+    //     Endurance of f8 -> 4 -> 3: l^_i = 7.5, l^_j = 23.75, loaded 16.25;
+    //     t_3 = 7.5 + 22.5 = 30; (36) = (30 - 23.75) + 16.25 = 22.5;
+    //     (37) = 16.25 + 10/2 = 21.25; both <= 100.
     //
-    // F2: k=ceil(4/(1+2))=2. K-means (Block 2's own logic, seeded from
-    // the sorted customer ids [1,2,3,4], independent of r0's direction)
-    // gives cluster0={1,2}, cluster1={3,4}.
-    //
-    // F3: one FLP per arc of r0: arc(0,4)->(20,0); arc(4,3)->(35,0);
-    // arc(3,2)->(25,0); arc(2,1)->(15,0); arc(1,0)->(5,0) [unused, enters
-    // the depot]. Launch candidates: customer4->(20,0); customer3->(35,0);
-    // customer2->(25,0); customer1->(15,0).
-    //
-    // F4 cluster0 (customers 1,2), available_drones=1:
-    //   candidate 1: launch(15,0)->cust1, recovery=depot (nothing truck-
-    //     served follows customer1 in r0 before the closing depot).
-    //     launch_time=65, customer_arrival=67.5 (score).
-    //   candidate 2: launch(25,0)->cust2, recovery=customer1.
-    //     launch_time=55, customer_arrival=57.5 (score).
-    //   BestRoute (lowest score) picks customer 2: score 57.5 < 67.5.
-    //   Committed. available_drones -> 0. Customer 1 remains truck-served
-    //   (and becomes recovery-locked).
-    //
-    // F4 cluster1 (customers 3,4), available_drones resets to 1:
-    //   candidate 4: launch(20,0)->cust4, recovery=customer3.
-    //     launch_time=20, customer_arrival=30 (score).
-    //   candidate 3: launch(35,0)->cust3, recovery=customer1 (the next
-    //     later Customer/Depot after arc entering cust3 in the route
-    //     WITHOUT customer4 removed -- customer1 is still on the route in
-    //     THIS independent trial). launch_time=45, customer_arrival=47.5.
-    //   BestRoute picks customer 4: score 30 < 47.5. Committed.
-    //   Customer 3 remains truck-served (and becomes recovery-locked).
-    //
-    // Final route: [0, FLP(20,0), 3, FLP(25,0), 1, 0].
-    // Final trips: (launch=FLP(25,0), customer=2, recovery=1),
-    //              (launch=FLP(20,0), customer=4, recovery=3).
-    // Final timing (forward pass, hand-computed):
-    //   arrival[0]=0
-    //   FLP(20,0): arrival=20, departure=20 (launch_time for trip(4)=20)
-    //     drone(4): outbound |20-40|/2=10 -> arrival(4)=30; departure=30;
-    //       return |40-30|/2=5 -> recovery_arrival=35
-    //   node3: arrival=departure[FLP20](20)+|20-30|=30;
-    //     recovery_complete=max(30,35)+0=35; service_complete=30+0=30;
-    //     departure[3]=max(30,35)=35
-    //   FLP(25,0): arrival=departure[3](35)+|30-25|=40; departure=40
-    //     (launch_time for trip(2)=40)
-    //     drone(2): outbound |25-20|/2=2.5 -> arrival(2)=42.5;
-    //       departure=42.5; return |20-10|/2=5 -> recovery_arrival=47.5
-    //   node1: arrival=departure[FLP25](40)+|25-10|=55;
-    //     recovery_complete=max(55,47.5)+0=55; service_complete=55+0=55;
-    //     departure[1]=max(55,55)=55
-    //   depot: arrival=departure[1](55)+|10-0|=65
-    //   Objective = 30 (cust4,drone) + 30 (cust3,truck) + 42.5 (cust2,drone)
-    //             + 55 (cust1,truck) = 157.5
+    // Final route [0, 8, 3, 31, 1, 0]; trips (8 -> 4 -> 3) and (31 -> 2 -> 1),
+    // BOTH flown by drone 0 (positions 1..2, then 3..4: sequential reuse).
+    // Timing: f8 7.5; C3 30 (drone landed 28.75 and waited); f31 36.667;
+    // t_2 = 38.333, lands at C1 at 43.333; truck at C1 50; depot 60.
+    // Objective = 23.75 (4) + 30 (3) + 38.333 (2) + 50 (1) = 142.0833...
     // =====================================================================
     {
         NodeRegistry nodes;
@@ -344,11 +404,11 @@ int main() {
         std::unordered_map<NodeId, CustomerData> customers;
         for (NodeId id : {1, 2, 3, 4}) customers[id] = CustomerData{id, 0.0, 0.0, 0.0};
 
-        InitialSolutionResult result = build_initial_solution(0, {1, 2, 3, 4}, customers, network);
+        InitialSolutionResult result = build_initial_solution(0, {1, 2, 3, 4}, customers, network, unit_division_policy(10.0));
 
         check(result.tsp_result.exact, "Block 6: F1 tour is exact (n=5, well within Held-Karp's range)");
         check_near(result.tsp_result.cost, 80.0, 1e-9, "Block 6: F1 optimal cost is 80");
-        check(result.truck_only_route.size() == 6, "Block 6: F1 route has 6 entries (depot+4 customers+depot)");
+        check(result.truck_only_route == TruckRoute({0, 4, 3, 2, 1, 0}), "Block 6: r0 = [0,4,3,2,1,0]");
 
         check(result.clustering.cluster_count == 2, "Block 6: F2 produces 2 clusters");
         check(result.clustering.assignment.at(1) == result.clustering.assignment.at(2),
@@ -356,29 +416,47 @@ int main() {
         check(result.clustering.assignment.at(3) == result.clustering.assignment.at(4),
               "Block 6: F2 groups customers 3 and 4 together");
 
-        check(result.candidate_flps.size() == 5, "Block 6: F3 generates one FLP per arc of the 5-node route (5 arcs)");
+        check(result.candidate_flps.size() == 40, "Block 6: F3 generates sum floor(D/10) = 40 launch points over the 20 ordered arcs");
         bool flp_geometry_ok = true;
-        for (std::size_t i = 0; i + 1 < result.truck_only_route.size(); ++i) {
-            const Point2D& a = nodes.at(result.truck_only_route[i]).coordinates;
-            const Point2D& b = nodes.at(result.truck_only_route[i + 1]).coordinates;
-            const auto& gen = result.candidate_flps[i];
-            if (gen.data.arc_from != result.truck_only_route[i] || gen.data.arc_to != result.truck_only_route[i + 1]) flp_geometry_ok = false;
-            if (std::fabs(gen.node.coordinates.x - (a.x + b.x) / 2.0) > 1e-9) flp_geometry_ok = false;
-            if (std::fabs(gen.node.coordinates.y - (a.y + b.y) / 2.0) > 1e-9) flp_geometry_ok = false;
+        for (const auto& gen : result.candidate_flps) {
+            const Point2D& a = nodes.at(gen.data.arc_from).coordinates;
+            const Point2D& b = nodes.at(gen.data.arc_to).coordinates;
+            const double len = std::hypot(b.x - a.x, b.y - a.y);
+            const int n = static_cast<int>(std::floor(len / 10.0 + 1e-9));
+            const double m = gen.data.position_ratio * (n + 1);
+            if (std::fabs(m - std::round(m)) > 1e-9 || std::round(m) < 1 || std::round(m) > n) flp_geometry_ok = false;
+            if (std::fabs(gen.node.coordinates.x - (a.x + gen.data.position_ratio * (b.x - a.x))) > 1e-9) flp_geometry_ok = false;
+            if (std::fabs(gen.node.coordinates.y - (a.y + gen.data.position_ratio * (b.y - a.y))) > 1e-9) flp_geometry_ok = false;
+            if (result.flp_data.at(gen.node.id).arc_from != gen.data.arc_from ||
+                result.flp_data.at(gen.node.id).arc_to != gen.data.arc_to) flp_geometry_ok = false;
         }
-        check(flp_geometry_ok, "Block 6: F3 every candidate FLP sits at the midpoint of its recorded arc, in route order");
+        check(flp_geometry_ok, "Block 6: F3 every launch point sits at ratio m/(n+1), n = floor(D/d), of its own arc");
+        check(result.flp_data.at(8).arc_from == 0 && result.flp_data.at(8).arc_to == 3 &&
+                  std::fabs(result.node_registry.at(8).coordinates.x - 7.5) < 1e-9,
+              "Block 6: FLP 8 is the first point of L_(0,3), at x = 7.5");
+        check(result.flp_data.at(31).arc_from == 3 && result.flp_data.at(31).arc_to == 1 &&
+                  std::fabs(result.node_registry.at(31).coordinates.x - 70.0 / 3.0) < 1e-9,
+              "Block 6: FLP 31 is the first point of L_(3,1), at x = 23.33");
 
+        check(result.solution.truck_route == TruckRoute({0, 8, 3, 31, 1, 0}), "Block 6: final route is [0, 8, 3, 31, 1, 0]");
         check(result.solution.drone_trips.size() == 2, "Block 6: F4 constructs exactly 2 drone trips");
         bool trip_for_2 = false, trip_for_4 = false;
         for (const auto& t : result.solution.drone_trips) {
-            if (t.service_customer == 2) { trip_for_2 = (t.recovery_node == 1); }
-            if (t.service_customer == 4) { trip_for_4 = (t.recovery_node == 3); }
+            if (t.service_customer == 2) trip_for_2 = (t.launch_node == 31 && t.recovery_node == 1 && t.drone_id == 0);
+            if (t.service_customer == 4) trip_for_4 = (t.launch_node == 8 && t.recovery_node == 3 && t.drone_id == 0);
         }
-        check(trip_for_2, "Block 6: customer 2 is drone-served, recovering at customer 1");
-        check(trip_for_4, "Block 6: customer 4 is drone-served, recovering at customer 3");
+        check(trip_for_2, "Block 6: customer 2 is served 31 -> 2 -> 1 by drone 0");
+        check(trip_for_4, "Block 6: customer 4 is served 8 -> 4 -> 3 by drone 0 (the same physical drone, reused)");
 
         check(result.feasible, "Block 6: the final initial solution is feasible");
-        check_near(result.objective_value, 157.5, 1e-9, "Block 6: hand-computed objective is 157.5");
+        check_near(result.objective_value, 23.75 + 30.0 + 115.0 / 3.0 + 50.0, 1e-9,
+                   "Block 6: hand-computed objective is 142.0833");
+        for (std::size_t i = 0; i < result.solution.drone_trips.size(); ++i) {
+            if (result.solution.drone_trips[i].service_customer != 4) continue;
+            const auto& tm = result.evaluation.drone_trip_timings[i];
+            check_near(tm.endurance_value_36, 22.5, 1e-9, "Block 6: trip 8->4->3 (36) = 22.5");
+            check_near(tm.endurance_value_37, 21.25, 1e-9, "Block 6: trip 8->4->3 (37) = 21.25");
+        }
 
         int truck_served = 0, drone_served = 0;
         std::unordered_map<NodeId, int> seen_count;
@@ -395,13 +473,14 @@ int main() {
         }
         check(truck_served == 2 && drone_served == 2, "Block 6: 2 customers truck-served and 2 drone-served, every customer served exactly once");
 
+        check_phase_f_invariants(result, 1, "Block 6");
+
         // Item 10: re-evaluate the FINAL solution independently (a fresh
-        // network built from the result's own node_registry) and confirm
-        // it agrees with the builder's own final evaluation -- the
-        // builder must not report anything Phase E itself would not.
+        // network built from the result's own node_registry and the result's
+        // own arc-ownership data) and confirm it agrees with the builder.
         SpatialNetwork rebuilt_network(result.node_registry, truck, drone);
         tdr::timing::SolutionEvaluationResult independent_eval =
-            tdr::timing::evaluate_solution(result.solution, rebuilt_network, customers);
+            tdr::timing::evaluate_solution(result.solution, rebuilt_network, customers, result.flp_data);
         check(independent_eval.feasible == result.evaluation.feasible,
               "Block 6: independently re-running the Phase E engine agrees on feasibility");
         check_near(independent_eval.objective_value, result.objective_value, 1e-9,
@@ -409,14 +488,12 @@ int main() {
     }
 
     // =====================================================================
-    // Block 7 (post-approval correctness patch, Issue 1): direct unit
-    // tests of check_drone_fleet_capacity() -- the pure sweep-line
-    // arithmetic F4 now uses to decide whether accepting a candidate
-    // trip would ever require more drones "in the air" at once than the
-    // fleet has. These use hand-built DroneTripTiming values (only
-    // launch_time/recovery_complete_time matter to this function) rather
-    // than a full solution, so the arithmetic itself is pinned
-    // independently of any clustering/TSP behavior.
+    // Block 7: direct unit tests of check_drone_fleet_capacity() -- a pure
+    // time-interval sweep-line utility. Since the 29 Sep 2026 correction
+    // F4 NO LONGER uses it: fleet limits are now enforced through explicit
+    // physical drone ids and the evaluator's route-order (28) and |U|
+    // checks. The utility is retained (and its arithmetic pinned here)
+    // only as a standalone helper; see DECISIONS.md.
     // =====================================================================
     {
         using tdr::init::check_drone_fleet_capacity;
@@ -468,103 +545,31 @@ int main() {
     }
 
     // =====================================================================
-    // Block 8 (post-approval correctness patch, Issue 1): a genuine
-    // end-to-end instance, run through the ACTUAL build_initial_solution
-    // pipeline (real K-means + real TSP, no hand-picked cluster labels),
-    // where the drone-fleet cap correctly rejects a DIFFERENT cluster's
-    // candidate because accepting it would require 2 drones
-    // simultaneously in the air, with only num_drones=1 available.
+    // Block 8: a candidate of a DIFFERENT cluster is blocked because it
+    // would need a second drone simultaneously in the air (|U| = 1). Runs
+    // the ACTUAL pipeline (real K-means + real TSP).
     //
     // Depot=(0,0); customers 1=(10,5), 2=(20,0), 3=(30,5), 4=(40,0).
-    // truck_speed=1, drone_speed=2, SL=SR=Se1=Se2=theta=0,
-    // endurance=1000 (generous -- not the point here), num_drones=1.
-    //
-    // F1: HeldKarpSolver (exact, deterministic, no RNG) returns
-    // r0 = [0,2,4,3,1,0], cost = 20+20+sqrt(125)+20+sqrt(125)
-    //    = 60 + 2*sqrt(125) = 82.360679774998 (observed once by running
-    // this exact frozen solver; reproduced identically every time).
-    //
-    // F2: k=ceil(4/(1+2))=2. K-means groups cluster0={1,2} (near x=10-20)
-    // and cluster1={3,4} (near x=30-40) -- the small y perturbation on
-    // customers 1,3 does not change which points are mutually closest.
-    //
-    // F3: one FLP per arc of r0 (points_per_arc=1): arc(0,2)->(10,0)
-    // [customer2]; arc(2,4)->(30,0) [customer4]; arc(4,3)->(35,2.5)
-    // [customer3]; arc(3,1)->(20,5) [customer1]; arc(1,0)->(5,2.5)
-    // [depot, unused].
-    //
-    // F4 cluster0={1,2} is processed FIRST (ascending cluster index).
-    // Round 1, evaluated against the empty accepted-trip set:
-    //   candidate for customer2 (launch (10,0), recovery=customer4 --
-    //     the next Customer/Depot node after customer2's position in r0):
-    //     launch_time=10, customer_arrival=10+|10-20|/2=15.
-    //   candidate for customer1 (launch (20,5), recovery=depot):
-    //     launch_time = 20(0->2)+20(2->4)+sqrt(125)(4->3)+10(3->launch)
-    //       = 61.180339887499; customer_arrival = +5 = 66.180339887499.
-    //   BestRoute picks the lower score: customer2 (15 < 66.18).
-    //   Committed (fleet check on a single trip trivially passes).
-    //   Customer4 becomes recovery-locked.
-    // Round 2: only customer1 remains (customer2 converted). Its trial
-    //   (accepted=[trip2]) has interval [61.180339887499, 81.795868...]
-    //   vs trip2's [10,40] -- disjoint, fleet check passes. Committed.
-    //   Cluster0 exhausted (both customers converted).
-    //
-    // F4 cluster1={3,4}: customer4 is recovery-locked (skipped).
-    //   candidate for customer3 (launch (35,2.5), recovery=depot -- the
-    //     node that WAS customer1's own next stop is now customer1's own
-    //     launch FLP, an FLP type, so the search skips it and reaches the
-    //     depot): building this trial (accepted=[trip2,trip1] +
-    //     candidate3) and re-evaluating the WHOLE trial from scratch
-    //     (Phase E always does) gives, because trip1's own launch point
-    //     now sits downstream of a SHORTER path through customer3's own
-    //     launch FLP instead of through customer3 directly:
-    //       trip1 (recomputed within this trial): launch_time =
-    //         40 (trip2's own recovery_complete, unchanged)
-    //         + sqrt(31.25) (node4->launch3, 5.590169943749)
-    //         + sqrt(231.25) (launch3->launch1, 15.206906325746)
-    //         = 60.797076269495; recovery_complete (at the shared
-    //         ending depot) = 81.412604397583.
-    //       trip3 (candidate): launch_time = 45.590169943749;
-    //         recovery_complete (ALSO the ending depot, since customer1's
-    //         slot is now an FLP too) = 81.412604397583.
-    //     trip3's interval [45.590169943749, 81.412604397583] OVERLAPS
-    //     trip1's [60.797076269495, 81.412604397583] (60.797... falls
-    //     inside trip3's window) -- max_simultaneous_drones = 2 > 1 =
-    //     fleet_size. check_drone_fleet_capacity rejects this candidate.
-    //     [Before this patch, F4 would have reset "available_drones" to
-    //     1 fresh at the start of cluster1's processing and accepted this
-    //     candidate on structural/endurance grounds alone, silently
-    //     producing a solution needing 2 simultaneous drones from a
-    //     1-drone fleet -- exactly the bug this patch fixes.]
-    //   No other candidate exists this round (customer4 still locked) ->
-    //   feasible_this_round is empty -> cluster1 is exhausted with ZERO
-    //   trips. Customers 3 and 4 remain truck-served.
-    //
-    // Final route: [0, launch(customer2), customer4, customer3,
-    // launch(customer1), 0] -- the two ACCEPTED trips are customer2's
-    // and customer1's; customer3 and customer4 stay plain truck-served
-    // nodes. Final (fully re-evaluated) timings:
-    //   trip(cust=2): launch_time=10, customer_arrival=15,
-    //     recovery_complete=40 (recovery=customer4, still a plain
-    //     truck-served node in the final solution): truck arrival at
-    //     (10,0)=10; outbound |10-20|/2=5 -> arrival=15; return
-    //     |20-40|/2=10 -> drone_recovery_arrival=25; truck arrival at
-    //     customer4=10+30=40; recovery_complete=max(40,25)+0=40.
-    //   customer4 (truck-served): arrival = 40 (departure[customer4] is
-    //     then also 40, gated by this same recovery_complete).
-    //   customer3 (truck-served): arrival = 40 + sqrt(125)
-    //     = 51.180339887499 (the direct customer4->customer3 leg, since
-    //     customer3 itself was never converted).
-    //   trip(cust=1): launch_time = 51.180339887499 (departure[customer3])
-    //     + 10 (customer3->launch1 leg, (30,5)->(20,5)) = 61.180339887499;
-    //     customer_arrival=66.180339887499; recovery_complete
-    //     =81.795868015587 -- identical to the standalone per-candidate
-    //     derivation above, since nothing upstream of customer1's launch
-    //     changed between the trial and the final solution (customer3 was
-    //     never converted either way).
-    //   Objective = 15 (cust2,drone) + 51.180339887499 (cust3,truck)
-    //             + 66.180339887499 (cust1,drone) + 40 (cust4,truck)
-    //             = 172.360679774998.
+    // truck speed 1, drone speed 2, SL=SR=Se=theta=0, e=1000, |U|=1,
+    // test-fixture d=10.
+    // F1: r0 = [0,2,4,3,1,0], cost 60 + 2*sqrt(125). F2: {1,2}, {3,4}.
+    // F3: per direction 0-1 (11.18) 1, 0-2 (20) 2, 0-3 (30.41) 3, 0-4 (40)
+    //     4, 1-2 1, 1-3 (20) 2, 1-4 (30.41) 3, 2-3 1, 2-4 (20) 2, 3-4 1 ->
+    //     20; 40 in all. L_(0,4) = {11..14} at x = 8, 16, 24, 32;
+    //     L_(3,0) = {28, 29, 30} at (22.5,3.75), (15,2.5), (7.5,1.25).
+    // F4 cluster0, round 1 (route r0):
+    //   j=2 (a=0, b=4): f11: t_2 = 8 + 12/2 = 14 (f12: 18, f13: 26, f14: 38).
+    //   j=1 (a=3, b=0): f28: 65.06, f29: 69.18, f30: 76.24.
+    //   BestRoute: j=2 via f11 (14); customer 4 becomes recovery-locked.
+    // Round 2 (route [0,11,4,3,1,0]): j=1 via f28: truck at f28 =
+    //   8 + 32 + sqrt(125) + sqrt(57.8125) = 58.7838; t_1 = 58.7838 +
+    //   sqrt(157.8125)/2 = 65.0650. Accepted (recovery at the depot).
+    // F4 cluster1 (route [0,11,4,3,28,0]): 4 is locked. j=3 (a=4, b=0,
+    //   f28 skipped): the trip would span positions 2..5 and overlap trip(1)
+    //   at positions 4..5 -> 2 drones > |U| = 1: rejected. Cluster1 ends
+    //   with no trip.
+    // Final route [0, 11, 4, 3, 28, 0]; objective = 14 (2) + 40 (4) +
+    // (40 + sqrt(125)) (3) + 65.0650 (1) = 170.2453052010712.
     // =====================================================================
     {
         NodeRegistry nodes;
@@ -583,92 +588,73 @@ int main() {
         std::unordered_map<NodeId, CustomerData> customers;
         for (NodeId id : {1, 2, 3, 4}) customers[id] = CustomerData{id, 0.0, 0.0, 0.0};
 
-        InitialSolutionResult result = build_initial_solution(0, {1, 2, 3, 4}, customers, network);
+        InitialSolutionResult result = build_initial_solution(0, {1, 2, 3, 4}, customers, network, unit_division_policy(10.0));
 
         check(result.tsp_result.exact, "Block 8: F1 tour is exact");
         check_near(result.tsp_result.cost, 60.0 + 2.0 * std::sqrt(125.0), 1e-9, "Block 8: F1 optimal cost matches hand formula");
+        check(result.truck_only_route == TruckRoute({0, 2, 4, 3, 1, 0}), "Block 8: r0 = [0,2,4,3,1,0]");
 
         check(result.clustering.cluster_count == 2, "Block 8: F2 produces 2 clusters");
         auto cluster_of = [&](NodeId id) { return result.clustering.assignment.at(id); };
         check(cluster_of(1) == cluster_of(2) && cluster_of(3) == cluster_of(4) && cluster_of(1) != cluster_of(3),
               "Block 8: F2 groups {1,2} and {3,4} into two DIFFERENT clusters");
 
-        // Item 1 + item 2: multiple clusters competed for the single
-        // drone, and the cross-cluster time conflict was detected --
-        // cluster1's customers (3,4) end up with ZERO accepted drone
-        // trips (customer4 recovery-locked, customer3's only candidate
-        // rejected for exceeding the fleet's simultaneous capacity),
-        // while cluster0's customers (1,2) both got their trips.
-        check(result.solution.drone_trips.size() == 2, "Block 8: exactly 2 drone trips accepted overall (not 3 or 4)");
-        bool customer3_is_drone = false, customer4_is_drone = false;
-        bool customer1_is_drone = false, customer2_is_drone = false;
+        check(result.candidate_flps.size() == 40, "Block 8: F3 generates 40 launch points");
+        check(result.solution.truck_route == TruckRoute({0, 11, 4, 3, 28, 0}), "Block 8: final route is [0, 11, 4, 3, 28, 0]");
+        check(result.solution.drone_trips.size() == 2, "Block 8: exactly 2 drone trips accepted overall");
+        bool customer1_is_drone = false, customer2_is_drone = false, customer3_is_drone = false, customer4_is_drone = false;
         for (const auto& t : result.solution.drone_trips) {
-            if (t.service_customer == 1) customer1_is_drone = true;
-            if (t.service_customer == 2) customer2_is_drone = true;
+            if (t.service_customer == 1) customer1_is_drone = (t.launch_node == 28 && t.recovery_node == 0);
+            if (t.service_customer == 2) customer2_is_drone = (t.launch_node == 11 && t.recovery_node == 4);
             if (t.service_customer == 3) customer3_is_drone = true;
             if (t.service_customer == 4) customer4_is_drone = true;
         }
-        check(customer1_is_drone && customer2_is_drone, "Block 8: cluster0's customers 1 and 2 are both drone-served");
+        check(customer1_is_drone && customer2_is_drone, "Block 8: cluster0's customers 1 (28->1->0) and 2 (11->2->4) are drone-served");
         check(!customer3_is_drone && !customer4_is_drone,
-              "Block 8: cluster1's customers 3 and 4 remain truck-served (fleet-capacity conflict blocked customer3, "
-              "recovery-locking blocked customer4)");
-
-        // Item 2, directly: verify that the ACCEPTED solution never
-        // requires more than 1 drone simultaneously (the fleet cap is
-        // actually respected in the delivered result, not just "checked
-        // and ignored").
-        auto final_capacity = check_drone_fleet_capacity(result.evaluation.drone_trip_timings, 1);
-        check(final_capacity.feasible && final_capacity.max_simultaneous_drones <= 1,
-              "Block 8: the final accepted solution never needs more than 1 simultaneous drone");
+              "Block 8: cluster1's customers 3 and 4 remain truck-served (customer 3 would need a 2nd simultaneous "
+              "drone, customer 4 is recovery-locked)");
+        check(result.evaluation.max_simultaneous_drones <= 1,
+              "Block 8: the delivered solution never has more than |U| = 1 drone in flight");
 
         check(result.feasible, "Block 8: the final initial solution is feasible");
-        check_near(result.objective_value, 172.360679774998, 1e-6,
-                   "Block 8: hand-computed objective is 172.360679774998");
+        check_near(result.objective_value, 170.2453052010712, 1e-9, "Block 8: hand-computed objective is 170.2453052010712");
+        check_phase_f_invariants(result, 1, "Block 8");
 
-        // Item 4: independent Phase E re-evaluation from a rebuilt
-        // network agrees with the builder's own stored evaluation.
         SpatialNetwork rebuilt_network(result.node_registry, truck, drone);
         tdr::timing::SolutionEvaluationResult independent_eval =
-            tdr::timing::evaluate_solution(result.solution, rebuilt_network, customers);
+            tdr::timing::evaluate_solution(result.solution, rebuilt_network, customers, result.flp_data);
         check(independent_eval.feasible == result.feasible,
               "Block 8: independent Phase E re-evaluation agrees on feasibility");
-        check_near(independent_eval.objective_value, result.objective_value, 1e-6,
+        check_near(independent_eval.objective_value, result.objective_value, 1e-9,
                    "Block 8: independent Phase E re-evaluation agrees on the objective value");
     }
 
     // =====================================================================
-    // Block 9 (post-approval correctness patch, Issue 1): two genuinely
-    // DIFFERENT clusters, far enough apart that their two accepted drone
-    // trips do NOT overlap in time -- proving the single drone in the
-    // fleet is correctly REUSED (not blocked) once its first trip has
-    // completed. This is the same instance shape used informally while
-    // designing the fix; every number below is confirmed against the
-    // implementation's own deterministic output.
+    // Block 9: two DIFFERENT clusters far apart; the single physical drone
+    // is REUSED (drone 0 flies both trips, one after the other).
     //
     // Depot=(0,0); customers 1=(10,0), 2=(20,0), 3=(500,0), 4=(510,0).
-    // truck_speed=1, drone_speed=2, SL=SR=Se1=Se2=theta=0,
-    // endurance=1000, num_drones=1.
-    //
-    // F1: r0 = [0,4,3,2,1,0], cost = 2*510 = 1020 (colinear, all
-    // customers on one side of the depot -- the well-known "there and
-    // back" optimum; this specific direction is HeldKarpSolver's own
-    // deterministic tie-break, as in Block 6).
-    // F2: k=ceil(4/3)=2; cluster0={1,2}, cluster1={3,4} (contiguous
-    // proximity groups, as in Block 6/8).
-    // F3: FLP candidates at arc midpoints: (255,0)->customer4;
-    // (505,0)->customer3; (260,0)->customer2; (15,0)->customer1.
-    // F4: cluster0 accepts customer2 (recovery=customer1); cluster1
-    // accepts customer4 (recovery=customer3) -- full derivation and the
-    // exact final numbers below match the implementation's own
-    // deterministic, independently-recomputed output:
-    //   trip(customer4): launch_time=255, recovery_complete=500.
-    //   trip(customer2): launch_time=740, recovery_complete=990.
-    // 500 <= 740: the two trips' busy intervals do NOT overlap, so a
-    // single physical drone suffices for both -- exactly the "reuse
-    // after the previous operation has completed" behavior the review
-    // required, confirmed end-to-end through the real construction
-    // pipeline (not just the isolated check_drone_fleet_capacity unit
-    // tests in Block 7).
+    // truck speed 1, drone speed 2, SL=SR=Se=theta=0, e=1000, |U|=1,
+    // test-fixture d=100.
+    // F1: r0 = [0,4,3,2,1,0], cost 1020. F2: {1,2}, {3,4}.
+    // F3: per direction 0-3 5, 0-4 5, 1-3 4, 1-4 5, 2-3 4, 2-4 4 (the
+    //     short arcs 0-1, 0-2, 1-2, 3-4 get none) -> 27; 54 in all.
+    //     L_(0,3) = {5..9} at x = 83.33, 166.67, 250, 333.33, 416.67;
+    //     L_(3,1) = {37..40} at x = 402, 304, 206, 108; L_(2,0) is empty.
+    // F4 cluster0 (route r0): j=1 (a=2, b=0): L_(2,0) empty, no candidate.
+    //   j=2 (a=3, b=1): f37: truck at f37 = 510 + 10 + 98 = 618, t_2 =
+    //   618 + 382/2 = 809 (f38 858, f39 907, f40 956). Accept f37;
+    //   customer 1 locked.
+    // F4 cluster1 (route [0,4,3,37,1,0]): j=3 (a=4, b=1): overlaps trip(2)
+    //   -> 2 drones > 1: rejected. j=4 (a=0, b=3): f5: t_4 = 83.333 +
+    //   426.667/2 = 296.667 (the other four are later). Accept f5.
+    // Final route [0, 5, 3, 37, 1, 0]:
+    //   trip 5->4->3: launch 83.333, lands 301.667, truck at C3 at 500,
+    //     recovery completes at 500 (route positions 1..2);
+    //   trip 37->2->1: launch 500 + 98 = 598, t_2 = 789, lands 794,
+    //     truck at C1 at 990, recovery completes at 990 (positions 3..4).
+    //   500 <= 598: drone 0 is back on the truck before it is relaunched.
+    // Objective = 296.667 + 500 + 789 + 990 = 2575.6667.
     // =====================================================================
     {
         NodeRegistry nodes;
@@ -687,125 +673,219 @@ int main() {
         std::unordered_map<NodeId, CustomerData> customers;
         for (NodeId id : {1, 2, 3, 4}) customers[id] = CustomerData{id, 0.0, 0.0, 0.0};
 
-        InitialSolutionResult result = build_initial_solution(0, {1, 2, 3, 4}, customers, network);
+        InitialSolutionResult result = build_initial_solution(0, {1, 2, 3, 4}, customers, network, unit_division_policy(100.0));
 
         auto cluster_of = [&](NodeId id) { return result.clustering.assignment.at(id); };
         check(cluster_of(1) == cluster_of(2) && cluster_of(3) == cluster_of(4) && cluster_of(1) != cluster_of(3),
               "Block 9: customers split into two genuinely different clusters, {1,2} and {3,4}");
-
+        check(result.candidate_flps.size() == 54, "Block 9: F3 generates 54 launch points (none on the short arcs)");
+        check(result.solution.truck_route == TruckRoute({0, 5, 3, 37, 1, 0}), "Block 9: final route is [0, 5, 3, 37, 1, 0]");
         check(result.solution.drone_trips.size() == 2, "Block 9: both clusters' best candidates are accepted (2 trips)");
 
         double launch_a = -1.0, recover_a = -1.0, launch_b = -1.0, recover_b = -1.0;
+        int drone_a = -1, drone_b = -1;
         for (std::size_t i = 0; i < result.solution.drone_trips.size(); ++i) {
             const auto& t = result.solution.drone_trips[i];
             const auto& tm = result.evaluation.drone_trip_timings[i];
-            if (t.service_customer == 4) { launch_a = tm.launch_time; recover_a = tm.recovery_complete_time; }
-            if (t.service_customer == 2) { launch_b = tm.launch_time; recover_b = tm.recovery_complete_time; }
+            if (t.service_customer == 4) { launch_a = tm.launch_time; recover_a = tm.recovery_complete_time; drone_a = t.drone_id; }
+            if (t.service_customer == 2) { launch_b = tm.launch_time; recover_b = tm.recovery_complete_time; drone_b = t.drone_id; }
         }
-        check_near(launch_a, 255.0, 1e-9, "Block 9: customer4's trip launches at 255");
+        check_near(launch_a, 250.0 / 3.0, 1e-9, "Block 9: customer4's trip launches at 83.333");
         check_near(recover_a, 500.0, 1e-9, "Block 9: customer4's trip completes recovery at 500");
-        check_near(launch_b, 740.0, 1e-9, "Block 9: customer2's trip launches at 740");
+        check_near(launch_b, 598.0, 1e-9, "Block 9: customer2's trip launches at 598");
         check_near(recover_b, 990.0, 1e-9, "Block 9: customer2's trip completes recovery at 990");
         check(recover_a <= launch_b, "Block 9: customer4's trip fully completes before customer2's trip launches (no overlap)");
-
-        auto capacity = check_drone_fleet_capacity(result.evaluation.drone_trip_timings, 1);
-        check(capacity.max_simultaneous_drones == 1,
-              "Block 9: the two different-cluster trips never require more than 1 simultaneous drone (sequential reuse)");
-        check(capacity.feasible, "Block 9: sequential reuse is feasible with exactly 1 drone");
+        check(drone_a == 0 && drone_b == 0, "Block 9: both trips are flown by the same physical drone u = 0 (sequential reuse)");
+        check(result.evaluation.max_simultaneous_drones == 1,
+              "Block 9: the two different-cluster trips never have more than 1 drone in flight");
 
         check(result.feasible, "Block 9: the final initial solution is feasible");
-        check_near(result.objective_value, 2732.5, 1e-6, "Block 9: hand-computed objective is 2732.5");
+        check_near(result.objective_value, 296.0 + 2.0 / 3.0 + 500.0 + 789.0 + 990.0, 1e-9,
+                   "Block 9: hand-computed objective is 2575.6667");
+        check_phase_f_invariants(result, 1, "Block 9");
 
         SpatialNetwork rebuilt_network(result.node_registry, truck, drone);
         tdr::timing::SolutionEvaluationResult independent_eval =
-            tdr::timing::evaluate_solution(result.solution, rebuilt_network, customers);
+            tdr::timing::evaluate_solution(result.solution, rebuilt_network, customers, result.flp_data);
         check(independent_eval.feasible == result.feasible,
               "Block 9: independent Phase E re-evaluation agrees on feasibility");
-        check_near(independent_eval.objective_value, result.objective_value, 1e-6,
+        check_near(independent_eval.objective_value, result.objective_value, 1e-9,
                    "Block 9: independent Phase E re-evaluation agrees on the objective value");
     }
 
     // =====================================================================
-    // Block 10 (post-approval correctness patch, Issue 2): FLP candidate
-    // coverage. Proves the launch-candidate lookup considers EVERY FLP
-    // generated on a customer's entering arc, not just the single
-    // closest one -- i.e. that the fix in initial_solution_builder.hpp
-    // (launch_candidates_for now maps to a vector, and F4 tries every
-    // entry) actually changes behavior versus the pre-patch single-
-    // candidate lookup, rather than being a no-op refactor.
+    // Block 10: EVERY launch point of the bridging arc is a candidate, and
+    // the best one is not simply the first or last generated.
     //
-    // Depot=(0,0), single customer 1=(90,0). truck_speed=1,
-    // drone_speed=2 (FASTER than the truck -- see below for why this
-    // matters), SL=SR=Se1=Se2=theta=0, endurance=1000 (generous -- not
-    // the point), num_drones=1, points_per_arc=2.
-    //
-    // F1: r0=[0,1,0] (trivial). F3 generates 2 FLPs per arc; on arc
-    // (0->1) [the one entering the customer]: id=2 at ratio 1/3 = (30,0)
-    // and id=3 at ratio 2/3 = (60,0).
-    //
-    // Because drone_speed(2) > truck_speed(1), launching FARTHER from
-    // the customer (lower ratio) gives an EARLIER customer arrival, not
-    // a later one: arrival(x) = x (truck time to reach the launch point)
-    // + (90-x)/2 (drone flight from there) = 45 + x/2, which INCREASES
-    // with x. So the theoretically-nearest-to-customer candidate (60,0)
-    // is actually the WORSE choice here, and the farther one (30,0) is
-    // BestRoute's correct pick:
-    //   candidate @ (30,0): launch_time=30, arrival=30+(90-30)/2=60.
-    //   candidate @ (60,0): launch_time=60, arrival=60+(90-60)/2=75.
-    // If the lookup still kept only the single closest same-arc
-    // candidate (the pre-patch behavior, which always kept the
-    // highest-ratio point), the accepted launch node would necessarily
-    // be id=3 (60,0) with objective 75 -- it would never even see id=2.
-    // With the fix, BOTH are tried and BestRoute correctly picks the
-    // lower-scoring one: id=2 (30,0), objective 60.
+    // Depot=(0,0), customers 1=(90,0), 2=(180,0). truck speed 1, drone
+    // speed 0.5 (SLOWER than the truck), SL=SR=Se=theta=0, e=1000, |U|=1,
+    // test-fixture d=45.
+    // F1: r0 = [0,2,1,0]. F2: one cluster {1,2}.
+    // F3: 0-1 (90) 2, 0-2 (180) 4, 1-2 (90) 2 per direction -> 16, ids
+    //     3..18: L_(0,1) = {3, 4} at x = 30, 60; L_(2,0) = {13..16} at
+    //     x = 144, 108, 72, 36.
+    // F4: j=1 (a=2, b=0): truck reaches x at 180 + (180 - x); drone
+    //     reaches customer 1 at that + |x - 90|/0.5:
+    //       f13 (144): 216 + 108 = 324;  f14 (108): 252 + 36 = 288;
+    //       f15 (72):  288 + 36  = 324;  f16 (36):  324 + 108 = 432.
+    //     j=2 (a=0, b=1): f3 (30): 30 + 300 = 330; f4 (60): 60 + 240 = 300.
+    //   BestRoute: j=1 via f14 (288) -- the SECOND point of L_(2,0).
+    //   Endurance f14: loaded 36, return 90/0.5 = 180, truck at depot 360:
+    //   (36) = (360 - 288) + 36 = 108, (37) = 36 + 180 = 216 <= 1000.
+    //   Round 2: customer 2 now sits between the depot and f14, so a = b =
+    //   depot and no arc exists; done.
+    // Final route [0, 2, 14, 0]; objective = 180 (2) + 288 (1) = 468.
     // =====================================================================
     {
         NodeRegistry nodes;
         nodes.add(Node{0, NodeType::Depot, Point2D{0.0, 0.0}});
         nodes.add(Node{1, NodeType::Customer, Point2D{90.0, 0.0}});
+        nodes.add(Node{2, NodeType::Customer, Point2D{180.0, 0.0}});
         TruckParameters truck; truck.speed = 1.0;
         DroneParameters drone;
-        drone.speed = 2.0;
+        drone.speed = 0.5;
         drone.endurance_seconds = 1000.0;
         drone.num_drones = 1;
         SpatialNetwork network(nodes, truck, drone);
 
         std::unordered_map<NodeId, CustomerData> customers;
         customers[1] = CustomerData{1, 0.0, 0.0, 0.0};
+        customers[2] = CustomerData{2, 0.0, 0.0, 0.0};
 
-        InitialSolutionPolicy policy;
-        policy.flp_policy.points_per_arc = 2;
-        InitialSolutionResult result = build_initial_solution(0, {1}, customers, network, policy);
+        InitialSolutionResult result = build_initial_solution(0, {1, 2}, customers, network, unit_division_policy(45.0));
 
-        // 2 arcs in r0 (0->1, 1->0) x 2 points per arc = 4 candidate FLPs
-        // total, but only the 2 on arc (0->1) are candidates for
-        // customer 1 -- proving neither is silently dropped.
-        check(result.candidate_flps.size() == 4, "Block 10: F3 generates 4 candidate FLPs total (2 arcs x 2 per arc)");
-        int same_arc_candidates = 0;
+        check(result.truck_only_route == TruckRoute({0, 2, 1, 0}), "Block 10: r0 = [0,2,1,0]");
+        check(result.candidate_flps.size() == 16, "Block 10: F3 generates 16 launch points");
+        int bridging_arc_points = 0;
         for (const auto& g : result.candidate_flps) {
-            if (g.data.arc_to == 1) ++same_arc_candidates;
+            if (g.data.arc_from == 2 && g.data.arc_to == 0) ++bridging_arc_points;
         }
-        check(same_arc_candidates == 2, "Block 10: customer 1 has 2 candidate launch points on its entering arc, not 1");
+        check(bridging_arc_points == 4, "Block 10: customer 1's bridging arc (2,0) carries 4 candidate launch points");
 
         check(result.solution.drone_trips.size() == 1, "Block 10: customer 1 is drone-served");
         const NodeId chosen_launch = result.solution.drone_trips.front().launch_node;
-        check(chosen_launch == 2,
-              "Block 10: the FARTHER candidate (id=2, (30,0)) is chosen, proving the closer one (id=3) was not the only "
-              "candidate considered");
-        check_near(result.node_registry.at(chosen_launch).coordinates.x, 30.0, 1e-9,
-                   "Block 10: the chosen launch point sits at x=30, not x=60");
+        check(chosen_launch == 14, "Block 10: the SECOND point of L_(2,0) (id 14) is chosen -- all four were evaluated");
+        check_near(result.node_registry.at(chosen_launch).coordinates.x, 108.0, 1e-9,
+                   "Block 10: the chosen launch point sits at x = 108");
+        check(result.solution.truck_route == TruckRoute({0, 2, 14, 0}), "Block 10: final route is [0, 2, 14, 0]");
 
         check(result.feasible, "Block 10: the resulting solution is feasible");
-        check_near(result.objective_value, 60.0, 1e-9,
-                   "Block 10: objective is 60 (the farther candidate's arrival time), not 75 (the closer candidate's)");
+        check_near(result.objective_value, 468.0, 1e-9, "Block 10: objective is 180 + 288 = 468");
+        check_phase_f_invariants(result, 1, "Block 10");
 
         SpatialNetwork rebuilt_network(result.node_registry, truck, drone);
         tdr::timing::SolutionEvaluationResult independent_eval =
-            tdr::timing::evaluate_solution(result.solution, rebuilt_network, customers);
+            tdr::timing::evaluate_solution(result.solution, rebuilt_network, customers, result.flp_data);
         check(independent_eval.feasible == result.feasible,
               "Block 10: independent Phase E re-evaluation agrees on feasibility");
         check_near(independent_eval.objective_value, result.objective_value, 1e-9,
                    "Block 10: independent Phase E re-evaluation agrees on the objective value");
+    }
+
+    // =====================================================================
+    // Block 11 = test L: a Phase F initial solution with valid FLP-arc
+    // membership on a non-trivial instance (7 customers, |U| = 2, non-zero
+    // SL, SR, Se^T, Se^D and theta). Depot (0,0); customers 1=(10,30),
+    // 2=(25,5), 3=(40,35), 4=(55,10), 5=(70,40), 6=(15,-20), 7=(45,-25).
+    // truck speed 1, drone speed 1.5, SL=1, SR=1, Se^T=2, Se^D=1,
+    // theta=0.2, e=60, test-fixture d=8.
+    // Expected (independent reference implementation): r0 =
+    // [0,6,7,4,5,3,1,2,0]; 292 launch points; final route
+    // [0, 39, 7, 290, 5, 3, 117, 2, 0] with trips 39->6->7, 117->1->2,
+    // 290->4->5.
+    // STAGE 2 (8 Nov 2026, SR Option B): the route and trips are UNCHANGED,
+    // but the objective moved from 820.1434959367223 (pre-Stage-2 SR rule)
+    // to 828.143495936722. Both figures were reproduced by a stand-alone
+    // Python evaluator that shares no code with the C++ one (old rule ->
+    // 820.1434959367, Option B -> 828.1434959367). The +8 is SR charged
+    // additively (t + Se^T + r*SR) at the recovery customers 7, 5 and 2
+    // instead of concurrently with their service.
+    // Before the correction, F3 generated launch points only on r0's arcs
+    // and F4 could leave a point of L_(a,j) in the route after j was
+    // removed, i.e. between a and some unrelated node.
+    // =====================================================================
+    {
+        NodeRegistry nodes;
+        nodes.add(Node{0, NodeType::Depot, Point2D{0.0, 0.0}});
+        const std::vector<Point2D> pts{{10, 30}, {25, 5}, {40, 35}, {55, 10}, {70, 40}, {15, -20}, {45, -25}};
+        std::vector<NodeId> ids;
+        std::unordered_map<NodeId, CustomerData> customers;
+        for (std::size_t i = 0; i < pts.size(); ++i) {
+            const NodeId id = static_cast<NodeId>(i + 1);
+            nodes.add(Node{id, NodeType::Customer, pts[i]});
+            ids.push_back(id);
+            customers[id] = CustomerData{id, 2.0, 1.0, 0.2};
+        }
+        TruckParameters truck; truck.speed = 1.0;
+        DroneParameters drone;
+        drone.speed = 1.5;
+        drone.launch_prep_time_sl = 1.0;
+        drone.recovery_time_sr = 1.0;
+        drone.endurance_seconds = 60.0;
+        drone.num_drones = 2;
+        SpatialNetwork network(nodes, truck, drone);
+
+        InitialSolutionResult result = build_initial_solution(0, ids, customers, network, unit_division_policy(8.0));
+
+        check(result.truck_only_route == TruckRoute({0, 6, 7, 4, 5, 3, 1, 2, 0}), "L: r0 = [0,6,7,4,5,3,1,2,0]");
+        check(result.candidate_flps.size() == 292, "L: F3 generates 292 launch points over the 56 ordered arcs");
+        check(result.solution.truck_route == TruckRoute({0, 39, 7, 290, 5, 3, 117, 2, 0}),
+              "L: final route is [0, 39, 7, 290, 5, 3, 117, 2, 0]");
+        check(result.solution.drone_trips.size() == 3, "L: three customers are converted to drone service");
+        check_phase_f_invariants(result, 2, "L");
+        check_near(result.objective_value, 828.143495936722, 1e-9, "L: objective matches the independent reference under SR Option B (828.1435)");
+
+        // Every route launch point is on the arc between its truck
+        // neighbours, and that arc is one the final truck route traverses.
+        bool arcs_traversed = true;
+        const auto& route = result.solution.truck_route;
+        std::vector<NodeId> truck_only;
+        for (NodeId v : route) {
+            if (result.node_registry.at(v).type != NodeType::FlexibleLaunchPoint) truck_only.push_back(v);
+        }
+        for (NodeId v : route) {
+            if (result.node_registry.at(v).type != NodeType::FlexibleLaunchPoint) continue;
+            const auto& data = result.flp_data.at(v);
+            bool found = false;
+            for (std::size_t q = 0; q + 1 < truck_only.size(); ++q) {
+                if (truck_only[q] == data.arc_from && truck_only[q + 1] == data.arc_to) found = true;
+            }
+            if (!found) arcs_traversed = false;
+        }
+        check(arcs_traversed, "L: the owning arc (i,j) of every used launch point is an arc of the final truck route");
+
+        SpatialNetwork rebuilt_network(result.node_registry, truck, drone);
+        tdr::timing::SolutionEvaluationResult independent_eval =
+            tdr::timing::evaluate_solution(result.solution, rebuilt_network, customers, result.flp_data);
+        check(independent_eval.feasible && independent_eval.violation_reasons.empty(),
+              "L: independent Phase E re-evaluation (with arc-membership checks) finds no violation");
+    }
+
+    // =====================================================================
+    // Block 12: F3 refuses to run without a configured d (no invented
+    // paper default). The default InitialSolutionPolicy leaves d = 0.
+    // =====================================================================
+    {
+        NodeRegistry nodes;
+        nodes.add(Node{0, NodeType::Depot, Point2D{0.0, 0.0}});
+        nodes.add(Node{1, NodeType::Customer, Point2D{10.0, 0.0}});
+        nodes.add(Node{2, NodeType::Customer, Point2D{20.0, 5.0}});
+        TruckParameters truck; truck.speed = 1.0;
+        DroneParameters drone; drone.speed = 1.0; drone.endurance_seconds = 100.0; drone.num_drones = 1;
+        SpatialNetwork network(nodes, truck, drone);
+        std::unordered_map<NodeId, CustomerData> customers;
+        customers[1] = CustomerData{1, 0.0, 0.0, 0.0};
+        customers[2] = CustomerData{2, 0.0, 0.0, 0.0};
+
+        InitialSolutionResult result = build_initial_solution(0, {1, 2}, customers, network);
+        check(!result.feasible, "Block 12: with no d configured the builder reports no feasible solution");
+        bool diag = false;
+        for (const auto& s : result.diagnostics) {
+            if (s.rfind("F3: FLP unit division length d is not configured", 0) == 0) diag = true;
+        }
+        check(diag, "Block 12: the diagnostic states that d is not configured (the paper gives no main-experiment d)");
+        check(result.candidate_flps.empty() && result.solution.drone_trips.empty(),
+              "Block 12: no launch points and no drone trips are produced");
     }
 
     std::cout << "\n" << (g_failures == 0 ? "ALL TESTS PASSED" : std::to_string(g_failures) + " TEST(S) FAILED") << "\n";

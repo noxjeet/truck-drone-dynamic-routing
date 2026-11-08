@@ -1,19 +1,22 @@
 #pragma once
 
-// Phase F: initial-solution construction (steps F1-F4). Orchestrates
-// truck-only TSP (F1, truck_only_route.hpp), K-means clustering (F2,
-// customer_clustering.hpp), FLP insertion (F3, reuses Phase D unchanged),
-// and greedy drone-trip construction (F4). See DECISIONS.md
-// ("Initial-solution construction (Phase F)") for the full
-// [PAPER]/[INFERENCE]/[ASSUMPTION] breakdown -- that document is
-// authoritative; comments here are a summary.
+// Phase F: initial-solution construction (steps F1-F4, paper Sec 5.2,
+// Fig. 8, Algorithm 2). Orchestrates truck-only TSP (F1,
+// truck_only_route.hpp), K-means clustering (F2, customer_clustering.hpp),
+// flexible-launch-point generation (F3, reuses Phase D), and greedy
+// drone-trip construction (F4). See DECISIONS.md ("Initial-solution
+// construction (Phase F)" and "Paper-conformance corrections
+// (29 Sep 2026)") for the full [PAPER]/[INFERENCE]/[ASSUMPTION] breakdown
+// -- that document is authoritative; comments here are a summary.
 //
-// RULE: this file never computes timing/endurance/objective itself. It
-// only builds candidate routes/trips and asks
+// RULE: this file never computes timing/endurance/objective/feasibility
+// itself. It only builds candidate routes/trips and asks
 // tdr::timing::evaluate_solution whether each candidate is feasible.
 
 #include <algorithm>
 #include <cstddef>
+#include <map>
+#include <optional>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -22,7 +25,6 @@
 #include "flp/flexible_launch_point_generator.hpp"
 #include "graph/spatial_network.hpp"
 #include "init/customer_clustering.hpp"
-#include "init/drone_fleet_capacity.hpp"
 #include "init/truck_only_route.hpp"
 #include "model/customer.hpp"
 #include "model/drone_trip.hpp"
@@ -46,7 +48,11 @@ struct InitialSolutionResult {
     tdr::tsp::TSPResult tsp_result;         // F1 metadata (exact/heuristic, cost, etc.)
     tdr::model::TruckRoute truck_only_route; // F1: r0 itself (depot + every customer, no FLPs, no conversions)
     tdr::init::KMeansResult clustering;                      // F2 metadata
-    std::vector<tdr::flp::GeneratedFlexibleLaunchPoint> candidate_flps; // F3: full frozen candidate pool, generated from truck_only_route
+    // F3: L_{a,b} for every arc (a, b) between the depot and the customers
+    // (the paper's L = union of L_ij over i in C0, j in C_E), generated
+    // once and fixed; only FLPs of arcs the final route traverses are used.
+    std::vector<tdr::flp::GeneratedFlexibleLaunchPoint> candidate_flps;
+    tdr::timing::FlpDataMap flp_data; // arc ownership of every FLP in candidate_flps (input to evaluate_solution)
 
     tdr::timing::SolutionEvaluationResult evaluation; // Phase E's evaluation of `solution` (customer
                                                        // service assignment lives in evaluation.customer_records)
@@ -64,6 +70,50 @@ struct DroneTripCandidate {
     tdr::model::DroneTrip trip;
     double score = 0.0;
 };
+
+// Assigns physical drone ids u in [0, num_drones) to the trips of
+// `solution` so that no drone flies two trips whose route-position
+// intervals [launch position, recovery position] overlap (the route-order
+// form of constraint (28)). Trips are processed in route order of their
+// launch position and each takes the lowest-numbered drone that is free
+// at that launch position; for intervals processed by start this uses the
+// minimum possible number of drones, so it fails only if more than
+// num_drones trips are genuinely in flight at once.
+// [IMPLEMENTATION ASSUMPTION] which free drone is chosen (lowest id) is
+// not specified by the paper; see DECISIONS.md (Algorithm 2's per-drone
+// loop is a professor-pending item).
+// Trips whose launch/recovery cannot be located in route order are given
+// drone 0; the evaluator rejects them for that reason anyway.
+// Returns false iff more than num_drones drones would be needed.
+inline bool assign_drone_ids_by_route_order(tdr::model::Solution& solution, int num_drones) {
+    const auto& route = solution.truck_route;
+    struct Placed { std::size_t trip; std::size_t lp; std::size_t rp; };
+    std::vector<Placed> placed;
+    for (std::size_t i = 0; i < solution.drone_trips.size(); ++i) {
+        auto& t = solution.drone_trips[i];
+        const auto lp = tdr::timing::detail::find_route_position(route, t.launch_node);
+        const auto rp = lp ? tdr::timing::detail::find_route_position_from(route, t.recovery_node, *lp + 1)
+                           : std::nullopt;
+        if (!lp || !rp) { t.drone_id = 0; continue; }
+        placed.push_back(Placed{i, *lp, *rp});
+    }
+    std::sort(placed.begin(), placed.end(), [](const Placed& a, const Placed& b) {
+        if (a.lp != b.lp) return a.lp < b.lp;
+        return a.trip < b.trip;
+    });
+    std::vector<std::optional<std::size_t>> last_recovery(static_cast<std::size_t>(std::max(0, num_drones)));
+    for (const Placed& p : placed) {
+        int chosen = -1;
+        for (int u = 0; u < num_drones; ++u) {
+            const auto& last = last_recovery[static_cast<std::size_t>(u)];
+            if (!last || *last < p.lp) { chosen = u; break; }
+        }
+        if (chosen < 0) return false;
+        solution.drone_trips[p.trip].drone_id = chosen;
+        last_recovery[static_cast<std::size_t>(chosen)] = p.rp;
+    }
+    return true;
+}
 
 } // namespace detail
 
@@ -104,13 +154,40 @@ inline InitialSolutionResult build_initial_solution(
     const int k = compute_cluster_count(customer_ids.size(), network.drone_parameters().num_drones);
     out.clustering = run_kmeans(coords, k, policy.kmeans_policy);
 
-    // ---- F3: frozen FLP candidate pool, generated once from r0 -----------
+    // ---- F3: flexible launch points L_{a,b} for every arc -----------------
+    // [PAPER] L_ij is defined for every i in C0, j in C_E (Table 2), and a
+    // launch point of L_ij is usable only while the truck traverses (i,j)
+    // (p9). Step (c) inserts launch points "on the current truck route"
+    // (p19); because converting a customer to drone service changes the
+    // route (it creates the arc (a, b) that bypasses the customer), the
+    // candidate launch points of that conversion are those of the arc the
+    // RESULTING route traverses. Generating L for every arc up front (a pure,
+    // deterministic function of the arc and the policy) is the simplest way
+    // to have them available; nothing here depends on it beyond lookup.
+    std::vector<NodeId> truck_nodes;
+    truck_nodes.push_back(depot_id);
+    {
+        std::vector<NodeId> sorted_customers = customer_ids;
+        std::sort(sorted_customers.begin(), sorted_customers.end());
+        truck_nodes.insert(truck_nodes.end(), sorted_customers.begin(), sorted_customers.end());
+    }
+    std::vector<tdr::flp::Arc> all_arcs;
+    for (NodeId from : truck_nodes) {
+        for (NodeId to : truck_nodes) {
+            if (from != to) all_arcs.emplace_back(from, to);
+        }
+    }
+
     NodeId next_flp_id = depot_id;
     for (NodeId id : customer_ids) next_flp_id = std::max(next_flp_id, id);
     next_flp_id += 1;
 
-    tdr::flp::FlpGenerationResult flp_gen =
-        tdr::flp::generate_flexible_launch_points(r0, network.nodes(), policy.flp_policy, next_flp_id);
+    const tdr::flp::FlpGenerationResult flp_gen =
+        tdr::flp::generate_flexible_launch_points_on_arcs(all_arcs, network.nodes(), policy.flp_policy, next_flp_id);
+    if (!flp_gen.ok) {
+        out.diagnostics.push_back("F3: " + flp_gen.error);
+        return out;
+    }
     out.candidate_flps = flp_gen.points;
 
     NodeRegistry augmented_nodes;
@@ -118,30 +195,19 @@ inline InitialSolutionResult build_initial_solution(
         (void)id;
         augmented_nodes.add(node);
     }
-    for (const auto& gen : flp_gen.points) augmented_nodes.add(gen.node);
-    tdr::graph::SpatialNetwork augmented_network(augmented_nodes, network.truck_parameters(), network.drone_parameters());
-
-    // Each customer's launch CANDIDATES = every FLP generated on the arc
-    // that entered it in r0 (data.arc_to == customer id) -- ALL of them,
-    // not just one. [Post-approval correctness patch: previously this
-    // kept only the single closest same-arc FLP, an unintended narrowing
-    // beyond "the FLP(s) attached to this customer" -- see DECISIONS.md,
-    // "Post-approval correctness patch", Issue 2.] This is still scoped
-    // to the arc directly entering the customer (the narrowest defensible
-    // reading of Algorithm 2's "adjacent nodes" -- see F4 below for the
-    // parallel reasoning on the recovery side); it does not search
-    // earlier arcs or a geometric radius. [INFERENCE/ASSUMPTION -- see
-    // DECISIONS.md for the remaining, explicitly acknowledged ambiguity.]
-    std::unordered_map<NodeId, std::vector<const tdr::flp::GeneratedFlexibleLaunchPoint*>> launch_candidates_for;
+    std::map<tdr::flp::Arc, std::vector<NodeId>> flps_on_arc; // ordered by ratio (generation order)
     for (const auto& gen : flp_gen.points) {
-        launch_candidates_for[gen.data.arc_to].push_back(&gen);
+        augmented_nodes.add(gen.node);
+        out.flp_data[gen.node.id] = gen.data;
+        flps_on_arc[{gen.data.arc_from, gen.data.arc_to}].push_back(gen.node.id);
     }
-
+    tdr::graph::SpatialNetwork augmented_network(augmented_nodes, network.truck_parameters(), network.drone_parameters());
     out.node_registry = augmented_nodes;
 
     // ---- F4: per-cluster greedy drone-trip construction -------------------
     TruckRoute working_route = r0;
-    std::vector<DroneTrip> accepted_trips;
+    Solution accepted;           // accepted.truck_route mirrors working_route
+    accepted.truck_route = working_route;
     std::unordered_set<NodeId> converted;       // customers already turned into drone trips
     std::unordered_set<NodeId> recovery_locked; // customers already used as someone's recovery target
 
@@ -155,17 +221,8 @@ inline InitialSolutionResult build_initial_solution(
     }
     for (auto& v : clusters_customers) std::sort(v.begin(), v.end());
 
-    // [Post-approval correctness patch, Issue 1] `fleet_size` and
-    // `slot_counter` are single running values shared across the WHOLE
-    // construction (every cluster), not reset per cluster -- see
-    // DECISIONS.md, "Post-approval correctness patch". There is no
-    // per-cluster drone-count budget any more: whether a candidate trip
-    // can be accepted is decided purely by whether the set of ALL trips
-    // accepted so far (across every cluster processed up to this point)
-    // plus this candidate would ever need more than `fleet_size` drones
-    // simultaneously in the air, via `check_drone_fleet_capacity()` below.
     const int fleet_size = std::max(0, network.drone_parameters().num_drones);
-    int slot_counter = 0;
+    const auto is_flp = [&](NodeId id) { return augmented_network.nodes().at(id).type == NodeType::FlexibleLaunchPoint; };
 
     for (int c = 0; c < out.clustering.cluster_count; ++c) {
         while (true) {
@@ -174,49 +231,48 @@ inline InitialSolutionResult build_initial_solution(
             for (NodeId j : clusters_customers[static_cast<std::size_t>(c)]) {
                 if (converted.count(j) || recovery_locked.count(j)) continue;
 
-                auto launch_it = launch_candidates_for.find(j);
-                if (launch_it == launch_candidates_for.end()) continue; // no candidate FLP for this customer
-
                 auto pos_it = std::find(working_route.begin(), working_route.end(), j);
-                if (pos_it == working_route.end()) continue; // defensive; should not happen given `converted`
+                if (pos_it == working_route.end()) continue; // defensive
                 const std::size_t pos_j = static_cast<std::size_t>(pos_it - working_route.begin());
 
-                NodeId k_candidate = tdr::model::kInvalidNodeId;
-                for (std::size_t p = pos_j + 1; p < working_route.size(); ++p) {
-                    const NodeType t = augmented_network.nodes().at(working_route[p]).type;
-                    if (t == NodeType::Customer || t == NodeType::Depot) {
-                        k_candidate = working_route[p];
-                        break;
-                    }
+                // a / b: nearest truck (non-FLP) nodes before / after j.
+                NodeId a = tdr::model::kInvalidNodeId;
+                NodeId b = tdr::model::kInvalidNodeId;
+                for (std::size_t q = pos_j; q-- > 0;) {
+                    if (!is_flp(working_route[q])) { a = working_route[q]; break; }
                 }
-                if (k_candidate == tdr::model::kInvalidNodeId) continue; // should not happen: route ends at depot
+                for (std::size_t q = pos_j + 1; q < working_route.size(); ++q) {
+                    if (!is_flp(working_route[q])) { b = working_route[q]; break; }
+                }
+                if (a == tdr::model::kInvalidNodeId || b == tdr::model::kInvalidNodeId) continue; // defensive
+                if (a == b) continue; // (a, a) is not an arc (only when the route is depot-j-depot)
 
-                // [Post-approval correctness patch, Issue 2] Try EVERY FLP
-                // attached to this customer's entering arc (see the
-                // [INFERENCE/ASSUMPTION] note above `launch_candidates_for`),
-                // not just the single closest one -- each is a fully
-                // independent candidate trip, evaluated on its own merits.
-                for (const tdr::flp::GeneratedFlexibleLaunchPoint* launch : launch_it->second) {
+                // [INFERENCE/ASSUMPTION] Launch candidates: every launch point
+                // of the arc (a, b) that the resulting route traverses after j
+                // is removed. Recovery candidate: b, the next truck node after
+                // j (unchanged narrowest reading; see DECISIONS.md).
+                const auto arc_it = flps_on_arc.find({a, b});
+                if (arc_it == flps_on_arc.end()) continue; // arc too short for any launch point
+                const NodeId k_candidate = b;
+
+                for (NodeId launch : arc_it->second) {
                     DroneTrip trip;
-                    trip.launch_node = launch->node.id;
+                    trip.launch_node = launch;
                     trip.service_customer = j;
                     trip.recovery_node = k_candidate;
 
-                    TruckRoute trial_route = working_route;
-                    trial_route[pos_j] = launch->node.id;
-                    Solution trial_solution;
-                    trial_solution.truck_route = trial_route;
-                    trial_solution.drone_trips = accepted_trips;
-                    trial_solution.drone_trips.push_back(trip);
+                    Solution trial = accepted;
+                    trial.truck_route[pos_j] = launch; // j leaves the truck route; the launch point takes its place
+                    trial.drone_trips.push_back(trip);
+                    if (!detail::assign_drone_ids_by_route_order(trial, fleet_size)) continue;
 
                     const tdr::timing::SolutionEvaluationResult trial_eval =
-                        tdr::timing::evaluate_solution(trial_solution, augmented_network, customers);
+                        tdr::timing::evaluate_solution(trial, augmented_network, customers, out.flp_data);
+                    if (!trial_eval.feasible) continue;
+                    if (trial_eval.drone_trip_timings.empty() || !trial_eval.drone_trip_timings.back().feasible) continue;
 
-                    if (trial_eval.drone_trip_timings.empty() || !trial_eval.drone_trip_timings.back().feasible) {
-                        continue;
-                    }
-                    bool j_ok = false;
                     double arrival = 0.0;
+                    bool j_ok = false;
                     for (const auto& rec : trial_eval.customer_records) {
                         if (rec.customer_id == j && rec.served_by_drone && rec.feasible) {
                             j_ok = true;
@@ -224,18 +280,7 @@ inline InitialSolutionResult build_initial_solution(
                             break;
                         }
                     }
-                    if (!j_ok || !trial_eval.feasible) continue;
-
-                    // Global, time-aware drone-fleet capacity check
-                    // (Issue 1): reject this candidate if the trips
-                    // accepted so far PLUS this one would ever require
-                    // more than `fleet_size` drones simultaneously in
-                    // flight. Uses only Phase E's own already-computed
-                    // launch_time / recovery_complete_time values -- no
-                    // timing logic is duplicated here.
-                    const auto fleet_check = tdr::init::check_drone_fleet_capacity(
-                        trial_eval.drone_trip_timings, fleet_size);
-                    if (!fleet_check.feasible) continue;
+                    if (!j_ok) continue;
 
                     feasible_this_round.push_back(detail::DroneTripCandidate{j, trip, arrival});
                 }
@@ -244,20 +289,19 @@ inline InitialSolutionResult build_initial_solution(
             if (feasible_this_round.empty()) break; // cluster exhausted this round
 
             std::sort(feasible_this_round.begin(), feasible_this_round.end(),
-                      [](const detail::DroneTripCandidate& a, const detail::DroneTripCandidate& b) {
-                          if (a.score != b.score) return a.score < b.score;
-                          if (a.customer != b.customer) return a.customer < b.customer;
-                          return a.trip.launch_node < b.trip.launch_node;
+                      [](const detail::DroneTripCandidate& x, const detail::DroneTripCandidate& y) {
+                          if (x.score != y.score) return x.score < y.score;
+                          if (x.customer != y.customer) return x.customer < y.customer;
+                          return x.trip.launch_node < y.trip.launch_node;
                       });
             const detail::DroneTripCandidate& chosen = feasible_this_round.front();
 
             auto pos_it = std::find(working_route.begin(), working_route.end(), chosen.customer);
             const std::size_t pos_j = static_cast<std::size_t>(pos_it - working_route.begin());
             working_route[pos_j] = chosen.trip.launch_node;
-
-            DroneTrip committed = chosen.trip;
-            committed.drone_slot = slot_counter++;
-            accepted_trips.push_back(committed);
+            accepted.truck_route = working_route;
+            accepted.drone_trips.push_back(chosen.trip);
+            detail::assign_drone_ids_by_route_order(accepted, fleet_size); // succeeded for this set during the trial
             converted.insert(chosen.customer);
             if (augmented_network.nodes().at(chosen.trip.recovery_node).type == NodeType::Customer) {
                 recovery_locked.insert(chosen.trip.recovery_node);
@@ -265,9 +309,8 @@ inline InitialSolutionResult build_initial_solution(
         }
     }
 
-    out.solution.truck_route = working_route;
-    out.solution.drone_trips = accepted_trips;
-    out.evaluation = tdr::timing::evaluate_solution(out.solution, augmented_network, customers);
+    out.solution = accepted;
+    out.evaluation = tdr::timing::evaluate_solution(out.solution, augmented_network, customers, out.flp_data);
     out.feasible = out.evaluation.feasible;
     out.objective_value = out.evaluation.objective_value;
     if (!out.feasible) {

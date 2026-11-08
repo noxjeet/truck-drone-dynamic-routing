@@ -45,21 +45,23 @@ Implemented so far:
   (not `tsp/`). Deliberately stops at raw travel time -- it does not
   apply Paper 1's load-dependent generalized-flight-time adjustment
   (eq. 35); see `DECISIONS.md`.
-- `flp/` — the flexible-launch-point (FLP) generator: given a truck route
-  and the node registry, places launch points on the arcs the route
-  actually traverses, evenly spaced per a configurable
-  `FlpGenerationPolicy`. Header-only, builds only on `model/`. Paper 1
-  does not specify a numeric placement rule for the main synthetic
-  experiments, so the placement policy here is an explicit, isolated,
-  swappable **[ASSUMPTION]** baseline -- see `DECISIONS.md` for exactly
-  what is and is not paper-supported here.
+- `flp/` — the flexible-launch-point (FLP) generator: places the launch
+  points L_(i,j) evenly along given arcs, n = floor(D/d) per arc (the
+  structure of Paper 1's eq. (41)), and records each point's owning arc.
+  Header-only, builds only on `model/`. Paper 1 does not state the
+  main-experiment spacing d, so there is no default: the caller must set
+  `FlpGenerationPolicy::unit_division_length` (an unset d is reported as
+  an error) -- see `DECISIONS.md`.
 - `timing/` — the centralized timing and feasibility engine: given a
   complete `Solution`, computes truck arrival/departure at every route
   position, every drone trip's launch/flight/service/recovery timing,
   synchronization waits, battery-endurance feasibility, per-customer
   service resolution, overall solution feasibility with violation
   reasons, and the Paper 1 objective (sum of each customer's own service
-  arrival time -- never a vehicle's recovery/completion time). Header-only,
+  arrival time -- never a vehicle's recovery/completion time). It also
+  enforces launch-point arc membership (p9, (13)-(15)), the launch-point
+  visit rules (6), (8), (9), physical drone identity and reuse ((28)) and
+  the |U| limit, and endurance exactly as (36)/(37). Header-only,
   builds on `model/` and `graph/` only (not `tsp/` or `flp/`), and
   contains no optimization/search logic. Several timing conventions here
   (e.g. how eq. 35's generalized flight time is used only for endurance,
@@ -71,15 +73,16 @@ Implemented so far:
   optimal (or, above Held-Karp's practical size, a clearly-labeled
   heuristic) truck-only TSP route, K-means customer clustering with
   `k = ceil(|C| / (|U| + 2))`, a frozen pool of candidate flexible
-  launch points generated once from that route (reusing `flp/`
-  unchanged), and a greedy construction of feasible drone trips, cluster
-  by cluster, modeled on the paper's Algorithm 2. Builds on `model/`,
-  `graph/`, `flp/`, `timing/`, and `tsp/`; deliberately duplicates none
-  of `timing/`'s logic -- every candidate trip's feasibility, including
-  whether accepting it would ever require more drones simultaneously in
-  the air than the fleet has (`init/drone_fleet_capacity.hpp`, checked
-  globally across the whole construction, not reset per cluster), is
-  decided by calling `tdr::timing::evaluate_solution()` on a trial
+  launch points L_(i,j) generated once for every arc between the depot
+  and the customers (reusing `flp/`), and a greedy construction of
+  feasible drone trips, cluster by cluster, modeled on the paper's
+  Algorithm 2: a customer's launch candidates are the points of the arc
+  the truck route traverses once that customer is removed, and every trip
+  gets a physical drone id. Builds on `model/`, `graph/`, `flp/`,
+  `timing/`, and `tsp/`; deliberately duplicates none of `timing/`'s
+  logic -- every candidate trip's feasibility (including arc membership,
+  drone reuse and the |U| limit) is decided by calling
+  `tdr::timing::evaluate_solution()` on a trial
   solution and reading its own computed timings back. Paper 1 specifies
   CPLEX for the truck-only route's exact solve, which is unavailable
   here; this is documented as an implementation limitation, not a Paper

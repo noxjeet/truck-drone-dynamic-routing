@@ -4,7 +4,7 @@
 
 namespace tdr::model {
 
-inline constexpr int kUnassignedDroneSlot = -1;
+inline constexpr int kUnassignedDroneId = -1;
 inline constexpr int kUnknownRoutePosition = -1;
 
 // A single drone flight: launch -> serve one customer -> recover.
@@ -19,15 +19,21 @@ inline constexpr int kUnknownRoutePosition = -1;
 // time or feasibility; a DroneTrip only ever records *which* nodes it
 // connects, never *when*.
 struct DroneTrip {
-    // [ASSUMPTION] Nominal per-trip drone identity. The MILP formulation
-    // itself does not require persistent drone identity -- only the
-    // concurrency cap |U| matters there -- but the Random_Drone_Remove
-    // shake neighborhood is phrased as acting on "a drone" (see
-    // paper1-implementation-plan.md Sec 15), which implies some notion
-    // of "this trip belongs to drone slot N". kUnassignedDroneSlot means
-    // no slot has been assigned yet; this is a bookkeeping convenience,
-    // not a paper-defined identifier.
-    int drone_slot = kUnassignedDroneSlot;
+    // [PAPER] Physical drone identity u in U (Table 2: "U set of drones",
+    // "|U| number of drones"; every drone-side variable y_s^u, t^_{i,u},
+    // l^_{i,u} and constraints (7), (11), (12), (28) are indexed by u).
+    // A trip s = <i, j, k> is flown by exactly one physical drone u, and
+    // one physical drone may fly several trips in sequence (p9: "drones
+    // are capable of multiple takeoffs and recoveries"; Fig. 3 shows each
+    // of two drones flying three trips). Valid values are
+    // 0 <= drone_id < |U| (DroneParameters::num_drones);
+    // kUnassignedDroneId means "not assigned yet" and is rejected by the
+    // timing/feasibility engine, like any other out-of-range id.
+    //
+    // This replaces the former `drone_slot` field, which was only a
+    // per-trip counter with no relation to U (see DECISIONS.md,
+    // "Paper-conformance corrections (29 Sep 2026)", correction 4).
+    int drone_id = kUnassignedDroneId;
 
     NodeId launch_node = kInvalidNodeId;       // i -- expected NodeType::FlexibleLaunchPoint
     NodeId service_customer = kInvalidNodeId;  // j -- expected NodeType::Customer
@@ -39,7 +45,9 @@ struct DroneTrip {
     // need to re-search the route on every access. kUnknownRoutePosition
     // means "not populated" -- Phase B does not require these to be kept
     // in sync; whichever later module maintains a Solution is
-    // responsible for that.
+    // responsible for that. NOTE: as of 29 Sep 2026 no module populates
+    // or reads these two fields; the timing/feasibility engine derives
+    // route positions itself from the truck route.
     int launch_position_in_route = kUnknownRoutePosition;
     int recovery_position_in_route = kUnknownRoutePosition;
 };

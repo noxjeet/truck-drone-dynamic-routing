@@ -1,5 +1,13 @@
 #pragma once
 
+// STATUS (29 Sep 2026 paper-conformance corrections): F4 NO LONGER calls
+// this utility. Fleet limits are now enforced by explicit physical drone
+// ids (DroneTrip::drone_id, 0 <= u < |U|) and by the evaluator itself
+// (tdr::timing::evaluate_solution: route-order constraint (28) per drone
+// and the simultaneous-drone count against |U|). This header is retained
+// only as a standalone time-interval utility (unit-tested in test_init
+// Block 7). See DECISIONS.md, "Paper-conformance corrections (29 Sep 2026)".
+//
 // Phase F post-approval correctness patch (drone-fleet capacity across
 // the WHOLE initial-solution construction, not just within one cluster).
 // See DECISIONS.md, "Initial-solution construction (Phase F)" ->

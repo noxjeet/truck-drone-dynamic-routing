@@ -108,13 +108,13 @@ int main() {
     std::vector<DroneTrip> trips;
     {
         DroneTrip t1;
-        t1.drone_slot = 0;
+        t1.drone_id = 0;
         t1.launch_node = 3;
         t1.service_customer = 1;
         t1.recovery_node = 2;
 
         DroneTrip t2;
-        t2.drone_slot = 1;
+        t2.drone_id = 1;
         t2.launch_node = 4;
         t2.service_customer = 2;
         t2.recovery_node = 0;
@@ -123,8 +123,8 @@ int main() {
         trips.push_back(t2);
 
         check(trips.size() == 2, "Two drone trips can be held together");
-        check(trips[0].drone_slot == 0 && trips[1].drone_slot == 1,
-              "Each drone trip keeps its own drone_slot");
+        check(trips[0].drone_id == 0 && trips[1].drone_id == 1,
+              "Each drone trip keeps its own physical drone id");
     }
 
     // 6. A truck route can be represented as an ordered sequence of node ids.
