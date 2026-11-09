@@ -1,0 +1,1 @@
+n0=20 regime=P endurance_s=1800 rho=1 zeta=1 omega_s=60 scenarios=10 sigma0=0 seed=20261109 vns_iters=150 w_tilde=2 eps_list=0.5;2;8; varsigma=1 base_objective=157839 reference_makespan_s=17571.3 optimiser=identity(B1) tool=tdr_dynamic 0.2 (DM3/DM4 slice + DM5 G3/A-PM)

@@ -1,0 +1,6 @@
+arm,scan,admission,eps_tilde,scenarios,generated,out_of_scan,expired,stale,rejected_no_insertion,rejected_promise,accepted,acc_over_generated,acc_over_considered,mean_final_objective_per_accepted_delta,mean_queue_wait_s,mean_evaluator_calls,scan_area_fraction_base_plan,paired_digests_match
+B0,none,a0,0,10,42,42.00,0.00,0.00,0.00,0.00,0.00,0,0,0,0,0,0.0000,1
+G0/A0,g0,a0,0,10,42,0.00,0.00,0.00,0.00,0.00,42.00,1,1,25997.03483,4031.97,846,1.0000,1
+G0/APM(eps=2),g0,apm,2,10,42,0.00,5.30,8.20,0.00,23.70,4.80,0.114286,0.114286,14421.67357,2930.48,524.7,1.0000,1
+G3/APM(eps=2),g3,apm,2,10,42,2.20,4.60,6.70,0.00,23.70,4.80,0.114286,0.120603,14421.67357,2852.79,524.7,1.0000,1
+G3c/APM(eps=2),g3c,apm,2,10,42,17.40,0.00,0.00,0.00,16.80,7.80,0.185714,0.317073,16224.458,1300.07,480.6,0.9407,1

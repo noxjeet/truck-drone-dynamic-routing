@@ -186,3 +186,26 @@ add_test(NAME test_runner_cli COMMAND test_runner_cli)
 
 # M9: the recorded validation protocol still reproduces (scripts/m9_check.cmake)
 add_test(NAME m9_protocol_reproduces COMMAND ${CMAKE_COMMAND} -DBIN=$<TARGET_FILE:tdr_static> -DSRC=${CMAKE_SOURCE_DIR} -DOUT=${CMAKE_BINARY_DIR}/m9_check_out -P ${CMAKE_SOURCE_DIR}/scripts/m9_check.cmake)
+
+# --- Dynamic extension (DM3/DM4, 9 Nov 2026): separate targets, OFF by default -------------------------------------------------
+# With the option OFF the target graph above is unchanged. Static code never includes include/dynamic/.
+option(TDR_BUILD_DYNAMIC "Build the dynamic extension (include/dynamic, tdr_dynamic, test_dyn_*)" OFF)
+if(TDR_BUILD_DYNAMIC)
+    add_executable(tdr_dynamic apps/tdr_dynamic.cpp)
+    target_link_libraries(tdr_dynamic PRIVATE tdr_core)
+
+    add_executable(test_dyn_core tests/test_dyn_core.cpp)
+    target_link_libraries(test_dyn_core PRIVATE tdr_core)
+    add_test(NAME test_dyn_core COMMAND test_dyn_core)
+
+    add_executable(test_dyn_slice tests/test_dyn_slice.cpp)
+    target_link_libraries(test_dyn_slice PRIVATE tdr_core)
+    add_test(NAME test_dyn_slice COMMAND test_dyn_slice)
+
+    add_executable(test_dyn_dm5 tests/test_dyn_dm5.cpp)
+    target_link_libraries(test_dyn_dm5 PRIVATE tdr_core)
+    add_test(NAME test_dyn_dm5 COMMAND test_dyn_dm5)
+
+    add_executable(tdr_dynamic_experiment apps/tdr_dynamic_experiment.cpp)
+    target_link_libraries(tdr_dynamic_experiment PRIVATE tdr_core)
+endif()

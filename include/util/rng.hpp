@@ -52,6 +52,14 @@ enum class SeedStream : std::uint64_t {
     Vns = 3,             // acceptance draws and neighbourhood tie-breaking
     Shake = 4,           // shake selection and parameters
     Fuzz = 5,            // test-only
+    // --- Dynamic extension (DM4, additive; values 1-5 above are unchanged, so every static seed is unchanged) ---
+    Arrivals = 6,        // dynamic scenario: request count and arrival times
+    Locations = 7,       // dynamic scenario: request locations
+    Clusters = 8,        // dynamic scenario: cluster centres (reserved, clustered/corridor models are not in the vertical slice)
+    DynVns = 9,          // dynamic: per-decision VNS seed (keyed by request index) -- reserved, not used by the vertical slice
+    DynShake = 10,       // dynamic: per-decision shake seed -- reserved
+    DynPolicy = 11,      // dynamic: policy-side randomness -- reserved
+    Marks = 12,          // dynamic: per-request thinning marks -- reserved, NOT drawn in v1
 };
 
 // Derives an independent 64-bit seed from (base seed, stream, index).

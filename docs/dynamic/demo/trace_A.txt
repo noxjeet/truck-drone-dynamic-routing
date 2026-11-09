@@ -1,0 +1,77 @@
+base plan: n0=15 executed objective 98669.2, reference makespan 15374.2 s (regime F, endurance 3600 s)
+scenario sigma=0 digest 384a340069a942f9: generated 13, out-of-scan 1, expired 0, stale 2, rejected-no-insertion 0, rejected-promise 8, accepted 2 | stage primary 2 fallback 0 | objective 98669.2 -> 124988 | invariant checks 4
+
+=== DYNAMIC TRUCK-DRONE DEMO TRACE ===
+prototype: truck-only insertion of new requests into the editable part of the plan; optimiser: IDENTITY (no re-optimisation, no improvement claimed)
+scan region: g3 | admission: apm | decision latency omega = 900 s | scenario sigma=0 digest 384a340069a942f9 | n0=15, regime F (endurance 3600 s)
+promises: response window W = 6000 s (ETA_r <= arrival + W); tolerance E = 2066 s (every promised ETA' <= first promised ETA + E)
+conventions: every decision (even a rejected one) occupies omega; no editable gap => STALE (still occupies omega); EXPIRED = window already unmeetable at dequeue, dropped, no omega
+
+INITIAL PLAN (version 0, objective 98669.244050)
+  truck route: D -> c10[807s] -> c9[1212s] -> c2[1914s] -> c5[2555s] -> c1[3690s] -> c8[4244s] -> c15[5049s] -> c6[5635s] -> c13[7065s] -> c11[8427s] -> c3[9014s] -> f828 -> c14[11260s] -> c12[12288s] -> c4[14080s] -> D
+  drone trips: (launch f828 -> c7[11429s] -> recover c4)  
+  (bracketed value = service-arrival time ETA in seconds)
+
+REQUESTS (arrival time, location):
+  r1   t=   5262.6 s  at (  55322,   29031) m
+  r2   t=   5611.8 s  at (  43167,   39442) m
+  r3   t=   6513.3 s  at (   2769,   50319) m
+  r4   t=   7067.6 s  at (  34526,   58390) m
+  r5   t=   7109.6 s  at (   3465,   36525) m
+  r6   t=   7519.2 s  at (  28823,   53202) m
+  r7   t=   8928.2 s  at (  19866,   36633) m
+  r8   t=   9529.4 s  at (  18673,   47254) m
+  r9   t=  10092.1 s  at (  11986,   10542) m
+  r10  t=  10905.5 s  at (  20003,   12785) m
+  r11  t=  13348.2 s  at (   6502,   21220) m
+  r12  t=  13520.7 s  at (  45865,   10612) m
+  r13  t=  14326.9 s  at (  44339,   46447) m
+
+EVENTS (FIFO, one decision at a time):
+  t=   5262.6  ARRIVE   r1  (requests waiting or in decision: 0)  -> in scan, queued
+  t=   5262.6  START    r1  after waiting 0 s in queue; cut after truck position 9 (t=7065 s), 6 editable gaps tried, 3 evaluator-feasible
+  t=   5611.8  ARRIVE   r2  (requests waiting or in decision: 1)  -> in scan, queued
+  t=   6162.6  INSTALL  r1  decision ends: REJECTED-PROMISE: feasible insertions exist but none satisfies the promises (first failure: response window W violated)
+  t=   6162.6  START    r2  after waiting 551 s in queue; cut after truck position 9 (t=7065 s), 6 editable gaps tried, 4 evaluator-feasible
+  t=   6513.3  ARRIVE   r3  (requests waiting or in decision: 1)  -> in scan, queued
+  t=   7062.6  INSTALL  r2  decision ends: REJECTED-PROMISE: feasible insertions exist but none satisfies the promises (first failure: response window W violated)
+  t=   7062.6  START    r3  after waiting 549 s in queue; cut after truck position 10 (t=8427 s), 5 editable gaps tried, 2 evaluator-feasible
+  t=   7067.6  ARRIVE   r4  (requests waiting or in decision: 1)  -> in scan, queued
+  t=   7109.6  ARRIVE   r5  (requests waiting or in decision: 2)  -> in scan, queued
+  t=   7519.2  ARRIVE   r6  (requests waiting or in decision: 3)  -> in scan, queued
+  t=   7962.6  INSTALL  r3  decision ends: ACCEPTED (primary): ETA 9301 s (promised, window bound 12513 s), objective +12928, plan -> version 1
+  t=   7962.6  START    r4  after waiting 895 s in queue; cut after truck position 11 (t=9301 s), 5 editable gaps tried, 3 evaluator-feasible
+  t=   8862.6  INSTALL  r4  decision ends: ACCEPTED (primary): ETA 12801 s (promised, window bound 13068 s), objective +13391, plan -> version 2
+  t=   8862.6  START    r5  after waiting 1753 s in queue; cut after truck position 17 (t=15101 s), 1 editable gaps tried, 1 evaluator-feasible
+  t=   8928.2  ARRIVE   r7  (requests waiting or in decision: 2)  -> in scan, queued
+  t=   9529.4  ARRIVE   r8  (requests waiting or in decision: 3)  -> in scan, queued
+  t=   9762.6  INSTALL  r5  decision ends: REJECTED-PROMISE: feasible insertions exist but none satisfies the promises (first failure: response window W violated)
+  t=   9762.6  START    r6  after waiting 2243 s in queue; cut after truck position 17 (t=15101 s), 1 editable gaps tried, 1 evaluator-feasible
+  t=  10092.1  ARRIVE   r9  (requests waiting or in decision: 3)  -> in scan, queued
+  t=  10662.6  INSTALL  r6  decision ends: REJECTED-PROMISE: feasible insertions exist but none satisfies the promises (first failure: response window W violated)
+  t=  10662.6  START    r7  after waiting 1734 s in queue; cut after truck position 17 (t=15101 s), 1 editable gaps tried, 1 evaluator-feasible
+  t=  10905.5  ARRIVE   r10  (requests waiting or in decision: 3)  -> in scan, queued
+  t=  11562.6  INSTALL  r7  decision ends: REJECTED-PROMISE: feasible insertions exist but none satisfies the promises (first failure: response window W violated)
+  t=  11562.6  START    r8  after waiting 2033 s in queue; cut after truck position 17 (t=15101 s), 1 editable gaps tried, 1 evaluator-feasible
+  t=  12462.6  INSTALL  r8  decision ends: REJECTED-PROMISE: feasible insertions exist but none satisfies the promises (first failure: response window W violated)
+  t=  12462.6  START    r9  after waiting 2370 s in queue; cut after truck position 17 (t=15101 s), 1 editable gaps tried, 1 evaluator-feasible
+  t=  13348.2  ARRIVE   r11  (requests waiting or in decision: 2)  -> in scan, queued
+  t=  13362.6  INSTALL  r9  decision ends: REJECTED-PROMISE: feasible insertions exist but none satisfies the promises (first failure: response window W violated)
+  t=  13362.6  START    r10  after waiting 2457 s in queue; cut after truck position 17 (t=15101 s), 1 editable gaps tried, 1 evaluator-feasible
+  t=  13520.7  ARRIVE   r12  (requests waiting or in decision: 2)  -> in scan, queued
+  t=  14262.6  INSTALL  r10  decision ends: REJECTED-PROMISE: feasible insertions exist but none satisfies the promises (first failure: response window W violated)
+  t=  14262.6  START    r11  after waiting 914 s in queue; clean cut leaves no editable gap
+  t=  14326.9  ARRIVE   r13  (requests waiting or in decision: 2)  -> OUT OF SCAN: lost, never queued
+  t=  15162.6  INSTALL  r11  decision ends: STALE: nothing editable remains behind the cut (the truck is too far along)
+  t=  15162.6  START    r12  after waiting 1642 s in queue; clean cut leaves no editable gap
+  t=  16062.6  INSTALL  r12  decision ends: STALE: nothing editable remains behind the cut (the truck is too far along)
+
+FINAL PLAN (version 2, objective 124988.404685)
+  truck route: D -> c10[807s] -> c9[1212s] -> c2[1914s] -> c5[2555s] -> c1[3690s] -> c8[4244s] -> c15[5049s] -> c6[5635s] -> c13[7065s] -> c11[8427s] -> r3[9301s] -> c3[9739s] -> f828 -> c14[11986s] -> r4[12801s] -> c12[13308s] -> c4[15101s] -> D
+  drone trips: (launch f828 -> c7[12154s] -> recover c4)  
+  (bracketed value = service-arrival time ETA in seconds)
+
+SUMMARY: generated 13 | out-of-scan 1 | expired 0 | stale 2 | rejected-no-insertion 0 | rejected-promise 8 | accepted 2 (primary 2, fallback 0)
+objective 98669 -> 124988 | makespan 15374 -> 16395 s | max queue 3 | promised-ETA drift: base customers max 1020 s, new customers max 0 s | tolerance violations 0 | invariant checks 4 | sim ok: yes
+
+warning: sigma 0: queue load rho_q = 0.761015 >= 0.5 (FIFO waiting will consume W)
