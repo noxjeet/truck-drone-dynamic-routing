@@ -145,6 +145,7 @@ inline OperatorResult n4_truck_service_node_relocate(const tdr::model::Solution&
                                                      tdr::model::NodeId anchor, const N4Options& opt = {}) {
     using tdr::model::NodeId;
     OperatorResult res;
+    if (detail_scope::refuse(ctx, opt, res, OperatorId::N4)) return res; // [DM8] a scope requires evaluate_candidates
     res.op = OperatorId::N4;
     res.anchor_customer = anchor;
 
@@ -225,6 +226,9 @@ inline OperatorResult n4_truck_service_node_relocate(const tdr::model::Solution&
                 rec.affected_trips.assign(affected.begin(), affected.end());
                 std::sort(rec.affected_trips.begin(), rec.affected_trips.end());
                 reject(RejectReason::AffectedTrips);
+            } else if (const ScopeViolation sv = opt.evaluate_candidates ? detail_scope::violation(ctx, cand, move) : ScopeViolation::None; sv != ScopeViolation::None) {
+                detail_scope::count_candidate(res, sv); // [DM8] stopped before the evaluator
+                rec.scope_violation = sv;
             } else if (opt.evaluate_candidates) {
                 const EvalVerdict v = run_evaluator(cand, move, {});
                 rec.evaluated = true;
@@ -249,7 +253,11 @@ inline OperatorResult n4_truck_service_node_relocate(const tdr::model::Solution&
         // 2. nothing stale: the candidate is complete (also: an FLP off its arc that no trip launches from cannot be
         //    re-anchored; the evaluator judges - and rejects - it as it stands).
         const auto judge_as_is = [&] {
-            if (opt.evaluate_candidates) {
+            const ScopeViolation sv = opt.evaluate_candidates ? detail_scope::violation(ctx, cand, move) : ScopeViolation::None; // [DM8]
+            if (sv != ScopeViolation::None) {
+                detail_scope::count_candidate(res, sv);
+                rec.scope_violation = sv;
+            } else if (opt.evaluate_candidates) {
                 const EvalVerdict v = run_evaluator(cand, move, {});
                 rec.evaluated = true;
                 rec.objective = v.objective;
@@ -304,6 +312,8 @@ inline OperatorResult n4_truck_service_node_relocate(const tdr::model::Solution&
         //    judge each, keep the best feasible.
         std::vector<std::size_t> choice(stale.size(), 0);
         bool first = true, any_feasible = false;
+        bool reason_taken = false;                              // [DM8] the first EVALUATED variant supplies first_reason (== the first variant when nothing is scope-skipped)
+        ScopeViolation first_scope = ScopeViolation::None;      // [DM8] violation of the first scope-skipped variant
         double best_objective = 0.0;
         RejectReason first_reason = RejectReason::None;
         tdr::model::Solution shown;
@@ -321,7 +331,14 @@ inline OperatorResult n4_truck_service_node_relocate(const tdr::model::Solution&
             }
             ++rec.variants_generated;
             ++res.variants_generated;
-            if (opt.evaluate_candidates) {
+            const ScopeViolation vsv = opt.evaluate_candidates ? detail_scope::violation(ctx, var, move) : ScopeViolation::None; // [DM8] per variant, before the evaluator
+            if (vsv != ScopeViolation::None) {
+                ++rec.variants_scope_skipped;
+                ++res.scope_variants_skipped;
+                ++res.evaluator_calls_avoided;
+                if (first_scope == ScopeViolation::None) first_scope = vsv;
+                if (opt.record_candidates && !any_feasible && !reason_taken && shown.truck_route.empty()) { shown = std::move(var); shown_re = std::move(re); }
+            } else if (opt.evaluate_candidates) {
                 const EvalVerdict v = run_evaluator(var, move, re);
                 ++rec.variants_evaluated;
                 if (v.feasible) {
@@ -330,10 +347,11 @@ inline OperatorResult n4_truck_service_node_relocate(const tdr::model::Solution&
                         best_objective = v.objective;
                         if (opt.record_candidates) { shown = std::move(var); shown_re = std::move(re); }
                     }
-                } else if (first) {
+                } else if (!reason_taken) {
                     first_reason = v.reason;
                     if (opt.record_candidates) { shown = std::move(var); shown_re = std::move(re); }
                 }
+                reason_taken = true;
             } else if (first && opt.record_candidates) {
                 shown = std::move(var);
                 shown_re = std::move(re);
@@ -349,7 +367,12 @@ inline OperatorResult n4_truck_service_node_relocate(const tdr::model::Solution&
             }
             if (k == stale.size() + 1) break;
         }
-        if (opt.evaluate_candidates) {
+        if (opt.evaluate_candidates && rec.variants_evaluated == 0 && rec.variants_scope_skipped > 0) {
+            // [DM8] every generated variant was stopped by the scope hook: the CANDIDATE is scope-rejected (its calls were already counted per variant)
+            ++res.scope_rejected;
+            ++res.scope_by_violation[static_cast<std::size_t>(first_scope)];
+            rec.scope_violation = first_scope;
+        } else if (opt.evaluate_candidates) {
             rec.evaluated = true;
             if (any_feasible) {
                 ++res.accepted;

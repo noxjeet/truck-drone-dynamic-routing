@@ -38,6 +38,7 @@ struct N6Options : OperatorOptions {
 inline OperatorResult n6_drone_drone_swap(const tdr::model::Solution& base, const SearchContext& ctx,
                                           std::size_t trip_index, const N6Options& opt = {}) {
     OperatorResult res;
+    if (detail_scope::refuse(ctx, opt, res, OperatorId::N6)) return res; // [DM8] a scope requires evaluate_candidates
     if (!detail_exchange::begin(base, ctx, OperatorId::N6, trip_index, res)) return res;
 
     const PositionIndex pi(base, ctx.nodes());

@@ -127,6 +127,8 @@ inline std::uint64_t arc_key(NodeId a, NodeId b) { return (static_cast<std::uint
 
 inline bool begin(const Solution& base, const SearchContext& ctx, ShakeKind kind, ShakeResult& res) {
     res.kind = kind;
+    // [DM8] shakes have no scope support (deferred): a scoped call is refused BEFORE any evaluation, never silently run unscoped.
+    if (ctx.scope != nullptr) { res.status = ShakeStatus::InvalidParameters; return false; }
     const auto e = tdr::timing::evaluate_solution(base, ctx.network, ctx.customers, ctx.flp_data);
     if (!e.feasible) { res.status = ShakeStatus::InputInfeasible; return false; }
     res.base_objective = e.objective_value;

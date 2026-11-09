@@ -63,6 +63,7 @@ inline OperatorResult n5_td_service_node_swap(const tdr::model::Solution& base, 
                                               std::size_t trip_index, const N5Options& opt = {}) {
     using tdr::model::NodeId;
     OperatorResult res;
+    if (detail_scope::refuse(ctx, opt, res, OperatorId::N5)) return res; // [DM8] a scope requires evaluate_candidates
     res.op = OperatorId::N5;
     res.anchor_trip = trip_index;
 
@@ -168,7 +169,11 @@ inline OperatorResult n5_td_service_node_swap(const tdr::model::Solution& base, 
                     cand.drone_trips.back().drone_id = *drone;
                     rec.move.drone_id = *drone;
                     m.drone_id = *drone;
-                    if (opt.evaluate_candidates) {
+                    const ScopeViolation sv = opt.evaluate_candidates ? detail_scope::violation(ctx, cand, m) : ScopeViolation::None; // [DM8] before the evaluator
+                    if (sv != ScopeViolation::None) {
+                        detail_scope::count_candidate(res, sv);
+                        rec.scope_violation = sv;
+                    } else if (opt.evaluate_candidates) {
                         const auto e = tdr::timing::evaluate_solution(cand, ctx.network, ctx.customers, ctx.flp_data);
                         const EvalVerdict v = classify_evaluation(e, ctx.num_drones());
                         ++res.evaluated;

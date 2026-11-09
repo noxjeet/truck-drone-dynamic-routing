@@ -43,7 +43,11 @@ inline void judge(tdr::model::Solution&& cand, const Move& m, std::vector<tdr::m
     CandidateRecord rec;
     rec.move = m;
     rec.flps_dropped = dropped;
-    if (opt.evaluate_candidates) {
+    const ScopeViolation sv = opt.evaluate_candidates ? detail_scope::violation(ctx, cand, m) : ScopeViolation::None; // [DM8] before the evaluator
+    if (sv != ScopeViolation::None) {
+        detail_scope::count_candidate(res, sv);
+        rec.scope_violation = sv;
+    } else if (opt.evaluate_candidates) {
         const auto e = tdr::timing::evaluate_solution(cand, ctx.network, ctx.customers, ctx.flp_data);
         const EvalVerdict v = classify_evaluation(e, ctx.num_drones());
         ++res.evaluated;

@@ -69,6 +69,7 @@ inline OperatorResult n7_truck_node_delete_drone_insert(const tdr::model::Soluti
                                                         tdr::model::NodeId anchor, const N7Options& opt = {}) {
     using tdr::model::NodeId;
     OperatorResult res;
+    if (detail_scope::refuse(ctx, opt, res, OperatorId::N7)) return res; // [DM8] a scope requires evaluate_candidates
     res.op = OperatorId::N7;
     res.anchor_customer = anchor;
 
@@ -170,7 +171,11 @@ inline OperatorResult n7_truck_node_delete_drone_insert(const tdr::model::Soluti
                 cand.drone_trips.back().drone_id = *drone;
                 rec.move.drone_id = *drone;
                 m.drone_id = *drone;
-                if (opt.evaluate_candidates) {
+                const ScopeViolation sv = opt.evaluate_candidates ? detail_scope::violation(ctx, cand, m) : ScopeViolation::None; // [DM8] before the evaluator
+                if (sv != ScopeViolation::None) {
+                    detail_scope::count_candidate(res, sv);
+                    rec.scope_violation = sv;
+                } else if (opt.evaluate_candidates) {
                     const auto e = tdr::timing::evaluate_solution(cand, ctx.network, ctx.customers, ctx.flp_data);
                     const EvalVerdict v = classify_evaluation(e, ctx.num_drones());
                     ++res.evaluated;

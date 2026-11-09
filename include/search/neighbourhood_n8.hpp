@@ -48,6 +48,7 @@ inline OperatorResult n8_drone_node_delete_truck_insert(const tdr::model::Soluti
                                                         std::size_t trip_index, const N8Options& opt = {}) {
     using tdr::model::NodeId;
     OperatorResult res;
+    if (detail_scope::refuse(ctx, opt, res, OperatorId::N8)) return res; // [DM8] a scope requires evaluate_candidates
     res.op = OperatorId::N8;
     res.anchor_trip = trip_index;
 
@@ -115,6 +116,10 @@ inline OperatorResult n8_drone_node_delete_truck_insert(const tdr::model::Soluti
             rec.reason = RejectReason::AffectedTrips;
             rec.affected_trips = std::move(affected);
             ++res.rejected[static_cast<std::size_t>(RejectReason::AffectedTrips)];
+        } else if (const ScopeViolation sv = opt.evaluate_candidates ? detail_scope::violation(ctx, cand, m) : ScopeViolation::None; sv != ScopeViolation::None) {
+            // [DM8] stopped by the scope hook before the evaluator
+            detail_scope::count_candidate(res, sv);
+            rec.scope_violation = sv;
         } else if (opt.evaluate_candidates) {
             // ---- step 4: the evaluator ----------------------------------------------------------------------
             const auto e = tdr::timing::evaluate_solution(cand, ctx.network, ctx.customers, ctx.flp_data);

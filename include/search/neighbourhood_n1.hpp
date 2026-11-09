@@ -41,6 +41,7 @@ inline OperatorResult n1_launch_node_relocate(const tdr::model::Solution& base, 
                                               const N1Options& opt = {}) {
     using tdr::model::NodeId;
     OperatorResult res;
+    if (detail_scope::refuse(ctx, opt, res, OperatorId::N1)) return res; // [DM8] a scope requires evaluate_candidates
     if (!detail_exchange::begin(base, ctx, OperatorId::N1, trip_index, res)) return res;
 
     const auto site = detail_relocate::locate(base, ctx, trip_index);

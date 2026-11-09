@@ -29,6 +29,7 @@
 #include "model/customer.hpp"
 #include "model/node.hpp"
 #include "model/solution.hpp"
+#include "search/scope_hook.hpp"
 #include "timing/timing_engine.hpp"
 
 namespace tdr::search {
@@ -41,6 +42,7 @@ struct SearchContext {
     const tdr::timing::FlpDataMap& flp_data;                                        // arc ownership of every FLP (evaluator input)
     const tdr::flp::FlpArcIndex& flp_index;                                         // arc -> FLPs (built from flp_data)
     int adjacency_window = 3;                                                       // D1: NeighbourhoodConfig::adjacency_window
+    const ScopeHook* scope = nullptr;                                               // [DM8] optional; nullptr = unscoped (static behaviour, unchanged)
 
     const tdr::model::NodeRegistry& nodes() const { return network.nodes(); }
     int num_drones() const { return network.drone_parameters().num_drones; }
@@ -147,6 +149,8 @@ struct CandidateRecord {
     bool cap_reached = false;                       // N4 Reanchor: the search budget (N4Options::max_reanchor_variants) stopped the enumeration before all combinations were reached
     std::vector<tdr::model::NodeId> flps_dropped;   // FLPs removed because their only trip was replaced or dissolved (N5, N8)
     tdr::model::Solution solution;                  // the candidate (empty for pre-construction rejections)
+    ScopeViolation scope_violation = ScopeViolation::None; // [DM8] set iff the candidate was rejected by the scope hook (never evaluated)
+    std::size_t variants_scope_skipped = 0;         // [DM8] N4 Reanchor: variants skipped by the scope hook (not evaluated)
 };
 
 struct Candidate {
@@ -162,6 +166,7 @@ enum class OperatorStatus {
     InputInfeasible,  // the input solution is not evaluator-feasible: nothing is generated
     InvalidAnchor,    // the given customer / trip index is not a valid anchor for this operator
     NoEligibleAnchor, // random selection found nothing to anchor on
+    ScopeRequiresEvaluation, // [DM8] a scoped call (SearchContext::scope != nullptr) with evaluate_candidates == false: refused before any work, the hook cannot be bypassed
 };
 
 inline const char* operator_status_name(OperatorStatus s) {
@@ -170,6 +175,7 @@ inline const char* operator_status_name(OperatorStatus s) {
         case OperatorStatus::InputInfeasible: return "input-infeasible";
         case OperatorStatus::InvalidAnchor: return "invalid-anchor";
         case OperatorStatus::NoEligibleAnchor: return "no-eligible-anchor";
+        case OperatorStatus::ScopeRequiresEvaluation: return "scope-requires-evaluation";
     }
     return "unknown";
 }
@@ -200,6 +206,16 @@ struct OperatorResult {
 
     std::optional<Candidate> best;   // lowest objective among accepted; first generated wins ties (strict <)
     std::vector<CandidateRecord> log; // all candidates, iff OperatorOptions::record_candidates
+
+    // [DM8] scope hook accounting (all zero when SearchContext::scope == nullptr). Identity (evaluate_candidates = true):
+    //   accepted + rejected_total() + scope_rejected == generated,   evaluated + evaluator_calls_avoided == (evaluated of the unscoped run).
+    // A scope-rejected CANDIDATE is one that was generated, passed every structural check, and was stopped before the evaluator (N4 Reanchor: ALL of its generated variants were
+    // stopped). It is counted in scope_rejected and in NO rejected[] slot. A single N4 variant stopped while a sibling variant was evaluated counts only in scope_variants_skipped.
+    // Variants never generated because of the N4 cap are not scope events at all.
+    std::size_t scope_rejected = 0;
+    std::array<std::size_t, kScopeViolationCount> scope_by_violation{}; // by ScopeViolation (index 0 unused); candidates only
+    std::size_t scope_variants_skipped = 0;   // N4 Reanchor variants stopped by the scope hook (includes those of scope-rejected candidates)
+    std::size_t evaluator_calls_avoided = 0;  // one per scope-stopped candidate (N5, N7, N8, N1-N3, N6, N4 w/o variants) or per scope-stopped N4 variant
 
     bool has_candidate() const { return best.has_value(); }
     // Strict comparison on the raw objective: no tolerance (see DECISIONS.md, "P2" note for M7).
@@ -245,5 +261,29 @@ inline EvalVerdict classify_evaluation(const tdr::timing::SolutionEvaluationResu
     v.reason = RejectReason::EvalOther;
     return v;
 }
+
+namespace detail_scope {
+
+// [DM8] Precondition of every scoped call: the hook is consulted only on the evaluator-bound path, so a scope with evaluate_candidates == false would silently
+// bypass it. Such a call is refused (no generation, no evaluator call). Returns true iff refused. No effect when there is no scope.
+inline bool refuse(const SearchContext& ctx, const OperatorOptions& opt, OperatorResult& res, OperatorId op) {
+    if (ctx.scope == nullptr || opt.evaluate_candidates) return false;
+    res.op = op;
+    res.status = OperatorStatus::ScopeRequiresEvaluation;
+    return true;
+}
+
+// The verdict of the context's hook on one constructed candidate; None when there is no hook.
+inline ScopeViolation violation(const SearchContext& ctx, const tdr::model::Solution& cand, const Move& m) {
+    return ctx.scope != nullptr ? ctx.scope->check(cand, m) : ScopeViolation::None;
+}
+// A whole candidate stopped before the evaluator.
+inline void count_candidate(OperatorResult& res, ScopeViolation v) {
+    ++res.scope_rejected;
+    ++res.scope_by_violation[static_cast<std::size_t>(v)];
+    ++res.evaluator_calls_avoided;
+}
+
+} // namespace detail_scope
 
 } // namespace tdr::search

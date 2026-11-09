@@ -61,6 +61,7 @@ inline std::vector<std::size_t> drone_sequence(const tdr::model::Solution& s, in
 inline OperatorResult n3_drone_service_node_relocate(const tdr::model::Solution& base, const SearchContext& ctx,
                                                      std::size_t trip_index, const N3Options& opt = {}) {
     OperatorResult res;
+    if (detail_scope::refuse(ctx, opt, res, OperatorId::N3)) return res; // [DM8] a scope requires evaluate_candidates
     if (!detail_exchange::begin(base, ctx, OperatorId::N3, trip_index, res)) return res;
 
     const std::vector<std::size_t> seq = detail_n3::drone_sequence(base, base.drone_trips[trip_index].drone_id);

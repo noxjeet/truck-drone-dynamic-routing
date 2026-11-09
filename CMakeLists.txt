@@ -208,6 +208,12 @@ if(TDR_BUILD_DYNAMIC)
     add_executable(test_dyn_region tests/test_dyn_region.cpp)
     target_link_libraries(test_dyn_region PRIVATE tdr_core)
     add_test(NAME test_dyn_region COMMAND test_dyn_region)
+    # [DM8] scope hook: bit-identity against the frozen pre-hook copy of include/search (tests/reference/search_pre_hook), scoped oracle, mutation-checked guards
+    add_executable(test_dyn_scope tests/test_dyn_scope.cpp)
+    target_link_libraries(test_dyn_scope PRIVATE tdr_core)
+    target_include_directories(test_dyn_scope PRIVATE ${CMAKE_SOURCE_DIR}/tests/reference)
+    add_test(NAME test_dyn_scope COMMAND test_dyn_scope)
+    add_test(NAME dm8_search_pre_hook_verbatim COMMAND ${CMAKE_SOURCE_DIR}/tests/reference/search_pre_hook/generate.sh --check WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
     add_executable(tdr_dynamic_experiment apps/tdr_dynamic_experiment.cpp)
     target_link_libraries(tdr_dynamic_experiment PRIVATE tdr_core)
