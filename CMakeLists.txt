@@ -215,6 +215,14 @@ if(TDR_BUILD_DYNAMIC)
     add_test(NAME test_dyn_scope COMMAND test_dyn_scope)
     add_test(NAME dm8_search_pre_hook_verbatim COMMAND ${CMAKE_SOURCE_DIR}/tests/reference/search_pre_hook/generate.sh --check WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
+    # [DM9] regional local optimiser, arms and the RIC-C certificate (UNVERIFIED under CMake: no CMake on the development VM; built by hand with g++). Quick configuration by default
+    # (10 seeds); the full 30-seed sweep is DM9_SEED0 / DM9_SEEDS chunks, see docs/dynamic/architecture_dynamic.md (DM9 addendum).
+    add_executable(test_dyn_opt tests/test_dyn_opt.cpp)
+    target_link_libraries(test_dyn_opt PRIVATE tdr_core)
+    add_test(NAME test_dyn_opt COMMAND test_dyn_opt)
+    add_executable(bench_dyn_opt tests/bench_dyn_opt.cpp)
+    target_link_libraries(bench_dyn_opt PRIVATE tdr_core)
+
     add_executable(tdr_dynamic_experiment apps/tdr_dynamic_experiment.cpp)
     target_link_libraries(tdr_dynamic_experiment PRIVATE tdr_core)
 endif()

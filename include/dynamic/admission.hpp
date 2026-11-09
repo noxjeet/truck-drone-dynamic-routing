@@ -42,6 +42,7 @@ struct Decision {
     std::size_t trial_index = static_cast<std::size_t>(-1); // index into ins.trials of the accepted single insertion; -1 if the plan came from the optimiser
     std::string note;
     int extra_evaluator_calls = 0;
+    bool optimiser_failed = false; // [DM9] the optimiser threw (std or not): treated as `no plan`, S+ is used, the U1 chain continues
 };
 
 struct Optimizer { // post-insertion optimiser hook (DM9 will implement the real one); returns the plan S* to try first
@@ -49,25 +50,19 @@ struct Optimizer { // post-insertion optimiser hook (DM9 will implement the real
     virtual std::optional<tdr::model::Solution> optimise(const AdmissionInput&, const tdr::model::Solution& s_plus) const { return s_plus; }
 };
 
+// [DM9] An optimiser exception must never bypass the U1 chain or escape into the simulator: it is treated exactly like an optimiser that returned nothing (S+ is used).
+inline std::optional<tdr::model::Solution> guarded_optimise(const Optimizer& opt, const AdmissionInput& in, const tdr::model::Solution& s_plus, Decision& d) {
+    try { return opt.optimise(in, s_plus); }
+    catch (const std::exception& e) { d.optimiser_failed = true; d.note = std::string("optimiser exception: ") + e.what(); }
+    catch (...) { d.optimiser_failed = true; d.note = "optimiser exception: non-standard"; }
+    return std::nullopt;
+}
+
 struct AdmissionPolicy {
     virtual ~AdmissionPolicy() = default;
     virtual Decision decide(const AdmissionInput& in, const Optimizer& opt) const = 0;
     virtual const char* name() const = 0;
     virtual bool uses_promises() const = 0;
-};
-
-struct AdmitA0 final : AdmissionPolicy {
-    Decision decide(const AdmissionInput& in, const Optimizer&) const override {
-        Decision d;
-        if (!in.ins.best) return d; // RejectedNoInsertion
-        d.outcome = Outcome::Accepted;
-        d.solution = in.ins.solution;
-        d.trial_index = *in.ins.best;
-        d.stage = Stage::None;
-        return d;
-    }
-    const char* name() const override { return "a0"; }
-    bool uses_promises() const override { return false; }
 };
 
 inline bool same_solution(const tdr::model::Solution& a, const tdr::model::Solution& b) {
@@ -78,6 +73,24 @@ inline bool same_solution(const tdr::model::Solution& a, const tdr::model::Solut
     }
     return true;
 }
+
+struct AdmitA0 final : AdmissionPolicy {
+    // [DM9] A0 shares the insertion/optimisation pipeline of A-PM and differs only in Phi (none here): S* = optimiser(S+) is installed as is (the optimiser
+    // returns an evaluator-feasible plan with F(S*) <= F(S+) or S+ itself). With the identity optimiser the result is exactly the DM4-DM6 one.
+    Decision decide(const AdmissionInput& in, const Optimizer& opt) const override {
+        Decision d;
+        if (!in.ins.best) return d; // RejectedNoInsertion
+        const auto sstar = guarded_optimise(opt, in, in.ins.solution, d);
+        d.outcome = Outcome::Accepted;
+        d.stage = Stage::None;
+        if (sstar && !same_solution(*sstar, in.ins.solution)) { d.solution = *sstar; return d; } // trial_index stays -1: I1-I6 are defined for single insertions only
+        d.solution = in.ins.solution;
+        d.trial_index = *in.ins.best;
+        return d;
+    }
+    const char* name() const override { return "a0"; }
+    bool uses_promises() const override { return false; }
+};
 
 struct AdmitAPM final : AdmissionPolicy {
     Decision decide(const AdmissionInput& in, const Optimizer& opt) const override {
@@ -93,7 +106,8 @@ struct AdmitAPM final : AdmissionPolicy {
             return r.ok;
         };
         // step 2-3: S* = optimiser(S+); install it if Phi holds
-        const auto sstar = opt.optimise(in, s_plus);
+        const auto sstar = guarded_optimise(opt, in, s_plus, d);
+        const std::string opt_note = d.note;   // empty unless the optimiser threw
         std::string why;
         const tdr::model::Solution& cand = sstar ? *sstar : s_plus;
         if (phi_of(cand, &why)) {
@@ -101,7 +115,7 @@ struct AdmitAPM final : AdmissionPolicy {
             if (same_solution(cand, s_plus)) d.trial_index = *in.ins.best;
             return d;
         }
-        d.note = why;
+        d.note = opt_note.empty() ? why : opt_note + "; " + why;
         // step 3 (fallback): cheapest evaluator-feasible insertion plan that satisfies Phi
         std::vector<std::size_t> order;
         for (std::size_t i = 0; i < in.ins.trials.size(); ++i) if (in.ins.trials[i].feasible) order.push_back(i);
