@@ -1,0 +1,57 @@
+# Raw log of tests/mutation/m3_mutate.py. Two mutants first SURVIVED (N7-10, N8-20): the tests were strengthened (new test N7-10; best-move descriptor assertions) and the mutants re-run (the second line of each is the re-run).
+# CW-02 survived and is equivalent for M3 (see test_and_validation.md section 9).
+N7-01 window +1: KILLED by test_n7_n8, test_n7_n8_oracle
+N7-02 window -1: KILLED by test_n7_n8, test_n7_n8_oracle
+N7-03 window boundary strict (<): KILLED by test_n7_n8
+N7-04 merged-arc coordinate shifted (+2): KILLED by test_n7_n8
+N7-05 left-of-removed coordinate wrong (+2): KILLED by test_n7_n8, test_n7_n8_oracle
+N7-06 right-of-removed coordinate wrong (+1 instead of +3): KILLED by test_n7_n8, test_n7_n8_oracle
+N7-07 t not removed from the route: KILLED by test_n7_n8, test_n7_n8_oracle
+N7-08 wrong recovery node (x instead of y): KILLED by test_n7_n8, test_n7_n8_oracle
+N7-09 affected check skipped: KILLED by test_n7_n8, test_n7_n8_oracle
+N7-10 trips recovering at t ignored: SURVIVED
+N7-11 foreign-FLP trips ignored: KILLED by test_n7_n8, test_n7_n8_oracle
+N7-12 free-drone search bypassed (always drone 0): KILLED by test_n7_n8, test_n7_n8_oracle
+N7-13 tie-break last wins (<=): KILLED by test_n7_n8
+N7-14 NoReplacementFlp not counted: KILLED by test_n7_n8, test_n7_n8_oracle
+N7-15 on-route FLP reuse disabled (duplicate insert): KILLED by test_n7_n8, test_n7_n8_oracle
+N7-16 NoFreeDrone not counted: KILLED by test_n7_n8, test_n7_n8_oracle
+N7-17 anchor validity check skipped: KILLED by test_n7_n8
+N7-18 evaluate_candidates ignored: KILLED by test_n7_n8
+N7-10 trips recovering at t ignored: KILLED by test_n7_n8
+N7-19 gaps enumerated in reverse: KILLED by test_n7_n8, test_n7_n8_oracle
+N7-20 FLPs of an arc in reverse ratio order: KILLED by test_n7_n8, test_n7_n8_oracle
+N7-21 FLP inserted ignoring the ratio order: KILLED by test_n7_n8, test_n7_n8_oracle
+N7-22 best move lacks the drone id: KILLED by test_n7_n8
+N7-23 NoReplacement test ignores the window (all gaps): KILLED by test_n7_n8_oracle
+N7-24 Rng overload always picks the first customer: KILLED by test_n7_n8
+N7-25 original trips lost: KILLED by test_n7_n8, test_n7_n8_oracle
+N7-26 new trip customer wrong (launch FLP instead of t): KILLED by test_n7_n8, test_n7_n8_oracle
+N7-27 affected list not recorded: KILLED by test_n7_n8, test_n7_n8_oracle
+N7-28 evaluator reason overridden to EvalOther: KILLED by test_n7_n8, test_n7_n8_oracle
+N8-01 default restricted to the D1 window (violates D5): KILLED by test_n7_n8, test_n7_n8_oracle
+N8-02 first gap skipped: KILLED by test_n7_n8, test_n7_n8_oracle
+N8-03 last gap skipped: KILLED by test_n7_n8, test_n7_n8_oracle
+N8-04 affected check skipped: KILLED by test_n7_n8, test_n7_n8_oracle
+N8-05 trip not dissolved: KILLED by test_n7_n8, test_n7_n8_oracle
+N8-06 unused FLPs not dropped: KILLED by test_n7_n8, test_n7_n8_oracle
+N8-07 customer inserted at the gap start (before its FLPs): KILLED by test_n7_n8_oracle
+N8-08 tie-break last wins (<=): KILLED by test_n7_n8
+N8-09 insertion_window +1: KILLED by test_n7_n8, test_n7_n8_oracle
+N8-10 insertion_window -1: KILLED by test_n7_n8, test_n7_n8_oracle
+N8-11 insertion_window centre shifted (+2 half-steps): KILLED by test_n7_n8, test_n7_n8_oracle
+N8-12 affected trips reported with local, not base, indices: KILLED by test_n7_n8, test_n7_n8_oracle
+N8-13 affected list not sorted: KILLED by test_n7_n8_oracle
+N8-14 AffectedTrips not counted: KILLED by test_n7_n8, test_n7_n8_oracle
+N8-15 evaluate_candidates ignored: KILLED by test_n7_n8
+N8-16 flps_dropped not recorded: KILLED by test_n7_n8, test_n7_n8_oracle
+N8-17 trip-index range check skipped: KILLED by test_n7_n8
+N8-18 Rng overload always picks the first trip: KILLED by test_n7_n8
+N8-19 evaluator rejection counted twice: KILLED by test_n7_n8
+N8-20 best move lacks the replaced trip: SURVIVED
+N8-21 customer inserted twice (not removed first: duplicate coverage): KILLED by test_n7_n8, test_n7_n8_oracle
+N8-20 best move lacks the replaced trip: KILLED by test_n7_n8, test_n7_n8_oracle
+RO-01 FLP inserted in reverse ratio order: KILLED by test_n7_n8, test_n7_n8_oracle
+RO-02 FLP insertion ignores existing FLPs: KILLED by test_n7_n8, test_n7_n8_oracle
+CW-01 window boundary strict (<): KILLED by test_n7_n8, test_n7_n8_oracle
+CW-02 window boundary +1 half-step: SURVIVED

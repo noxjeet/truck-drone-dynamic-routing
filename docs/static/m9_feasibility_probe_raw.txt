@@ -1,0 +1,171 @@
+m9_feasibility_probe  config config/m9/n10_seed1.cfg  customers 10  endurance 1800 s  window 3
+dataset 0: pool 1464, initial obj 1342.53 min (3 trips), VNS run 0 best 842.001 min (0 trips)
+  base = initial (7 truck customers, 3 trips)
+    N7 truck->drone w=3      anchors   7/  7  generated      87  feasible      0  improving anchors   0  rejected: affected-trips=5 eval-endurance=82
+    N7 truck->drone w=1000   anchors   7/  7  generated     160  feasible      0  improving anchors   0  rejected: affected-trips=5 eval-endurance=155
+    N1 launch relocate       anchors   3/  3  generated     204  feasible     14  improving anchors   0  best feasible vs base +0.01%  rejected: invalid-recovery=73 eval-endurance=117
+    N2 recovery relocate     anchors   3/  3  generated      16  feasible      0  improving anchors   0  rejected: invalid-recovery=9 eval-endurance=7
+    N3 drone-node relocate   anchors   3/  3  generated       4  feasible      0  improving anchors   0  rejected: eval-endurance=4
+    N5 truck/drone swap      anchors   3/  3  generated     379  feasible      0  improving anchors   0  rejected: affected-trips=9 eval-endurance=370
+    N6 drone/drone swap      anchors   3/  3  generated       6  feasible      0  improving anchors   0  rejected: eval-endurance=6
+    N8 drone->truck          anchors   3/  3  generated      24  feasible     18  improving anchors   3  best feasible vs base -2.29%  rejected: affected-trips=6
+  base = VNS best (10 truck customers, 0 trips)
+    N7 truck->drone w=3      anchors  10/ 10  generated     410  feasible     16  improving anchors   0  best feasible vs base +2.52%  rejected: eval-endurance=394
+    N7 truck->drone w=1000   anchors  10/ 10  generated     961  feasible     16  improving anchors   0  best feasible vs base +2.52%  rejected: eval-endurance=945
+    (no trips: N1, N2, N3, N5, N6, N8 have no anchor by construction)
+dataset 1: pool 1784, initial obj 935.14 min (2 trips), VNS run 0 best 872.93 min (0 trips)
+  base = initial (8 truck customers, 2 trips)
+    N7 truck->drone w=3      anchors   8/  8  generated     341  feasible      3  improving anchors   0  best feasible vs base +2.91%  rejected: affected-trips=2 eval-endurance=336
+    N7 truck->drone w=1000   anchors   8/  8  generated     553  feasible      3  improving anchors   0  best feasible vs base +2.91%  rejected: affected-trips=2 eval-endurance=548
+    N1 launch relocate       anchors   2/  2  generated      84  feasible      8  improving anchors   0  best feasible vs base +0.08%  rejected: invalid-recovery=62 eval-endurance=13 eval-drone-sequencing=1
+    N2 recovery relocate     anchors   2/  2  generated       7  feasible      1  improving anchors   1  best feasible vs base -0.98%  rejected: invalid-recovery=1 eval-endurance=5
+    N3 drone-node relocate   anchors   2/  2  generated       2  feasible      0  improving anchors   0  rejected: eval-endurance=2
+    N5 truck/drone swap      anchors   2/  2  generated     246  feasible     13  improving anchors   1  best feasible vs base -0.70%  rejected: affected-trips=3 eval-endurance=230
+    N6 drone/drone swap      anchors   2/  2  generated       2  feasible      0  improving anchors   0  rejected: eval-endurance=2
+    N8 drone->truck          anchors   2/  2  generated      18  feasible     16  improving anchors   2  best feasible vs base -3.90%  rejected: affected-trips=2
+  base = VNS best (10 truck customers, 0 trips)
+    N7 truck->drone w=3      anchors  10/ 10  generated     436  feasible     28  improving anchors   0  best feasible vs base +2.20%  rejected: eval-endurance=408
+    N7 truck->drone w=1000   anchors  10/ 10  generated     945  feasible     28  improving anchors   0  best feasible vs base +2.20%  rejected: eval-endurance=917
+    (no trips: N1, N2, N3, N5, N6, N8 have no anchor by construction)
+dataset 2: pool 1564, initial obj 1042.97 min (2 trips), VNS run 0 best 800.56 min (0 trips)
+  base = initial (8 truck customers, 2 trips)
+    N7 truck->drone w=3      anchors   8/  8  generated     158  feasible      0  improving anchors   0  rejected: affected-trips=4 eval-endurance=154
+    N7 truck->drone w=1000   anchors   8/  8  generated     322  feasible      5  improving anchors   0  best feasible vs base +18.49%  rejected: affected-trips=4 eval-endurance=313
+    N1 launch relocate       anchors   2/  2  generated     126  feasible      9  improving anchors   0  best feasible vs base +0.00%  rejected: invalid-recovery=43 eval-endurance=74
+    N2 recovery relocate     anchors   2/  2  generated      11  feasible      1  improving anchors   1  best feasible vs base -0.66%  rejected: invalid-recovery=6 eval-endurance=4
+    N3 drone-node relocate   anchors   2/  2  generated       2  feasible      0  improving anchors   0  rejected: eval-endurance=2
+    N5 truck/drone swap      anchors   2/  2  generated     349  feasible      9  improving anchors   2  best feasible vs base -1.56%  rejected: affected-trips=4 eval-endurance=336
+    N6 drone/drone swap      anchors   2/  2  generated       2  feasible      0  improving anchors   0  rejected: eval-endurance=2
+    N8 drone->truck          anchors   2/  2  generated      18  feasible     16  improving anchors   2  best feasible vs base -1.83%  rejected: affected-trips=2
+  base = VNS best (10 truck customers, 0 trips)
+    N7 truck->drone w=3      anchors  10/ 10  generated     427  feasible     17  improving anchors   0  best feasible vs base +0.00%  rejected: eval-endurance=410
+    N7 truck->drone w=1000   anchors  10/ 10  generated     840  feasible     21  improving anchors   0  best feasible vs base +0.00%  rejected: eval-endurance=819
+    (no trips: N1, N2, N3, N5, N6, N8 have no anchor by construction)
+dataset 3: pool 1798, initial obj 1154.54 min (1 trips), VNS run 0 best 1091.23 min (0 trips)
+  base = initial (9 truck customers, 1 trips)
+    N7 truck->drone w=3      anchors   9/  9  generated     344  feasible      3  improving anchors   1  best feasible vs base -1.00%  rejected: affected-trips=2 eval-endurance=339
+    N7 truck->drone w=1000   anchors   9/  9  generated     687  feasible      3  improving anchors   1  best feasible vs base -1.00%  rejected: affected-trips=2 eval-endurance=682
+    N1 launch relocate       anchors   1/  1  generated      80  feasible      5  improving anchors   0  best feasible vs base +0.01%  rejected: invalid-recovery=37 eval-endurance=38
+    N2 recovery relocate     anchors   1/  1  generated       6  feasible      0  improving anchors   0  rejected: invalid-recovery=3 eval-endurance=3
+    N3 drone-node relocate   anchors   1/  1  generated       0  feasible      0  improving anchors   0  rejected: none
+    N5 truck/drone swap      anchors   1/  1  generated     392  feasible      4  improving anchors   0  best feasible vs base +0.63%  rejected: eval-endurance=388
+    N6 drone/drone swap      anchors   1/  1  generated       0  feasible      0  improving anchors   0  rejected: none
+    N8 drone->truck          anchors   1/  1  generated      10  feasible     10  improving anchors   1  best feasible vs base -0.96%  rejected: none
+  base = VNS best (10 truck customers, 0 trips)
+    N7 truck->drone w=3      anchors  10/ 10  generated     510  feasible      7  improving anchors   0  best feasible vs base +2.59%  rejected: eval-endurance=503
+    N7 truck->drone w=1000   anchors  10/ 10  generated    1073  feasible      7  improving anchors   0  best feasible vs base +2.59%  rejected: eval-endurance=1066
+    (no trips: N1, N2, N3, N5, N6, N8 have no anchor by construction)
+m9_feasibility_probe  config config/m9/n20_seed1.cfg  customers 20  endurance 1800 s  window 3
+dataset 0: pool 6314, initial obj 3302.7 min (7 trips), VNS run 0 best 2489.78 min (0 trips)
+  base = initial (13 truck customers, 7 trips)
+    N7 truck->drone w=3      anchors  13/ 13  generated     109  feasible      0  improving anchors   0  rejected: affected-trips=11 eval-endurance=98
+    N7 truck->drone w=1000   anchors  13/ 13  generated     223  feasible      0  improving anchors   0  rejected: affected-trips=11 eval-endurance=212
+    N1 launch relocate       anchors   7/  7  generated     325  feasible     29  improving anchors   1  best feasible vs base -0.96%  rejected: invalid-recovery=134 eval-endurance=161 eval-drone-sequencing=1
+    N2 recovery relocate     anchors   7/  7  generated      36  feasible      1  improving anchors   0  best feasible vs base +0.00%  rejected: invalid-recovery=18 eval-endurance=16 eval-drone-sequencing=1
+    N3 drone-node relocate   anchors   7/  7  generated      12  feasible      0  improving anchors   0  rejected: eval-endurance=12
+    N5 truck/drone swap      anchors   7/  7  generated     632  feasible     14  improving anchors   1  best feasible vs base -0.02%  rejected: affected-trips=23 eval-endurance=595
+    N6 drone/drone swap      anchors   7/  7  generated      16  feasible      0  improving anchors   0  rejected: eval-endurance=16
+    N8 drone->truck          anchors   7/  7  generated      98  feasible     56  improving anchors   7  best feasible vs base -2.65%  rejected: affected-trips=42
+  base = VNS best (20 truck customers, 0 trips)
+    N7 truck->drone w=3      anchors  20/ 20  generated     621  feasible     68  improving anchors   0  best feasible vs base +0.13%  rejected: eval-endurance=553
+    N7 truck->drone w=1000   anchors  20/ 20  generated    2394  feasible     78  improving anchors   0  best feasible vs base +0.13%  rejected: eval-endurance=2316
+    (no trips: N1, N2, N3, N5, N6, N8 have no anchor by construction)
+dataset 1: pool 6478, initial obj 2686.42 min (7 trips), VNS run 0 best 2253.83 min (0 trips)
+  base = initial (13 truck customers, 7 trips)
+    N7 truck->drone w=3      anchors  13/ 13  generated     169  feasible      0  improving anchors   0  rejected: affected-trips=10 eval-endurance=159
+    N7 truck->drone w=1000   anchors  13/ 13  generated     333  feasible      0  improving anchors   0  rejected: affected-trips=10 eval-endurance=323
+    N1 launch relocate       anchors   7/  7  generated     300  feasible     21  improving anchors   0  best feasible vs base +0.01%  rejected: invalid-recovery=132 eval-endurance=145 eval-drone-sequencing=2
+    N2 recovery relocate     anchors   7/  7  generated      35  feasible      0  improving anchors   0  rejected: invalid-recovery=18 eval-endurance=16 eval-drone-sequencing=1
+    N3 drone-node relocate   anchors   7/  7  generated      12  feasible      0  improving anchors   0  rejected: eval-endurance=12
+    N5 truck/drone swap      anchors   7/  7  generated     786  feasible      4  improving anchors   0  best feasible vs base +2.98%  rejected: affected-trips=21 eval-endurance=761
+    N6 drone/drone swap      anchors   7/  7  generated      16  feasible      0  improving anchors   0  rejected: eval-endurance=16
+    N8 drone->truck          anchors   7/  7  generated      98  feasible     56  improving anchors   7  best feasible vs base -3.66%  rejected: affected-trips=42
+  base = VNS best (20 truck customers, 0 trips)
+    N7 truck->drone w=3      anchors  20/ 20  generated     566  feasible     53  improving anchors   0  best feasible vs base +0.81%  rejected: eval-endurance=513
+    N7 truck->drone w=1000   anchors  20/ 20  generated    2284  feasible     64  improving anchors   0  best feasible vs base +0.81%  rejected: eval-endurance=2220
+    (no trips: N1, N2, N3, N5, N6, N8 have no anchor by construction)
+dataset 2: pool 5798, initial obj 3105.56 min (7 trips), VNS run 0 best 2341.88 min (0 trips)
+  base = initial (13 truck customers, 7 trips)
+    N7 truck->drone w=3      anchors  13/ 13  generated      91  feasible      0  improving anchors   0  rejected: affected-trips=11 eval-endurance=80
+    N7 truck->drone w=1000   anchors  13/ 13  generated     209  feasible      0  improving anchors   0  rejected: affected-trips=11 eval-endurance=198
+    N1 launch relocate       anchors   7/  7  generated     288  feasible     25  improving anchors   0  best feasible vs base +0.01%  rejected: invalid-recovery=106 eval-endurance=152 eval-drone-sequencing=5
+    N2 recovery relocate     anchors   7/  7  generated      35  feasible      1  improving anchors   1  best feasible vs base -0.45%  rejected: invalid-recovery=19 eval-endurance=14 eval-drone-sequencing=1
+    N3 drone-node relocate   anchors   7/  7  generated      12  feasible      2  improving anchors   0  best feasible vs base +2.87%  rejected: eval-endurance=10
+    N5 truck/drone swap      anchors   7/  7  generated     621  feasible     19  improving anchors   1  best feasible vs base -1.03%  rejected: affected-trips=21 eval-endurance=581
+    N6 drone/drone swap      anchors   7/  7  generated      14  feasible      2  improving anchors   0  best feasible vs base +2.87%  rejected: eval-endurance=12
+    N8 drone->truck          anchors   7/  7  generated      98  feasible     56  improving anchors   7  best feasible vs base -6.74%  rejected: affected-trips=42
+  base = VNS best (20 truck customers, 0 trips)
+    N7 truck->drone w=3      anchors  20/ 20  generated     531  feasible     48  improving anchors   0  best feasible vs base +0.68%  rejected: eval-endurance=483
+    N7 truck->drone w=1000   anchors  20/ 20  generated    1997  feasible     60  improving anchors   0  best feasible vs base +0.68%  rejected: eval-endurance=1937
+    (no trips: N1, N2, N3, N5, N6, N8 have no anchor by construction)
+dataset 3: pool 6376, initial obj 3087.38 min (7 trips), VNS run 0 best 2733.29 min (0 trips)
+  base = initial (13 truck customers, 7 trips)
+    N7 truck->drone w=3      anchors  13/ 13  generated     140  feasible      0  improving anchors   0  rejected: affected-trips=10 eval-endurance=130
+    N7 truck->drone w=1000   anchors  13/ 13  generated     330  feasible      0  improving anchors   0  rejected: affected-trips=10 eval-endurance=320
+    N1 launch relocate       anchors   7/  7  generated     325  feasible     29  improving anchors   0  best feasible vs base +0.01%  rejected: invalid-recovery=136 eval-endurance=160
+    N2 recovery relocate     anchors   7/  7  generated      33  feasible      1  improving anchors   1  best feasible vs base -1.13%  rejected: invalid-recovery=17 eval-endurance=15
+    N3 drone-node relocate   anchors   7/  7  generated      12  feasible      0  improving anchors   0  rejected: eval-endurance=12
+    N5 truck/drone swap      anchors   7/  7  generated     566  feasible     14  improving anchors   2  best feasible vs base -0.86%  rejected: affected-trips=21 eval-endurance=531
+    N6 drone/drone swap      anchors   7/  7  generated      16  feasible      0  improving anchors   0  rejected: eval-endurance=16
+    N8 drone->truck          anchors   7/  7  generated      98  feasible     56  improving anchors   7  best feasible vs base -2.60%  rejected: affected-trips=42
+  base = VNS best (20 truck customers, 0 trips)
+    N7 truck->drone w=3      anchors  20/ 20  generated     598  feasible     61  improving anchors   0  best feasible vs base +0.18%  rejected: eval-endurance=537
+    N7 truck->drone w=1000   anchors  20/ 20  generated    2424  feasible     70  improving anchors   0  best feasible vs base +0.18%  rejected: eval-endurance=2354
+    (no trips: N1, N2, N3, N5, N6, N8 have no anchor by construction)
+m9_feasibility_probe  config config/m9/n50_seed1.cfg  customers 50  endurance 1800 s  window 3
+dataset 0: pool 38494, initial obj 12886.6 min (24 trips), VNS run 0 best 9025.04 min (0 trips)
+  base = initial (26 truck customers, 24 trips)
+    N7 truck->drone w=3      anchors  26/ 26  generated      26  feasible      0  improving anchors   0  rejected: affected-trips=26
+    N7 truck->drone w=1000   anchors  26/ 26  generated      26  feasible      0  improving anchors   0  rejected: affected-trips=26
+    N1 launch relocate       anchors  24/ 24  generated     786  feasible     71  improving anchors   1  best feasible vs base -0.04%  rejected: invalid-recovery=327 eval-endurance=371 eval-drone-sequencing=17
+    N2 recovery relocate     anchors  24/ 24  generated     132  feasible      3  improving anchors   0  best feasible vs base +0.05%  rejected: invalid-recovery=66 eval-endurance=51 eval-drone-sequencing=12
+    N3 drone-node relocate   anchors  24/ 24  generated      46  feasible      2  improving anchors   0  best feasible vs base +0.42%  rejected: eval-endurance=44
+    N5 truck/drone swap      anchors  24/ 24  generated     309  feasible     34  improving anchors   2  best feasible vs base -0.21%  rejected: affected-trips=126 eval-endurance=149
+    N6 drone/drone swap      anchors  24/ 24  generated     114  feasible      2  improving anchors   0  best feasible vs base +0.42%  rejected: eval-endurance=112
+    N8 drone->truck          anchors  24/ 24  generated     648  feasible     96  improving anchors  24  best feasible vs base -2.13%  rejected: affected-trips=552
+  base = VNS best (50 truck customers, 0 trips)
+    N7 truck->drone w=3      anchors  50/ 50  generated     898  feasible    259  improving anchors   0  best feasible vs base +0.23%  rejected: eval-endurance=639
+    N7 truck->drone w=1000   anchors  50/ 50  generated    8518  feasible    302  improving anchors   1  best feasible vs base -0.48%  rejected: eval-endurance=8216
+    (no trips: N1, N2, N3, N5, N6, N8 have no anchor by construction)
+dataset 1: pool 37596, initial obj 12377.83 min (23 trips), VNS run 0 best 9633.19 min (0 trips)
+  base = initial (27 truck customers, 23 trips)
+    N7 truck->drone w=3      anchors  27/ 27  generated      27  feasible      0  improving anchors   0  rejected: affected-trips=27
+    N7 truck->drone w=1000   anchors  27/ 27  generated      27  feasible      0  improving anchors   0  rejected: affected-trips=27
+    N1 launch relocate       anchors  23/ 23  generated     720  feasible     74  improving anchors   2  best feasible vs base -0.21%  rejected: invalid-recovery=323 eval-endurance=303 eval-drone-sequencing=20
+    N2 recovery relocate     anchors  23/ 23  generated     130  feasible      4  improving anchors   3  best feasible vs base -1.76%  rejected: invalid-recovery=64 eval-endurance=52 eval-drone-sequencing=10
+    N3 drone-node relocate   anchors  23/ 23  generated      44  feasible      8  improving anchors   0  best feasible vs base +0.22%  rejected: eval-endurance=36
+    N5 truck/drone swap      anchors  23/ 23  generated     361  feasible     45  improving anchors   5  best feasible vs base -2.72%  rejected: affected-trips=121 eval-endurance=195
+    N6 drone/drone swap      anchors  23/ 23  generated     106  feasible     10  improving anchors   0  best feasible vs base +0.22%  rejected: eval-endurance=96
+    N8 drone->truck          anchors  23/ 23  generated     644  feasible    138  improving anchors  23  best feasible vs base -2.16%  rejected: affected-trips=506
+  base = VNS best (50 truck customers, 0 trips)
+    N7 truck->drone w=3      anchors  50/ 50  generated     853  feasible    273  improving anchors   1  best feasible vs base -0.03%  rejected: eval-endurance=580
+    N7 truck->drone w=1000   anchors  50/ 50  generated    8135  feasible    343  improving anchors   1  best feasible vs base -0.03%  rejected: eval-endurance=7792
+    (no trips: N1, N2, N3, N5, N6, N8 have no anchor by construction)
+dataset 2: pool 37282, initial obj 14047.39 min (23 trips), VNS run 0 best 10238.82 min (0 trips)
+  base = initial (27 truck customers, 23 trips)
+    N7 truck->drone w=3      anchors  27/ 27  generated      27  feasible      0  improving anchors   0  rejected: affected-trips=27
+    N7 truck->drone w=1000   anchors  27/ 27  generated      27  feasible      0  improving anchors   0  rejected: affected-trips=27
+    N1 launch relocate       anchors  23/ 23  generated     790  feasible     55  improving anchors   0  best feasible vs base +0.00%  rejected: invalid-recovery=338 eval-endurance=385 eval-drone-sequencing=12
+    N2 recovery relocate     anchors  23/ 23  generated     127  feasible      4  improving anchors   3  best feasible vs base -0.48%  rejected: invalid-recovery=63 eval-endurance=53 eval-drone-sequencing=7
+    N3 drone-node relocate   anchors  23/ 23  generated      44  feasible      2  improving anchors   0  best feasible vs base +1.40%  rejected: eval-endurance=42
+    N5 truck/drone swap      anchors  23/ 23  generated     424  feasible     35  improving anchors   3  best feasible vs base -0.93%  rejected: affected-trips=117 eval-endurance=272
+    N6 drone/drone swap      anchors  23/ 23  generated     100  feasible      2  improving anchors   0  best feasible vs base +1.40%  rejected: eval-endurance=98
+    N8 drone->truck          anchors  23/ 23  generated     644  feasible    138  improving anchors  23  best feasible vs base -2.21%  rejected: affected-trips=506
+  base = VNS best (50 truck customers, 0 trips)
+    N7 truck->drone w=3      anchors  50/ 50  generated     951  feasible    258  improving anchors   0  best feasible vs base +0.02%  rejected: eval-endurance=693
+    N7 truck->drone w=1000   anchors  50/ 50  generated    8703  feasible    294  improving anchors   1  best feasible vs base -1.39%  rejected: eval-endurance=8409
+    (no trips: N1, N2, N3, N5, N6, N8 have no anchor by construction)
+dataset 3: pool 38466, initial obj 12714.76 min (21 trips), VNS run 0 best 8991.80 min (0 trips)
+  base = initial (29 truck customers, 21 trips)
+    N7 truck->drone w=3      anchors  29/ 29  generated      79  feasible      0  improving anchors   0  rejected: affected-trips=28 eval-endurance=51
+    N7 truck->drone w=1000   anchors  29/ 29  generated     174  feasible      0  improving anchors   0  rejected: affected-trips=28 eval-endurance=146
+    N1 launch relocate       anchors  21/ 21  generated     640  feasible     58  improving anchors   2  best feasible vs base -0.23%  rejected: invalid-recovery=272 eval-endurance=296 eval-drone-sequencing=14
+    N2 recovery relocate     anchors  21/ 21  generated     118  feasible      4  improving anchors   3  best feasible vs base -0.22%  rejected: invalid-recovery=57 eval-endurance=43 eval-drone-sequencing=14
+    N3 drone-node relocate   anchors  21/ 21  generated      40  feasible      8  improving anchors   0  best feasible vs base +1.35%  rejected: eval-endurance=32
+    N5 truck/drone swap      anchors  21/ 21  generated     731  feasible     55  improving anchors   6  best feasible vs base -1.63%  rejected: affected-trips=100 eval-endurance=576
+    N6 drone/drone swap      anchors  21/ 21  generated      82  feasible     10  improving anchors   0  best feasible vs base +1.35%  rejected: eval-endurance=72
+    N8 drone->truck          anchors  21/ 21  generated     630  feasible    210  improving anchors  21  best feasible vs base -2.07%  rejected: affected-trips=420
+  base = VNS best (50 truck customers, 0 trips)
+    N7 truck->drone w=3      anchors  50/ 50  generated     970  feasible    224  improving anchors   0  best feasible vs base +0.15%  rejected: eval-endurance=746
+    N7 truck->drone w=1000   anchors  50/ 50  generated    9426  feasible    277  improving anchors   1  best feasible vs base -2.14%  rejected: eval-endurance=9149
+    (no trips: N1, N2, N3, N5, N6, N8 have no anchor by construction)

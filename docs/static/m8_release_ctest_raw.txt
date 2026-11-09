@@ -1,0 +1,51 @@
+Test project /sessions/rcw-01sy8ruhgeryus4v9ve7uj5w/build_m8
+      Start 11: test_n4_n5_oracle
+      Start 21: test_vns_oracle
+ 1/23 Test #21: test_vns_oracle ..................   Passed    5.44 sec
+      Start 17: test_n1_n2_oracle
+ 2/23 Test #11: test_n4_n5_oracle ................   Passed    7.68 sec
+      Start 13: test_n7_n8_oracle
+ 3/23 Test #17: test_n1_n2_oracle ................   Passed    5.16 sec
+      Start  9: test_evaluator_differential
+ 4/23 Test #13: test_n7_n8_oracle ................   Passed    3.80 sec
+      Start 15: test_n3_n6_oracle
+ 5/23 Test #15: test_n3_n6_oracle ................   Passed    1.71 sec
+      Start 19: test_shakes_oracle
+ 6/23 Test  #9: test_evaluator_differential ......   Passed    3.40 sec
+      Start 23: test_runner_cli
+ 7/23 Test #19: test_shakes_oracle ...............   Passed    1.71 sec
+      Start 20: test_vns
+ 8/23 Test #23: test_runner_cli ..................   Passed    0.96 sec
+      Start 18: test_shakes
+ 9/23 Test #20: test_vns .........................   Passed    0.13 sec
+      Start  8: test_fuzz_search_infra
+10/23 Test #18: test_shakes ......................   Passed    0.08 sec
+      Start  7: test_search_infra
+11/23 Test  #7: test_search_infra ................   Passed    0.01 sec
+      Start 10: test_n4_n5
+12/23 Test #10: test_n4_n5 .......................   Passed    0.01 sec
+      Start 16: test_n1_n2
+13/23 Test #16: test_n1_n2 .......................   Passed    0.00 sec
+      Start 14: test_n3_n6
+14/23 Test #14: test_n3_n6 .......................   Passed    0.00 sec
+      Start 12: test_n7_n8
+15/23 Test #12: test_n7_n8 .......................   Passed    0.00 sec
+      Start  1: test_tsp
+16/23 Test  #1: test_tsp .........................   Passed    0.00 sec
+      Start  2: test_model
+17/23 Test  #2: test_model .......................   Passed    0.00 sec
+      Start  4: test_flp
+18/23 Test  #4: test_flp .........................   Passed    0.00 sec
+      Start  5: test_timing
+19/23 Test  #5: test_timing ......................   Passed    0.00 sec
+      Start  6: test_init
+20/23 Test  #6: test_init ........................   Passed    0.00 sec
+      Start  3: test_graph
+21/23 Test  #3: test_graph .......................   Passed    0.00 sec
+      Start 22: test_experiment_config
+22/23 Test #22: test_experiment_config ...........   Passed    0.00 sec
+23/23 Test  #8: test_fuzz_search_infra ...........   Passed    0.06 sec
+
+100% tests passed out of 23
+
+Total Test time (real) =  15.09 sec

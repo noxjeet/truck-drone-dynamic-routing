@@ -1,0 +1,75 @@
+evaluator benchmark: base seed 31415, 3 instances per size, 15 repetitions, ~15 ms batches
+columns: median us/call [min .. max] (rel. spread)  speedup vs A
+n=10 inst 0 initial-sol  feas=1 trips=2 |V|=1789 equivalent=yes
+    A ref/full-registry        8.04 us  [6.55 .. 16.39] (122.3%)  x1.0
+    B ref/used-nodes           1.39 us  [1.25 .. 2.11] (62.3%)  x5.8
+    D P1+P2 (prod)             1.18 us  [1.13 .. 2.50] (115.8%)  x6.8
+n=10 inst 0 all-truck   feas=1 trips=0 |V|=1789 equivalent=yes
+    A ref/full-registry        6.78 us  [6.22 .. 8.37] (31.7%)  x1.0
+    B ref/used-nodes           0.82 us  [0.79 .. 0.87] (10.7%)  x8.3
+    D P1+P2 (prod)             0.71 us  [0.69 .. 0.92] (32.4%)  x9.6
+n=10 inst 1 initial-sol  feas=1 trips=1 |V|=1923 equivalent=yes
+    A ref/full-registry        7.77 us  [7.00 .. 9.14] (27.6%)  x1.0
+    B ref/used-nodes           1.12 us  [1.09 .. 1.62] (47.0%)  x6.9
+    D P1+P2 (prod)             1.03 us  [1.01 .. 1.30] (28.3%)  x7.6
+n=10 inst 1 all-truck   feas=1 trips=0 |V|=1923 equivalent=yes
+    A ref/full-registry        7.31 us  [6.56 .. 12.02] (74.8%)  x1.0
+    B ref/used-nodes           0.80 us  [0.78 .. 1.00] (27.6%)  x9.1
+    D P1+P2 (prod)             0.73 us  [0.70 .. 1.00] (41.9%)  x10.1
+n=10 inst 2 initial-sol  feas=1 trips=3 |V|=1605 equivalent=yes
+    A ref/full-registry        6.82 us  [6.36 .. 10.53] (61.2%)  x1.0
+    B ref/used-nodes           1.46 us  [1.41 .. 1.60] (13.0%)  x4.7
+    D P1+P2 (prod)             1.35 us  [1.32 .. 1.70] (28.5%)  x5.1
+n=10 inst 2 all-truck   feas=1 trips=0 |V|=1605 equivalent=yes
+    A ref/full-registry        6.48 us  [5.77 .. 13.97] (126.5%)  x1.0
+    B ref/used-nodes           0.82 us  [0.79 .. 1.42] (78.0%)  x7.9
+    D P1+P2 (prod)             0.72 us  [0.69 .. 0.95] (35.4%)  x9.0
+n=20 inst 0 initial-sol  feas=1 trips=7 |V|=6373 equivalent=yes
+    A ref/full-registry       25.58 us  [23.71 .. 38.39] (57.4%)  x1.0
+    B ref/used-nodes           2.80 us  [2.71 .. 3.43] (26.0%)  x9.1
+    D P1+P2 (prod)             2.53 us  [2.48 .. 4.82] (92.4%)  x10.1
+n=20 inst 0 all-truck   feas=1 trips=0 |V|=6373 equivalent=yes
+    A ref/full-registry       26.85 us  [22.82 .. 48.99] (97.5%)  x1.0
+    B ref/used-nodes           1.92 us  [1.75 .. 3.12] (71.8%)  x14.0
+    D P1+P2 (prod)             1.62 us  [1.50 .. 2.61] (68.5%)  x16.6
+n=20 inst 1 initial-sol  feas=1 trips=9 |V|=6401 equivalent=yes
+    A ref/full-registry       28.08 us  [26.35 .. 30.17] (13.6%)  x1.0
+    B ref/used-nodes           3.04 us  [2.93 .. 3.23] (9.8%)  x9.2
+    D P1+P2 (prod)             2.87 us  [2.79 .. 2.98] (6.4%)  x9.8
+n=20 inst 1 all-truck   feas=1 trips=0 |V|=6401 equivalent=yes
+    A ref/full-registry       26.39 us  [25.14 .. 34.07] (33.8%)  x1.0
+    B ref/used-nodes           1.70 us  [1.65 .. 1.79] (8.2%)  x15.5
+    D P1+P2 (prod)             1.57 us  [1.53 .. 1.68] (9.1%)  x16.8
+n=20 inst 2 initial-sol  feas=1 trips=7 |V|=5615 equivalent=yes
+    A ref/full-registry       23.71 us  [21.04 .. 38.96] (75.6%)  x1.0
+    B ref/used-nodes           2.81 us  [2.69 .. 4.44] (62.6%)  x8.5
+    D P1+P2 (prod)             2.58 us  [2.43 .. 5.25] (109.0%)  x9.2
+n=20 inst 2 all-truck   feas=1 trips=0 |V|=5615 equivalent=yes
+    A ref/full-registry       22.06 us  [20.02 .. 43.14] (104.8%)  x1.0
+    B ref/used-nodes           1.82 us  [1.77 .. 2.40] (34.3%)  x12.1
+    D P1+P2 (prod)             1.56 us  [1.52 .. 2.14] (39.6%)  x14.1
+n=50 inst 0 initial-sol  feas=1 trips=22 |V|=35717 equivalent=yes
+    A ref/full-registry      253.62 us  [232.48 .. 294.43] (24.4%)  x1.0
+    B ref/used-nodes           8.72 us  [8.37 .. 10.09] (19.7%)  x29.1
+    D P1+P2 (prod)             8.29 us  [8.00 .. 11.76] (45.3%)  x30.6
+n=50 inst 0 all-truck   feas=1 trips=0 |V|=35717 equivalent=yes
+    A ref/full-registry      247.83 us  [234.16 .. 315.28] (32.7%)  x1.0
+    B ref/used-nodes           4.56 us  [4.33 .. 6.96] (57.7%)  x54.4
+    D P1+P2 (prod)             4.28 us  [4.07 .. 9.46] (125.8%)  x57.9
+n=50 inst 1 initial-sol  feas=1 trips=21 |V|=38021 equivalent=yes
+    A ref/full-registry      300.32 us  [238.75 .. 604.25] (121.7%)  x1.0
+    B ref/used-nodes           8.46 us  [7.75 .. 11.61] (45.7%)  x35.5
+    D P1+P2 (prod)             8.04 us  [7.71 .. 17.73] (124.6%)  x37.3
+n=50 inst 1 all-truck   feas=1 trips=0 |V|=38021 equivalent=yes
+    A ref/full-registry      272.38 us  [251.40 .. 316.38] (23.9%)  x1.0
+    B ref/used-nodes           4.57 us  [4.44 .. 5.99] (33.8%)  x59.5
+    D P1+P2 (prod)             4.39 us  [4.08 .. 5.44] (31.1%)  x62.1
+n=50 inst 2 initial-sol  feas=1 trips=23 |V|=38557 equivalent=yes
+    A ref/full-registry      272.77 us  [238.44 .. 296.10] (21.1%)  x1.0
+    B ref/used-nodes           9.21 us  [8.65 .. 10.82] (23.6%)  x29.6
+    D P1+P2 (prod)             8.86 us  [8.10 .. 12.03] (44.3%)  x30.8
+n=50 inst 2 all-truck   feas=1 trips=0 |V|=38557 equivalent=yes
+    A ref/full-registry      282.27 us  [237.38 .. 516.61] (98.9%)  x1.0
+    B ref/used-nodes           4.68 us  [4.47 .. 5.13] (14.1%)  x60.3
+    D P1+P2 (prod)             4.15 us  [4.05 .. 6.65] (62.5%)  x68.0
+ALL VARIANTS EQUIVALENT

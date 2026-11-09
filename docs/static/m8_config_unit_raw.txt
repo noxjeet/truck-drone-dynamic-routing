@@ -1,0 +1,27 @@
+[PASS] the default configuration is valid
+[PASS] VNS defaults equal VnsOptions{} (pilot values; threshold 0 = strict '<'; step guard 1000)
+[PASS] shake and N4 defaults equal ShakeOptions{} / N4Options{}
+[PASS] instance, vehicle, FLP, neighbourhood and seed defaults equal StaticConfig{}
+[PASS] F1/F2 constants default to the values that were hard-coded before M8 (TSP 21 / 8 / 42, KMeansPolicy{})
+[PASS] experiment defaults: 10 runs, 1 dataset, run indices from 0, no trace, solutions written
+[PASS] every key appears once in the field table (48 keys)
+[PASS] each field's setter accepts the value its getter prints
+[PASS] the canonical text parses without errors
+[PASS] dump -> parse -> dump is identical (all value kinds, %.17g doubles, 64-bit seed, enum strings, operator list)
+[PASS] parsed values are bit-identical to the originals
+[PASS] the dump lists every key and every parsed field equals the original (checked field by field through the table)
+[PASS] section prefixes, dotted keys, whitespace and # / ; comments
+[PASS] every problem is reported with its line number (duplicate, unknown key, bad number, missing '=', bad section)
+[PASS] all problems are collected in one pass (the NaN value and the duplicate that follows it are both reported) -> 7 errors
+[PASS] malformed values are rejected: negative / fractional / empty / overflowing integers, NaN, inf, bad booleans, bad enum names, bad operator lists, unknown keys
+[PASS] a rejected value leaves the field unchanged
+[PASS] operator list parsing (spaces tolerated, 'default' restores the standard list)
+[PASS] booleans accept true / false / 1 / 0
+[PASS] validate() reports every invalid class of value (experiment, instance, vehicle, neighbourhood, VNS, F1/F2, shake, dataset range)
+[PASS] documented special values stay valid (unlimited guard, iter_max 0, cooling 1, unlimited re-anchoring)
+[PASS] effective VNS options: base seed, N1/N2 repeats and trace come from seed./neighbourhood./output.; every other field passes through untouched
+[PASS] a configuration file is read
+[PASS] a bad file reports all its errors; a missing file is an error
+
+24 passed, 0 failed
+ALL TESTS PASSED

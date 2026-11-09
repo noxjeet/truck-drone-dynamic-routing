@@ -1,0 +1,71 @@
+S1-01 reverse excludes the last node of the segment: KILLED by test_shakes, test_shakes_oracle
+S1-02 reverse accepts a == b: KILLED by test_shakes
+S1-03 reverse allows b = m + 1 (the end depot): KILLED by test_shakes
+S1-04 random reverse: second index not skipping x (can pick equal): KILLED by test_shakes, test_shakes_oracle
+S1-05 random reverse: one draw fewer (y drawn from m): KILLED by test_shakes, test_shakes_oracle
+S1-06 random reverse: min/max swapped (b < a rejected as invalid): KILLED by test_shakes, test_shakes_oracle
+S2-01 exchange swaps one element less: KILLED by test_shakes, test_shakes_oracle
+S2-02 exchange allows overlapping segments: KILLED by test_shakes
+S2-03 exchange allows segments past the end: KILLED by test_shakes
+S2-04 random exchange: L bound m instead of m/2: KILLED by test_shakes, test_shakes_oracle
+S2-05 random exchange: L_max ignored: KILLED by test_shakes, test_shakes_oracle
+S2-06 random exchange: pair count off by one: KILLED by test_shakes, test_shakes_oracle
+S2-07 random exchange: adjacent segments never chosen: KILLED by test_shakes, test_shakes_oracle
+S3-01 shift forward rotates the wrong range: KILLED by test_shakes, test_shakes_oracle
+S3-02 shift backward direction swapped: KILLED by test_shakes, test_shakes_oracle
+S3-03 shift by zero accepted: KILLED by test_shakes
+S3-04 shift forward bound off by one: KILLED by test_shakes
+S3-05 shift backward bound off by one: KILLED by test_shakes
+S3-06 random shift: L bound m instead of m-1: KILLED by test_shakes_oracle
+S3-07 random shift: direction always forward when possible: KILLED by test_shakes, test_shakes_oracle
+S3-08 random shift: D_max ignored: KILLED by test_shakes, test_shakes_oracle
+S3-09 random shift: direction draw skipped: KILLED by test_shakes, test_shakes_oracle
+S4-01 drone remove: removes only the first trip of the drone: KILLED by test_shakes_oracle
+S4-02 drone remove: removed trips reported as dissolved: KILLED by test_shakes, test_shakes_oracle
+S4-04 random drone remove: first id always: KILLED by test_shakes, test_shakes_oracle
+S4-05 random drone remove: no-trip guard off: KILLED by test_shakes, test_shakes_oracle
+S4-06 drone remove: absent drone accepted: KILLED by test_shakes
+D6-01 vanished-launch trips are preserved (not dissolved): KILLED by test_shakes, test_shakes_oracle
+D6-02 recovery-order check dropped: KILLED by test_shakes, test_shakes_oracle
+D6-03 recovery order checked from the launch position (not strictly after): SURVIVED
+D6-04 recovery order checked from 0 (any occurrence): KILLED by test_shakes, test_shakes_oracle
+D6-05 reason of a vanished launch recorded as recovery-order: KILLED by test_shakes, test_shakes_oracle
+D6-06 dissolved trip not erased: KILLED by test_shakes, test_shakes_oracle
+D6-07 dissolved customers not queued for reinsertion (customer lost): KILLED by test_shakes, test_shakes_oracle
+D6-08 dissolved trip not recorded: KILLED by test_shakes, test_shakes_oracle
+D6-09 idle FLPs not dropped: KILLED by test_shakes, test_shakes_oracle
+D6-10 dropped FLPs not reported: KILLED by test_shakes, test_shakes_oracle
+D6-11 origin bookkeeping: preserved list not set: KILLED by test_shakes
+FL-01 FLPs of a vanished arc kept on the route (foreign FLP): KILLED by test_shakes, test_shakes_oracle
+FL-02 FLPs of a surviving arc dropped: KILLED by test_shakes, test_shakes_oracle
+FL-03 FLPs of an arc in reversed order: KILLED by test_shakes_oracle
+FL-04 lost FLPs not recorded: KILLED by test_shakes, test_shakes_oracle
+FL-05 arc key ignores direction: KILLED by test_shakes, test_shakes_oracle
+RI-01 reinsertion into any gap (not only free ones): KILLED by test_shakes, test_shakes_oracle
+RI-02 free-gap draw replaced by the first free gap: KILLED by test_shakes, test_shakes_oracle
+RI-03 free-gap draw replaced by the last free gap: KILLED by test_shakes, test_shakes_oracle
+RI-04 fallback gap draw over gaps - 1: KILLED by test_shakes, test_shakes_oracle
+RI-05 fallback does not dissolve the trips launching in the gap: KILLED by test_shakes, test_shakes_oracle
+RI-06 fallback does not erase the gap FLPs from the route: KILLED by test_shakes, test_shakes_oracle
+RI-08 fallback flag not recorded: KILLED by test_shakes, test_shakes_oracle
+RI-09 customer inserted before the anchor node (gap start - 1): KILLED by test_shakes, test_shakes_oracle
+RI-10 customers reinserted in reverse queue order: KILLED by test_shakes, test_shakes_oracle
+RI-11 anchor recorded as the next skeleton node: KILLED by test_shakes, test_shakes_oracle
+RI-12 free-gap count not recorded: KILLED by test_shakes, test_shakes_oracle
+EV-01 result not evaluated: KILLED by test_shakes, test_shakes_oracle
+EV-02 evaluate_result ignored: KILLED by test_shakes
+EV-03 verdict forced feasible: KILLED by test_shakes_oracle
+EV-04 objective not recorded: KILLED by test_shakes, test_shakes_oracle
+EV-05 reject reason not recorded: KILLED by test_shakes_oracle
+EV-06 base objective not recorded: KILLED by test_shakes, test_shakes_oracle
+EV-07 infeasible input not rejected: KILLED by test_shakes
+SH-01 shake(): fixed kind: KILLED by test_shakes, test_shakes_oracle
+SH-02 shake(): drone-remove drawn with probability 0: KILLED by test_shakes, test_shakes_oracle
+SH-03 shake(): Exchange and Shift swapped: KILLED by test_shakes, test_shakes_oracle
+SH-04 shake(): NotApplicable redrawn as reverse: KILLED by test_shakes, test_shakes_oracle
+NA-01 route shakes applicable with m = 1: KILLED by test_shakes
+NA-02 depot included in the interior: KILLED by test_shakes, test_shakes_oracle
+OP-01 max_segment_length default changed: KILLED by test_shakes, test_shakes_oracle
+OP-02 max_shift default changed: KILLED by test_shakes, test_shakes_oracle
+OP-03 lmax floor removed: KILLED by test_shakes
+OP-04 dmax floor removed: KILLED by test_shakes

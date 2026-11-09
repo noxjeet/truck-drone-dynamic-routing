@@ -1,0 +1,6 @@
+drone-id re-draws accepted=299
+bases=640 with_trips=638 two_drones_used=401 three_trips_on_one_drone=464
+N3: calls=3007 candidates=7036 accepted=3540 improving_calls=612 endurance=3496 other_eval=0 both_neighbours=919 lone=408 partner_not_vector_adjacent=1688 other_drone_launches_between=954 candidate_ties=0
+N6: calls(w=0,1,3)=9021 candidates=5806 accepted=3066 improving_calls=671 endurance=2740 other_eval=0 empty_calls=5538 calls_excluding_same_drone_partner=3777 same_drone_candidates(+same)=6468 calls_with_truck_customer_in_window=6014 candidate_ties=0
+613135 checks, 0 failures
+ALL TESTS PASSED

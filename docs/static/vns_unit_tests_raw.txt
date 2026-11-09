@@ -1,0 +1,88 @@
+[PASS] default neighbourhood list: Sec 6.1 order then N1, N2, N1, N2 (A32, D2)
+[PASS] list with n1 = 3, n2 = 1
+[PASS] list with no / one repeat
+[PASS] default options (pilot-based values, labelled assumptions; printed acceptance reference)
+[PASS] default options are valid
+[PASS] invalid options are reported
+[PASS] cooling_rate = 1 and iter_max = 0 are valid
+[PASS] invalid options: InvalidOptions with a message, nothing run
+[PASS] an infeasible initial solution is InitialInfeasible, nothing run
+[PASS] iter_max = 0: the initial solution comes back unchanged, no pass
+[PASS] exactly iter_max passes are run (D8: the counter advances) and the trace has one row per pass
+[PASS] T of pass i is T0 * alpha^(i-1) with T0 = t0_fraction * f(initial): one cooling step per pass
+[PASS] T0 and the final temperature are reported
+[PASS] absolute T0 and geometric cooling: 500, 250, 125 -> 62.5
+[PASS] the temperature never falls below t_min
+[PASS] statistics consistent
+[PASS] no applicable shake (one truck customer, no trip): every pass is skipped after max_shake_attempts NotApplicable draws; passes still count
+[PASS] a skipped pass leaves x and best unchanged, the temperature cools anyway
+[PASS] no local search runs in a skipped pass
+[PASS] no local search runs in a skipped pass
+[PASS] no local search runs in a skipped pass
+[PASS] no local search runs in a skipped pass
+[PASS] no local search runs in a skipped pass
+[PASS] no local search runs in a skipped pass
+[PASS] no local search runs in a skipped pass
+[PASS] no local search runs in a skipped pass
+[PASS] generated instance (n = 12, larger area, endurance x3: trips and accepted moves occur)
+[PASS] same options, seed and run index: bit-identical trace and result
+[PASS] another run index or base seed gives another trajectory
+[PASS] default: best and current are feasible for the frozen reference
+[PASS] default: best and current objectives equal the frozen reference's
+[PASS] default: best-so-far is never worse than the initial solution
+[PASS] default: the best-so-far objective never increases
+[PASS] default: statistics are internally consistent
+[PASS] default: every customer served exactly once in best and current
+[PASS] non-vacuity: moves are accepted and shakes applied
+[PASS] T ~ 0 (Incumbent): the accepted solution never worsens (only improvements and exact ties), x == best-so-far
+[PASS] pure descent: best and current are feasible for the frozen reference
+[PASS] pure descent: best and current objectives equal the frozen reference's
+[PASS] pure descent: best-so-far is never worse than the initial solution
+[PASS] pure descent: the best-so-far objective never increases
+[PASS] pure descent: statistics are internally consistent
+[PASS] pure descent: every customer served exactly once in best and current
+[PASS] T huge: no non-improving candidate is rejected (u <= exp(-small) ~ 1)
+[PASS] T huge: the local-search step guard bounds the pass (A38)
+[PASS] max_local_steps = 1: at most one operator call per applied shake
+[PASS] hot: best and current are feasible for the frozen reference
+[PASS] hot: best and current objectives equal the frozen reference's
+[PASS] hot: best-so-far is never worse than the initial solution
+[PASS] hot: the best-so-far objective never increases
+[PASS] hot: statistics are internally consistent
+[PASS] hot: every customer served exactly once in best and current
+[PASS] min_improvement huge: no move is an improvement
+[PASS] threshold: best and current are feasible for the frozen reference
+[PASS] threshold: best and current objectives equal the frozen reference's
+[PASS] threshold: best-so-far is never worse than the initial solution
+[PASS] threshold: the best-so-far objective never increases
+[PASS] threshold: statistics are internally consistent
+[PASS] threshold: every customer served exactly once in best and current
+[PASS] ShakenState: deterministic and a different trajectory from Incumbent
+[PASS] shaken-state: best and current are feasible for the frozen reference
+[PASS] shaken-state: best and current objectives equal the frozen reference's
+[PASS] shaken-state: best-so-far is never worse than the initial solution
+[PASS] shaken-state: the best-so-far objective never increases
+[PASS] shaken-state: statistics are internally consistent
+[PASS] shaken-state: every customer served exactly once in best and current
+[PASS] ShakenState: the incumbent is the searched shaken solution (never better than the best-so-far)
+[PASS] a custom neighbourhood list is honoured
+[PASS] sequential list with restart: earlier neighbourhoods are called at least as often as the last ones
+[PASS] no-improvement stop: exactly max_no_improve passes after the last best-so-far update
+[PASS] time limit: stops after the pass that exceeds it
+[PASS] iter_max passes are completed
+[PASS] L_max = D_max = 1: best and current are feasible for the frozen reference
+[PASS] L_max = D_max = 1: best and current objectives equal the frozen reference's
+[PASS] L_max = D_max = 1: best-so-far is never worse than the initial solution
+[PASS] L_max = D_max = 1: the best-so-far objective never increases
+[PASS] L_max = D_max = 1: statistics are internally consistent
+[PASS] L_max = D_max = 1: every customer served exactly once in best and current
+[PASS] all-truck start: best and current are feasible for the frozen reference
+[PASS] all-truck start: best and current objectives equal the frozen reference's
+[PASS] all-truck start: best-so-far is never worse than the initial solution
+[PASS] all-truck start: the best-so-far objective never increases
+[PASS] all-truck start: statistics are internally consistent
+[PASS] all-truck start: every customer served exactly once in best and current
+[PASS] all-truck start: Drone_Remove is NotApplicable and redrawn, route shakes apply
+
+85 passed, 0 failed
+ALL TESTS PASSED

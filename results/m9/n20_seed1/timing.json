@@ -1,0 +1,207 @@
+{
+  "schema": "tdr.static.timing/1",
+  "note": "wall-clock seconds; NOT reproducible, excluded from the manifest digests",
+  "total_seconds": 15.363006155000001,
+  "runs": [
+    {
+      "dataset_index": 0,
+      "run_index": 0,
+      "seconds": 0.26056292800000003
+    },
+    {
+      "dataset_index": 0,
+      "run_index": 1,
+      "seconds": 0.497587638
+    },
+    {
+      "dataset_index": 0,
+      "run_index": 2,
+      "seconds": 0.25619866899999999
+    },
+    {
+      "dataset_index": 0,
+      "run_index": 3,
+      "seconds": 0.26136246800000001
+    },
+    {
+      "dataset_index": 0,
+      "run_index": 4,
+      "seconds": 0.24989692699999999
+    },
+    {
+      "dataset_index": 0,
+      "run_index": 5,
+      "seconds": 0.262659745
+    },
+    {
+      "dataset_index": 0,
+      "run_index": 6,
+      "seconds": 0.28060443600000001
+    },
+    {
+      "dataset_index": 0,
+      "run_index": 7,
+      "seconds": 0.25204392399999997
+    },
+    {
+      "dataset_index": 0,
+      "run_index": 8,
+      "seconds": 0.25542279800000001
+    },
+    {
+      "dataset_index": 0,
+      "run_index": 9,
+      "seconds": 0.265829335
+    },
+    {
+      "dataset_index": 1,
+      "run_index": 0,
+      "seconds": 0.238217504
+    },
+    {
+      "dataset_index": 1,
+      "run_index": 1,
+      "seconds": 0.29298719400000001
+    },
+    {
+      "dataset_index": 1,
+      "run_index": 2,
+      "seconds": 0.263480096
+    },
+    {
+      "dataset_index": 1,
+      "run_index": 3,
+      "seconds": 0.34743330100000003
+    },
+    {
+      "dataset_index": 1,
+      "run_index": 4,
+      "seconds": 0.268980622
+    },
+    {
+      "dataset_index": 1,
+      "run_index": 5,
+      "seconds": 0.25062667199999999
+    },
+    {
+      "dataset_index": 1,
+      "run_index": 6,
+      "seconds": 0.24478846100000001
+    },
+    {
+      "dataset_index": 1,
+      "run_index": 7,
+      "seconds": 0.27458760599999998
+    },
+    {
+      "dataset_index": 1,
+      "run_index": 8,
+      "seconds": 0.240744341
+    },
+    {
+      "dataset_index": 1,
+      "run_index": 9,
+      "seconds": 0.34883207599999999
+    },
+    {
+      "dataset_index": 2,
+      "run_index": 0,
+      "seconds": 0.28519431299999998
+    },
+    {
+      "dataset_index": 2,
+      "run_index": 1,
+      "seconds": 0.25127803100000001
+    },
+    {
+      "dataset_index": 2,
+      "run_index": 2,
+      "seconds": 0.292324945
+    },
+    {
+      "dataset_index": 2,
+      "run_index": 3,
+      "seconds": 0.25873083099999999
+    },
+    {
+      "dataset_index": 2,
+      "run_index": 4,
+      "seconds": 0.32967677699999998
+    },
+    {
+      "dataset_index": 2,
+      "run_index": 5,
+      "seconds": 0.29648112300000001
+    },
+    {
+      "dataset_index": 2,
+      "run_index": 6,
+      "seconds": 0.23452456799999999
+    },
+    {
+      "dataset_index": 2,
+      "run_index": 7,
+      "seconds": 0.224990256
+    },
+    {
+      "dataset_index": 2,
+      "run_index": 8,
+      "seconds": 0.29389620999999999
+    },
+    {
+      "dataset_index": 2,
+      "run_index": 9,
+      "seconds": 0.23519396100000001
+    },
+    {
+      "dataset_index": 3,
+      "run_index": 0,
+      "seconds": 0.25016957099999998
+    },
+    {
+      "dataset_index": 3,
+      "run_index": 1,
+      "seconds": 0.28932204099999997
+    },
+    {
+      "dataset_index": 3,
+      "run_index": 2,
+      "seconds": 0.32597319299999999
+    },
+    {
+      "dataset_index": 3,
+      "run_index": 3,
+      "seconds": 0.38063392400000001
+    },
+    {
+      "dataset_index": 3,
+      "run_index": 4,
+      "seconds": 0.23855494199999999
+    },
+    {
+      "dataset_index": 3,
+      "run_index": 5,
+      "seconds": 0.24006037799999999
+    },
+    {
+      "dataset_index": 3,
+      "run_index": 6,
+      "seconds": 0.40786102800000001
+    },
+    {
+      "dataset_index": 3,
+      "run_index": 7,
+      "seconds": 0.24346591400000001
+    },
+    {
+      "dataset_index": 3,
+      "run_index": 8,
+      "seconds": 0.273088155
+    },
+    {
+      "dataset_index": 3,
+      "run_index": 9,
+      "seconds": 0.307150439
+    }
+  ]
+}

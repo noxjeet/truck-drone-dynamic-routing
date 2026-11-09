@@ -1,0 +1,15 @@
+VNS pilot: n=50 endurance x1.00 iter_max=1000 runs=3 |pool|=39574 initial trips=23 drones=2
+Incumbent   T0=1e-04 alpha=0.980  gain% mean 19.74 [min 18.99, max 20.73]  s/run 1.79  per run: shakes 1000.00 (na 82.67, infeas 46.33, skipped 0.00) improving 32.00 SA-acc 3.33 best-updates 33.00 truncated 0.00
+Incumbent   T0=1e-03 alpha=0.980  gain% mean 19.74 [min 18.99, max 20.73]  s/run 1.74  per run: shakes 1000.00 (na 82.67, infeas 46.33, skipped 0.00) improving 32.00 SA-acc 3.33 best-updates 33.00 truncated 0.00
+Incumbent   T0=1e-02 alpha=0.980  gain% mean 19.56 [min 19.46, max 19.70]  s/run 1.64  per run: shakes 1000.00 (na 83.33, infeas 64.67, skipped 0.00) improving 34.00 SA-acc 7.00 best-updates 35.67 truncated 0.00
+Incumbent   T0=1e-01 alpha=0.980  gain% mean 7.17 [min 2.01, max 13.88]  s/run 0.45  per run: shakes 1000.00 (na 336.00, infeas 0.00, skipped 0.00) improving 271.00 SA-acc 226.67 best-updates 12.67 truncated 0.00
+ShakenState T0=1e-04 alpha=0.980  gain% mean 0.09 [min 0.00, max 0.26]  s/run 0.77  per run: shakes 1000.00 (na 339.00, infeas 0.00, skipped 0.00) improving 1822.33 SA-acc 3.00 best-updates 0.33 truncated 0.00
+ShakenState T0=1e-03 alpha=0.980  gain% mean 0.09 [min 0.00, max 0.26]  s/run 0.78  per run: shakes 1000.00 (na 338.33, infeas 0.33, skipped 0.00) improving 1841.00 SA-acc 10.00 best-updates 0.33 truncated 0.00
+ShakenState T0=1e-02 alpha=0.980  gain% mean 1.23 [min 0.00, max 3.68]  s/run 0.77  per run: shakes 1000.00 (na 338.33, infeas 0.00, skipped 0.00) improving 1877.00 SA-acc 82.00 best-updates 3.33 truncated 0.00
+ShakenState T0=1e-01 alpha=0.980  gain% mean 2.69 [min 0.00, max 4.88]  s/run 1.06  per run: shakes 1000.00 (na 336.67, infeas 0.00, skipped 0.00) improving 2231.00 SA-acc 400.67 best-updates 4.00 truncated 0.00
+Incumbent   T0=1e-02 alpha=0.900  gain% mean 19.74 [min 18.99, max 20.73]  s/run 1.64  per run: shakes 1000.00 (na 82.67, infeas 46.33, skipped 0.00) improving 32.00 SA-acc 3.33 best-updates 33.00 truncated 0.00
+Incumbent   T0=1e-02 alpha=0.950  gain% mean 19.74 [min 18.99, max 20.73]  s/run 1.62  per run: shakes 1000.00 (na 82.67, infeas 46.33, skipped 0.00) improving 32.00 SA-acc 3.33 best-updates 33.00 truncated 0.00
+Incumbent   T0=1e-02 alpha=0.995  gain% mean 19.71 [min 18.72, max 20.60]  s/run 0.98  per run: shakes 1000.00 (na 231.33, infeas 12.67, skipped 0.00) improving 47.33 SA-acc 26.33 best-updates 38.00 truncated 0.00
+ShakenState T0=1e-02 alpha=0.900  gain% mean 1.23 [min 0.00, max 3.68]  s/run 0.79  per run: shakes 1000.00 (na 338.00, infeas 0.00, skipped 0.00) improving 1900.00 SA-acc 29.67 best-updates 3.33 truncated 0.00
+ShakenState T0=1e-02 alpha=0.950  gain% mean 1.23 [min 0.00, max 3.68]  s/run 0.82  per run: shakes 1000.00 (na 338.00, infeas 0.00, skipped 0.00) improving 1879.00 SA-acc 45.33 best-updates 3.33 truncated 0.00
+ShakenState T0=1e-02 alpha=0.995  gain% mean 1.23 [min 0.00, max 3.68]  s/run 0.91  per run: shakes 1000.00 (na 337.33, infeas 0.00, skipped 0.00) improving 2006.00 SA-acc 247.00 best-updates 3.33 truncated 0.00

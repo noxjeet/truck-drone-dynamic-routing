@@ -1,0 +1,77 @@
+# M2 follow-up (N4 Reanchor) operator benchmark - Release -O3 -DNDEBUG, same methodology/sizes as the M2 report (window 3, base seed 31415, 15 reps, batch >= 20 ms).
+# The pre-follow-up numbers (Reject policy only) are kept in operator_bench_raw_reject_policy_before.txt
+
+operator benchmark, window=3, seeds: base 31415, dataset_index 0; 15 reps, batch >= 20.00 ms
+
+n=10  |pool|=1882  truck customers=7  trips=3  drones=2
+  base evaluate_solution (1 call)             1.62 us  [min 1.51, max 1.86, spread 21.86 %]
+  N4 Reject gen    (sweep, all anchors)       35.26 us  [min 32.56, max 37.22, spread 13.22 %]
+  N4 Reject full   (sweep, all anchors)       47.11 us  [min 41.49, max 54.69, spread 28.02 %]
+  N4 Reanchor gen  (sweep, all anchors)      910.12 us  [min 850.04, max 1022.63, spread 18.96 %]
+  N4 Reanchor full (sweep, all anchors)     5275.00 us  [min 4885.81, max 5712.75, spread 15.68 %]
+  N5 gen  (sweep over all trips)             92.47 us  [min 80.48, max 106.98, spread 28.66 %]
+  N5 full (sweep over all trips)           1325.39 us  [min 1193.84, max 1452.79, spread 19.54 %]
+  N4 Reject  : calls/sweep=7 generated=45 evaluated(full)=6 accepted=6 affected=39
+      generation (net of 7 base evals): 23.92 us per sweep = 0.53 us per generated candidate  -> 1881190.93 candidates/s
+      evaluation (full - gen): 11.85 us per sweep = 1.98 us per evaluated candidate (evaluator alone: 1.62 us per call)
+  N4 Reanchor: calls/sweep=7 generated=45 evaluated(full)=2008 accepted=8 affected=0
+      generation (net of 7 base evals): 898.78 us per sweep = 19.97 us per generated candidate  -> 50067.76 candidates/s
+      evaluation (full - gen): 4364.88 us per sweep = 2.17 us per evaluated candidate (evaluator alone: 1.62 us per call)
+  N5: calls/sweep=3 generated=610 evaluated(full)=607 accepted=5 affected=3
+      generation (net of 3 base evals): 87.61 us per sweep = 0.14 us per generated candidate  -> 6962841.80 candidates/s
+      evaluation (full - gen): 1232.92 us per sweep = 2.03 us per evaluated candidate (evaluator alone: 1.62 us per call)
+  N4 outcome per generated candidate (45 Reanchor / 45 Reject):
+      feasible (accepted):   Reject 6 (13.33 %)   Reanchor 8 (17.78 %)
+      of which re-anchored:  2 (4.44 %), 2 trips, 2002 variants built (stale launch candidates: 39 = 86.67 %)
+      rejected:              Reject 39 (86.67 %)   Reanchor 37 (82.22 %)
+        affected-trips (Reject policy): 39
+        Reanchor: invalid-recovery 11, no-replacement-flp 0, too-many-reanchorings 0, evaluator 26
+
+n=20  |pool|=6348  truck customers=14  trips=6  drones=2
+  base evaluate_solution (1 call)             3.00 us  [min 2.68, max 3.34, spread 21.84 %]
+  N4 Reject gen    (sweep, all anchors)      112.40 us  [min 101.13, max 121.42, spread 18.05 %]
+  N4 Reject full   (sweep, all anchors)      140.04 us  [min 130.44, max 161.19, spread 21.95 %]
+  N4 Reanchor gen  (sweep, all anchors)     1734.16 us  [min 1614.58, max 1863.30, spread 14.34 %]
+  N4 Reanchor full (sweep, all anchors)    13213.09 us  [min 12428.07, max 14468.24, spread 15.44 %]
+  N5 gen  (sweep over all trips)            166.65 us  [min 157.58, max 199.54, spread 25.18 %]
+  N5 full (sweep over all trips)           2903.29 us  [min 2720.59, max 3187.73, spread 16.09 %]
+  N4 Reject  : calls/sweep=14 generated=110 evaluated(full)=9 accepted=9 affected=101
+      generation (net of 14 base evals): 70.40 us per sweep = 0.64 us per generated candidate  -> 1562513.45 candidates/s
+      evaluation (full - gen): 27.64 us per sweep = 3.07 us per evaluated candidate (evaluator alone: 3.00 us per call)
+  N4 Reanchor: calls/sweep=14 generated=110 evaluated(full)=3278 accepted=27 affected=0
+      generation (net of 14 base evals): 1692.15 us per sweep = 15.38 us per generated candidate  -> 65005.93 candidates/s
+      evaluation (full - gen): 11478.94 us per sweep = 3.50 us per evaluated candidate (evaluator alone: 3.00 us per call)
+  N5: calls/sweep=6 generated=793 evaluated(full)=781 accepted=21 affected=12
+      generation (net of 6 base evals): 148.65 us per sweep = 0.19 us per generated candidate  -> 5334675.26 candidates/s
+      evaluation (full - gen): 2736.64 us per sweep = 3.50 us per evaluated candidate (evaluator alone: 3.00 us per call)
+  N4 outcome per generated candidate (110 Reanchor / 110 Reject):
+      feasible (accepted):   Reject 9 (8.18 %)   Reanchor 27 (24.55 %)
+      of which re-anchored:  18 (16.36 %), 20 trips, 3269 variants built (stale launch candidates: 101 = 91.82 %)
+      rejected:              Reject 101 (91.82 %)   Reanchor 83 (75.45 %)
+        affected-trips (Reject policy): 101
+        Reanchor: invalid-recovery 38, no-replacement-flp 0, too-many-reanchorings 0, evaluator 45
+
+n=50  |pool|=39574  truck customers=27  trips=23  drones=2
+  base evaluate_solution (1 call)            11.87 us  [min 10.39, max 13.48, spread 26.07 %]
+  N4 Reject gen    (sweep, all anchors)      759.56 us  [min 677.89, max 922.08, spread 32.15 %]
+  N4 Reject full   (sweep, all anchors)      775.51 us  [min 652.29, max 896.18, spread 31.45 %]
+  N4 Reanchor gen  (sweep, all anchors)    32103.73 us  [min 28235.69, max 36038.01, spread 24.30 %]
+  N4 Reanchor full (sweep, all anchors)   361633.54 us  [min 339400.18, max 381221.84, spread 11.56 %]
+  N5 gen  (sweep over all trips)            990.28 us  [min 852.95, max 1111.60, spread 26.12 %]
+  N5 full (sweep over all trips)           6185.59 us  [min 5409.54, max 6896.48, spread 24.04 %]
+  N4 Reject  : calls/sweep=27 generated=246 evaluated(full)=2 accepted=2 affected=244
+      generation (net of 27 base evals): 438.96 us per sweep = 1.78 us per generated candidate  -> 560415.28 candidates/s
+      evaluation (full - gen): 15.95 us per sweep = 7.97 us per evaluated candidate (evaluator alone: 11.87 us per call)
+  N4 Reanchor: calls/sweep=27 generated=246 evaluated(full)=23508 accepted=5 affected=0
+      generation (net of 27 base evals): 31783.12 us per sweep = 129.20 us per generated candidate  -> 7739.96 candidates/s
+      evaluation (full - gen): 329529.82 us per sweep = 14.02 us per evaluated candidate (evaluator alone: 11.87 us per call)
+  N5: calls/sweep=23 generated=494 evaluated(full)=376 accepted=24 affected=118
+      generation (net of 23 base evals): 717.18 us per sweep = 1.45 us per generated candidate  -> 688813.51 candidates/s
+      evaluation (full - gen): 5195.31 us per sweep = 13.82 us per evaluated candidate (evaluator alone: 11.87 us per call)
+  N4 outcome per generated candidate (246 Reanchor / 246 Reject):
+      feasible (accepted):   Reject 2 (0.81 %)   Reanchor 5 (2.03 %)
+      of which re-anchored:  3 (1.22 %), 6 trips, 23506 variants built (stale launch candidates: 244 = 99.19 %)
+      rejected:              Reject 244 (99.19 %)   Reanchor 241 (97.97 %)
+        affected-trips (Reject policy): 244
+        Reanchor: invalid-recovery 169, no-replacement-flp 0, too-many-reanchorings 0, evaluator 72
+

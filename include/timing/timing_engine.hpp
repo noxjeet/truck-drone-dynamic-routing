@@ -302,8 +302,13 @@ inline SolutionEvaluationResult evaluate_solution(
     // Keys are visited in ascending order so the reported violations are
     // deterministic.
     std::unordered_set<NodeId> invalid_customer_entries; // keys excluded from coverage/service lookup (already reported)
+    // [P2] The CustomerData keys in ascending order. Besides fixing the order
+    // of the violation reports below, this is the order in which customers are
+    // resolved and summed into the objective, so the objective no longer
+    // depends on the unordered_map's iteration order (which varies with its
+    // insertion history and bucket count).
+    std::vector<NodeId> keys;
     {
-        std::vector<NodeId> keys;
         keys.reserve(customers.size());
         for (const auto& kv : customers) keys.push_back(kv.first);
         std::sort(keys.begin(), keys.end());
@@ -321,12 +326,10 @@ inline SolutionEvaluationResult evaluate_solution(
                                   std::to_string(customers.at(id).node_id) + " (must equal its key)");
             }
         }
-        std::vector<NodeId> network_customers;
-        for (const auto& kv : registry.all()) {
-            if (kv.second.type == NodeType::Customer) network_customers.push_back(kv.first);
-        }
-        std::sort(network_customers.begin(), network_customers.end());
-        for (NodeId id : network_customers) {
+        // [P1] Ascending customer ids cached at SpatialNetwork construction
+        // (identical to the former full-registry scan + sort, without the
+        // O(|V|) pass over the FLP pool).
+        for (NodeId id : network.customer_ids()) {
             if (customers.find(id) == customers.end()) {
                 reasons.push_back("network customer " + std::to_string(id) +
                                   " has no CustomerData (service times and theta are unknown)");
@@ -634,8 +637,7 @@ inline SolutionEvaluationResult evaluate_solution(
 
     // --- Customer service resolution --------------------------------------
     result.customer_records.reserve(customers.size());
-    for (const auto& [customer_id, customer_data] : customers) {
-        (void)customer_data;
+    for (const NodeId customer_id : keys) { // [P2] ascending id order, deterministic
         if (invalid_customer_entries.count(customer_id) != 0) continue; // reported once above
         CustomerServiceRecord record;
         record.customer_id = customer_id;
@@ -689,6 +691,7 @@ inline SolutionEvaluationResult evaluate_solution(
     }
 
     // --- Objective and overall feasibility ---------------------------------
+    // [P2] Summed in ascending customer-id order (customer_records order).
     double objective = 0.0;
     for (const auto& record : result.customer_records) objective += record.service_arrival_time;
     result.objective_value = objective;

@@ -1,0 +1,5 @@
+# M8 sanitizer runs (ASan+UBSan, build_m6san)
+test_experiment_config: 24 passed, 0 failed
+test_runner_cli: 63 passed, 0 failed
+tdr_static run (10 customers, 2 runs, 100 passes): exit 0
+sanitizer reports: 0

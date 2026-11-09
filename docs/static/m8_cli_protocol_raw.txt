@@ -1,0 +1,6 @@
+# M8 CLI protocol runs (tdr_static run, 10 runs, 2000 passes, base seed 31415, dataset 0; Release -O3)
+n=10: mean improvement 14.63 %, best 57198.8 s, worst-of-best 58295.4 s, std 346.8 s, per-run wall 0.21 s, total 2.10 s, results.json 36504 bytes
+n=20: mean improvement 19.58 %, best 145626.4 s, worst-of-best 165288.3 s, std 6358.9 s, per-run wall 0.28 s, total 3.95 s, results.json 37403 bytes
+n=50: mean improvement 20.54 %, best 595980.0 s, worst-of-best 620465.9 s, std 8819.4 s, per-run wall 1.18 s, total 11.87 s, results.json 41555 bytes
+M7 bench_vns default (same seed/instance): n=10 14.63 %, n=20 19.58 %, n=50 20.54 % (re-measured with 10 runs, see m8_bench_vns_default_n50_raw.txt)
+byte-identical results.json on a repeated run at n = 10, 20, 50 (200 passes, 2 runs): yes

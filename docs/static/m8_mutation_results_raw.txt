@@ -1,0 +1,55 @@
+M-05 unsigned accepts a sign: KILLED by test_experiment_config
+M-06 non-finite numbers accepted: KILLED by test_experiment_config
+M-07 trailing garbage accepted in integers: SURVIVED
+M-08 base seed not wired into the VNS: KILLED by test_experiment_config, test_runner_cli
+M-09 n1_repeats not wired: KILLED by test_experiment_config, test_runner_cli
+M-10 record_trace not wired: KILLED by test_experiment_config, test_runner_cli
+M-07 trailing garbage accepted in integers: KILLED by test_experiment_config
+M-11 experiment.runs not validated: KILLED by test_experiment_config, test_runner_cli
+M-12 canonical dump omits a key: SURVIVED
+M-13 default TSP seed 43: KILLED by test_experiment_config
+M-14 default TSP restarts 9: KILLED by test_experiment_config
+M-12 canonical dump omits a key: KILLED by test_experiment_config
+M-15 default TSP exact limit 20: KILLED by test_experiment_config
+M-16 reference setter swapped: KILLED by test_runner_cli
+M-17 operator list loses its last entry: KILLED by test_experiment_config, test_runner_cli
+M-18 unknown keys accepted: KILLED by test_experiment_config
+M-21 first_run_index ignored: KILLED by test_runner_cli
+M-22 dataset offset ignored: KILLED by test_runner_cli
+M-23 adjacency window hard-coded: KILLED by test_runner_cli
+M-24 TSP seed hard-coded: SURVIVED
+M-25 k-means policy not passed: SURVIVED
+M-24 TSP seed hard-coded: KILLED by test_runner_cli
+M-25 k-means policy not passed: KILLED by test_runner_cli
+M-26 objective check dropped in verification: SURVIVED
+M-27 exactly-once check weakened: SURVIVED
+M-28 verified flag always true: SURVIVED
+M-26 objective check dropped in verification: KILLED by test_runner_cli
+M-27 exactly-once check weakened: SURVIVED
+M-28 verified flag always true: KILLED by test_runner_cli
+M-29 dataset index not applied to the instance: KILLED by test_runner_cli
+M-31 improvement percent uses the wrong base: KILLED by test_runner_cli
+M-27 exactly-once check weakened: KILLED by test_runner_cli
+M-32 minutes = seconds / 3600: KILLED by test_runner_cli
+M-33 guard trigger not reported: KILLED by test_runner_cli
+M-34 deterministic flag constant: KILLED by test_runner_cli
+M-35 timing.json digested: KILLED by test_runner_cli
+M-36 overwrite protection off: KILLED by test_runner_cli
+M-37 stale traces.csv kept: KILLED by test_runner_cli
+M-38 best solutions not written: KILLED by test_runner_cli
+M-39 JSON quote not escaped: KILLED by test_runner_cli
+M-40 csv loses a column: KILLED by test_runner_cli
+M-41 std uses n instead of n - 1: SURVIVED
+M-41 std uses n instead of n - 1: KILLED by test_runner_cli
+M-42 best run index not tracked: KILLED by test_runner_cli
+M-43 non-finite doubles written as numbers: KILLED by test_runner_cli
+M-44 digest of a different content: SURVIVED
+M-47 output errors exit 1 instead of 4: KILLED by test_runner_cli
+M-49 --quiet ignored: KILLED by test_runner_cli
+M-44 digest of a different content: KILLED by test_runner_cli
+M-51 unknown arguments accepted: SURVIVED
+M-51 unknown arguments accepted: KILLED by test_runner_cli
+M-01 doubles printed with 6 digits: KILLED by test_experiment_config, test_runner_cli
+M-02 duplicate keys accepted: KILLED by test_experiment_config
+M-03 section prefix not applied: KILLED by test_experiment_config, test_runner_cli
+M-04 ; comments not stripped: KILLED by test_experiment_config

@@ -1,0 +1,5 @@
+bases=360 with_trips=241
+N7: calls=5188 candidates=128212 accepted=1125 improving_calls=122 affected=1314 no_replacement=3 no_free_drone=2613 endurance=123157 other_eval=0 reuse_of_onroute_flp=812 depot_recovery=10919 second_drone=27
+N8: calls=1696 (windowed 848) candidates=9120 accepted=7946 improving_calls=1640 affected=1174 endurance=0 other_eval=0 flp_dropped_calls=1696 candidates_outside_the_default_window=3366
+1696098 checks, 0 failures
+ALL TESTS PASSED

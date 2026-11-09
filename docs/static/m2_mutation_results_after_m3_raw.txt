@@ -1,0 +1,64 @@
+N4-01 window +1 (relocate gaps): KILLED by test_n4_n5, test_n4_n5_oracle
+N4-02 window -1 (relocate gaps): KILLED by test_n4_n5, test_n4_n5_oracle
+N4-03 exchange window +1: KILLED by test_n4_n5, test_n4_n5_oracle
+N4-04 no duplicate removal: KILLED by test_n4_n5, test_n4_n5_oracle
+N4-05 affected check skipped: KILLED by test_n4_n5, test_n4_n5_oracle
+N4-06 incident gaps not excluded: KILLED by test_n4_n5, test_n4_n5_oracle
+N4-07 wrong gap mapping after removal: KILLED by test_n4_n5, test_n4_n5_oracle
+N4-08 tie-break last wins (<=): KILLED by test_n4_n5
+N4-09 trips silently dissolved: KILLED by test_n4_n5, test_n4_n5_oracle
+N4-10 affected rejection not counted (Reject policy): KILLED by test_n4_n5, test_n4_n5_oracle
+N4-11 affected trip list empty: KILLED by test_n4_n5, test_n4_n5_oracle
+N4-12 relocate lands before the gap FLPs (insertion pos -> gap start): KILLED by test_n4_n5, test_n4_n5_oracle
+N4-13 exchange partner order reversed: KILLED by test_n4_n5, test_n4_n5_oracle
+N4-14 evaluate_candidates ignored: KILLED by test_n4_n5
+RA-01 recovery check skipped: KILLED by test_n4_n5, test_n4_n5_oracle
+RA-02 no-replacement check skipped: KILLED by test_n4_n5, test_n4_n5_oracle
+RA-03 drone id changed by re-anchoring: KILLED by test_n4_n5, test_n4_n5_oracle
+RA-04 recovery node changed by re-anchoring: KILLED by test_n4_n5, test_n4_n5_oracle
+RA-05 variant tie-break last wins (<=): KILLED by test_n4_n5
+RA-06 stale trips handled in reverse order: KILLED by test_n4_n5
+RA-07 enumeration skips the last option: KILLED by test_n4_n5, test_n4_n5_oracle
+RA-08 stale FLP not removed from the route: KILLED by test_n4_n5, test_n4_n5_oracle
+RA-09 cap_reached off by one (>=): KILLED by test_n4_n5, test_n4_n5_oracle
+RA-10 invalid-recovery counted twice: KILLED by test_n4_n5, test_n4_n5_oracle
+RA-11 unaffected trips treated as stale: KILLED by test_n4_n5, test_n4_n5_oracle
+RA-12 no-replacement reported as affected-trips: KILLED by test_n4_n5, test_n4_n5_oracle
+RA-13 trips_reanchored counts candidates not trips: KILLED by test_n4_n5
+RA-14 evaluator judges the stale candidate, not the variant: KILLED by test_n4_n5, test_n4_n5_oracle
+RA-15 stale candidates not counted: KILLED by test_n4_n5, test_n4_n5_oracle
+RA-16 trip launch not updated to the replacement: KILLED by test_n4_n5, test_n4_n5_oracle
+CAP-01 default budget back to 10000: KILLED by test_n4_n5, test_n4_n5_oracle
+CAP-02 budget off by one (one extra combination): KILLED by test_n4_n5, test_n4_n5_oracle
+CAP-03 cap ignored (always exhaustive): KILLED by test_n4_n5, test_n4_n5_oracle
+RA-17 recovery searched from route start, not after launch: KILLED by test_n4_n5, test_n4_n5_oracle
+RA-18 replacement inserted into the first gap, not the stale FLP's arc: KILLED by test_n4_n5, test_n4_n5_oracle
+RA-19 re-anchored candidate not counted as accepted: KILLED by test_n4_n5, test_n4_n5_oracle
+RA-20 options in reverse ratio order: KILLED by test_n4_n5, test_n4_n5_oracle
+RA-21 evaluate_candidates ignored (Reanchor, unaffected path): KILLED by test_n4_n5
+CAP-04 cap_reached candidates not counted: KILLED by test_n4_n5, test_n4_n5_oracle
+CAP-05 cap 0 means zero budget instead of unlimited: KILLED by test_n4_n5
+CAP-06 enumeration order: FIRST stale trip fastest: KILLED by test_n4_n5
+CAP-07 combinations_total not recorded: KILLED by test_n4_n5, test_n4_n5_oracle
+CAP-08 budget applied to the Reject policy path too (candidates dropped): KILLED by test_n4_n5
+N5-01 partner window +1: KILLED by test_n4_n5, test_n4_n5_oracle
+N5-02 launch window +1: KILLED by test_n4_n5, test_n4_n5_oracle
+N5-03 launch window -1: KILLED by test_n4_n5, test_n4_n5_oracle
+N5-04 launch window centre shifted (+1 half-step): KILLED by test_n4_n5, test_n4_n5_oracle
+N5-05 wrong recovery node (x instead of y): KILLED by test_n4_n5, test_n4_n5_oracle
+N5-06 unused FLPs not dropped: KILLED by test_n4_n5, test_n4_n5_oracle
+N5-07 affected check skipped: KILLED by test_n4_n5, test_n4_n5_oracle
+N5-08 trips recovering at t ignored: KILLED by test_n4_n5, test_n4_n5_oracle
+N5-09 foreign-FLP trips ignored: KILLED by test_n4_n5, test_n4_n5_oracle
+N5-10 free-drone search bypassed (always drone 0): KILLED by test_n4_n5, test_n4_n5_oracle
+N5-11 tie-break last wins (<=): KILLED by test_n4_n5
+N5-12 old trip not dissolved: KILLED by test_n4_n5, test_n4_n5_oracle
+N5-13 role swap wrong (t stays): KILLED by test_n4_n5, test_n4_n5_oracle
+N5-14 on-route FLP reuse disabled (duplicate insert): KILLED by test_n4_n5_oracle
+N5-15 NoFreeDrone not counted: KILLED by test_n4_n5
+RO-01 FLP inserted in reverse ratio order: KILLED by test_n4_n5, test_n4_n5_oracle
+RO-02 FLP insertion ignores existing FLPs: KILLED by test_n4_n5, test_n4_n5_oracle
+CW-01 window boundary strict (<): KILLED by test_n4_n5
+CW-02 window boundary +1 half-step: KILLED by test_n4_n5, test_n4_n5_oracle
+MT-01 trip-order reason disabled (cascade reported): KILLED by test_n4_n5
+MT-02 fleet check before endurance swapped off: KILLED by test_n4_n5

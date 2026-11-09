@@ -1,0 +1,5263 @@
+{
+  "schema": "tdr.static.results/2",
+  "tool": "tdr_static 1.1 (M8)",
+  "units": {
+    "time": "seconds",
+    "coordinates": "metres",
+    "objective": "sum over all customers of the service arrival time (seconds), lower is better; *_min fields are the same value in minutes"
+  },
+  "experiment": {
+    "name": "m9_n10_seed1",
+    "runs_per_dataset": 10,
+    "num_datasets": 4,
+    "first_dataset_index": 0,
+    "first_run_index": 0,
+    "base_seed": 20261109,
+    "config_digest": "e171dfd0089f2977",
+    "deterministic": true,
+    "ok": true,
+    "errors": []
+  },
+  "datasets": [
+    {
+      "dataset_index": 0,
+      "instance_seed": 6916579990304827685,
+      "num_customers": 10,
+      "num_flp_candidates": 1464,
+      "initial": {
+        "feasible": true,
+        "objective_s": 80551.568773902429,
+        "objective_min": 1342.5261462317071,
+        "num_trips": 3,
+        "diagnostics": [],
+        "solution": {
+          "truck_route": [0, 3, 7, 4, 677, 9, 1324, 5, 6, 846, 1, 0],
+          "drone_trips": [
+            {
+              "drone": 0,
+              "launch": 677,
+              "customer": 10,
+              "recovery": 9
+            },
+            {
+              "drone": 0,
+              "launch": 1324,
+              "customer": 2,
+              "recovery": 5
+            },
+            {
+              "drone": 0,
+              "launch": 846,
+              "customer": 8,
+              "recovery": 1
+            }
+          ]
+        }
+      },
+      "nodes": [
+        {
+          "id": 0,
+          "type": "depot",
+          "x_m": 30000,
+          "y_m": 30000
+        },
+        {
+          "id": 1,
+          "type": "customer",
+          "x_m": 28073.594620679673,
+          "y_m": 16573.68124145301
+        },
+        {
+          "id": 2,
+          "type": "customer",
+          "x_m": 40198.457826874503,
+          "y_m": 7508.4713120760662
+        },
+        {
+          "id": 3,
+          "type": "customer",
+          "x_m": 118.37029965948264,
+          "y_m": 44805.065427143083
+        },
+        {
+          "id": 4,
+          "type": "customer",
+          "x_m": 48129.570952544651,
+          "y_m": 32897.166419923546
+        },
+        {
+          "id": 5,
+          "type": "customer",
+          "x_m": 33742.471390891675,
+          "y_m": 1007.4202336341665
+        },
+        {
+          "id": 6,
+          "type": "customer",
+          "x_m": 7462.0008523958313,
+          "y_m": 161.12475908348634
+        },
+        {
+          "id": 7,
+          "type": "customer",
+          "x_m": 33917.61304141413,
+          "y_m": 45746.02721338212
+        },
+        {
+          "id": 8,
+          "type": "customer",
+          "x_m": 20584.95485401907,
+          "y_m": 14157.007204464058
+        },
+        {
+          "id": 9,
+          "type": "customer",
+          "x_m": 42411.205561032257,
+          "y_m": 17345.853940550827
+        },
+        {
+          "id": 10,
+          "type": "customer",
+          "x_m": 38657.841911590345,
+          "y_m": 21543.18073244999
+        },
+        {
+          "id": 677,
+          "type": "flp",
+          "x_m": 44952.701290593322,
+          "y_m": 24257.548375827591,
+          "arc_from": 4,
+          "arc_to": 9,
+          "position_ratio": 0.55555555555555558
+        },
+        {
+          "id": 846,
+          "type": "flp",
+          "x_m": 19240.054434272311,
+          "y_m": 9539.728463294643,
+          "arc_from": 6,
+          "arc_to": 1,
+          "position_ratio": 0.5714285714285714
+        },
+        {
+          "id": 1324,
+          "type": "flp",
+          "x_m": 39810.585309990085,
+          "y_m": 12444.32382847583,
+          "arc_from": 9,
+          "arc_to": 5,
+          "position_ratio": 0.29999999999999999
+        }
+      ],
+      "runs": [
+        {
+          "run_index": 0,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 80551.568773902429,
+          "initial_objective_min": 1342.5261462317071,
+          "best_objective_s": 50520.087039365797,
+          "best_objective_min": 842.00145065609661,
+          "final_current_objective_s": 50766.191659185832,
+          "final_current_objective_min": 846.10319431976382,
+          "improvement_pct": 37.282305225899471,
+          "iterations": 2000,
+          "t0": 805.51568773902432,
+          "final_temperature": 0.035664446995948729,
+          "best_updates": 11,
+          "last_best_iteration": 353,
+          "improving_moves": 10,
+          "sa_accepted_moves": 106,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20012,
+            "max_local_steps_in_pass": 15
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 671,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 682,
+              "exchange": 683,
+              "shift": 635,
+              "drone_remove": 0
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 3998,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 2
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3998,
+              "no_candidate": 2,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2000,
+              "no_anchor": 1999,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2010,
+              "no_anchor": 0,
+              "no_candidate": 0,
+              "improving": 9,
+              "sa_accepted": 105,
+              "sa_rejected": 1896
+            },
+            {
+              "op": "N5",
+              "calls": 2001,
+              "no_anchor": 1999,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 1,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N6",
+              "calls": 2000,
+              "no_anchor": 1999,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2000,
+              "no_anchor": 0,
+              "no_candidate": 1407,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 593
+            },
+            {
+              "op": "N8",
+              "calls": 2001,
+              "no_anchor": 1999,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 0,
+              "sa_rejected": 1
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 1, 8, 5, 2, 9, 10, 4, 7, 3, 6, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 1,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 80551.568773902429,
+          "initial_objective_min": 1342.5261462317071,
+          "best_objective_s": 50520.087039365797,
+          "best_objective_min": 842.00145065609661,
+          "final_current_objective_s": 50766.191659185832,
+          "final_current_objective_min": 846.10319431976382,
+          "improvement_pct": 37.282305225899471,
+          "iterations": 2000,
+          "t0": 805.51568773902432,
+          "final_temperature": 0.035664446995948729,
+          "best_updates": 12,
+          "last_best_iteration": 220,
+          "improving_moves": 12,
+          "sa_accepted_moves": 97,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20022,
+            "max_local_steps_in_pass": 19
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 677,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 661,
+              "exchange": 685,
+              "shift": 654,
+              "drone_remove": 0
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 3994,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 6
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3994,
+              "no_candidate": 6,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2001,
+              "no_anchor": 1998,
+              "no_candidate": 3,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2012,
+              "no_anchor": 0,
+              "no_candidate": 2,
+              "improving": 8,
+              "sa_accepted": 97,
+              "sa_rejected": 1905
+            },
+            {
+              "op": "N5",
+              "calls": 2004,
+              "no_anchor": 1998,
+              "no_candidate": 2,
+              "improving": 1,
+              "sa_accepted": 0,
+              "sa_rejected": 3
+            },
+            {
+              "op": "N6",
+              "calls": 2001,
+              "no_anchor": 1998,
+              "no_candidate": 3,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2001,
+              "no_anchor": 0,
+              "no_candidate": 1370,
+              "improving": 1,
+              "sa_accepted": 0,
+              "sa_rejected": 630
+            },
+            {
+              "op": "N8",
+              "calls": 2003,
+              "no_anchor": 1998,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 0,
+              "sa_rejected": 3
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 1, 8, 5, 2, 9, 10, 4, 7, 3, 6, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 2,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 80551.568773902429,
+          "initial_objective_min": 1342.5261462317071,
+          "best_objective_s": 51442.103393657213,
+          "best_objective_min": 857.36838989428691,
+          "final_current_objective_s": 51442.103393657213,
+          "final_current_objective_min": 857.36838989428691,
+          "improvement_pct": 36.137676550970255,
+          "iterations": 2000,
+          "t0": 805.51568773902432,
+          "final_temperature": 0.035664446995948729,
+          "best_updates": 13,
+          "last_best_iteration": 35,
+          "improving_moves": 13,
+          "sa_accepted_moves": 122,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20025,
+            "max_local_steps_in_pass": 23
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 627,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 621,
+              "exchange": 629,
+              "shift": 749,
+              "drone_remove": 1
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4002,
+              "no_anchor": 3998,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 1,
+              "sa_rejected": 2
+            },
+            {
+              "op": "N2",
+              "calls": 4001,
+              "no_anchor": 3998,
+              "no_candidate": 3,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2001,
+              "no_anchor": 2000,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2013,
+              "no_anchor": 0,
+              "no_candidate": 0,
+              "improving": 10,
+              "sa_accepted": 120,
+              "sa_rejected": 1883
+            },
+            {
+              "op": "N5",
+              "calls": 2003,
+              "no_anchor": 2000,
+              "no_candidate": 2,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 1
+            },
+            {
+              "op": "N6",
+              "calls": 2001,
+              "no_anchor": 2000,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2001,
+              "no_anchor": 0,
+              "no_candidate": 1313,
+              "improving": 0,
+              "sa_accepted": 1,
+              "sa_rejected": 687
+            },
+            {
+              "op": "N8",
+              "calls": 2003,
+              "no_anchor": 2000,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 0,
+              "sa_rejected": 1
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 10, 9, 2, 5, 6, 8, 1, 4, 7, 3, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 3,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 80551.568773902429,
+          "initial_objective_min": 1342.5261462317071,
+          "best_objective_s": 53579.069832898138,
+          "best_objective_min": 892.984497214969,
+          "final_current_objective_s": 53579.069832898138,
+          "final_current_objective_min": 892.984497214969,
+          "improvement_pct": 33.484759330650057,
+          "iterations": 2000,
+          "t0": 805.51568773902432,
+          "final_temperature": 0.035664446995948729,
+          "best_updates": 9,
+          "last_best_iteration": 24,
+          "improving_moves": 10,
+          "sa_accepted_moves": 111,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20012,
+            "max_local_steps_in_pass": 15
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 711,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 673,
+              "exchange": 697,
+              "shift": 629,
+              "drone_remove": 1
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 3994,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 6
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3994,
+              "no_candidate": 6,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2000,
+              "no_anchor": 1997,
+              "no_candidate": 3,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2010,
+              "no_anchor": 0,
+              "no_candidate": 1,
+              "improving": 9,
+              "sa_accepted": 111,
+              "sa_rejected": 1889
+            },
+            {
+              "op": "N5",
+              "calls": 2001,
+              "no_anchor": 1997,
+              "no_candidate": 2,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 2
+            },
+            {
+              "op": "N6",
+              "calls": 2000,
+              "no_anchor": 1997,
+              "no_candidate": 3,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2000,
+              "no_anchor": 0,
+              "no_candidate": 1428,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 572
+            },
+            {
+              "op": "N8",
+              "calls": 2001,
+              "no_anchor": 1997,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 0,
+              "sa_rejected": 3
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 4, 10, 9, 2, 5, 1, 8, 6, 3, 7, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 4,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 80551.568773902429,
+          "initial_objective_min": 1342.5261462317071,
+          "best_objective_s": 50520.087039365797,
+          "best_objective_min": 842.00145065609661,
+          "final_current_objective_s": 50766.191659185832,
+          "final_current_objective_min": 846.10319431976382,
+          "improvement_pct": 37.282305225899471,
+          "iterations": 2000,
+          "t0": 805.51568773902432,
+          "final_temperature": 0.035664446995948729,
+          "best_updates": 11,
+          "last_best_iteration": 1255,
+          "improving_moves": 6,
+          "sa_accepted_moves": 122,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20010,
+            "max_local_steps_in_pass": 16
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 654,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 685,
+              "exchange": 641,
+              "shift": 674,
+              "drone_remove": 0
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 3998,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 2
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3998,
+              "no_candidate": 2,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2000,
+              "no_anchor": 1999,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2006,
+              "no_anchor": 0,
+              "no_candidate": 1,
+              "improving": 4,
+              "sa_accepted": 121,
+              "sa_rejected": 1880
+            },
+            {
+              "op": "N5",
+              "calls": 2002,
+              "no_anchor": 1999,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 1,
+              "sa_rejected": 1
+            },
+            {
+              "op": "N6",
+              "calls": 2000,
+              "no_anchor": 1999,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2000,
+              "no_anchor": 0,
+              "no_candidate": 1387,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 613
+            },
+            {
+              "op": "N8",
+              "calls": 2002,
+              "no_anchor": 1999,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 0,
+              "sa_rejected": 1
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 1, 8, 5, 2, 9, 10, 4, 7, 3, 6, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 5,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 80551.568773902429,
+          "initial_objective_min": 1342.5261462317071,
+          "best_objective_s": 50520.087039365797,
+          "best_objective_min": 842.00145065609661,
+          "final_current_objective_s": 50520.087039365797,
+          "final_current_objective_min": 842.00145065609661,
+          "improvement_pct": 37.282305225899471,
+          "iterations": 2000,
+          "t0": 805.51568773902432,
+          "final_temperature": 0.035664446995948729,
+          "best_updates": 15,
+          "last_best_iteration": 1513,
+          "improving_moves": 16,
+          "sa_accepted_moves": 118,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20032,
+            "max_local_steps_in_pass": 24
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 629,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 699,
+              "exchange": 654,
+              "shift": 646,
+              "drone_remove": 1
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 4000,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 4000,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2002,
+              "no_anchor": 2002,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2016,
+              "no_anchor": 0,
+              "no_candidate": 1,
+              "improving": 11,
+              "sa_accepted": 117,
+              "sa_rejected": 1887
+            },
+            {
+              "op": "N5",
+              "calls": 2005,
+              "no_anchor": 2002,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 1,
+              "sa_rejected": 2
+            },
+            {
+              "op": "N6",
+              "calls": 2002,
+              "no_anchor": 2002,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2002,
+              "no_anchor": 0,
+              "no_candidate": 1428,
+              "improving": 2,
+              "sa_accepted": 0,
+              "sa_rejected": 572
+            },
+            {
+              "op": "N8",
+              "calls": 2005,
+              "no_anchor": 2002,
+              "no_candidate": 0,
+              "improving": 3,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 1, 8, 5, 2, 9, 10, 4, 7, 3, 6, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 6,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 80551.568773902429,
+          "initial_objective_min": 1342.5261462317071,
+          "best_objective_s": 50520.087039365797,
+          "best_objective_min": 842.00145065609661,
+          "final_current_objective_s": 50766.191659185832,
+          "final_current_objective_min": 846.10319431976382,
+          "improvement_pct": 37.282305225899471,
+          "iterations": 2000,
+          "t0": 805.51568773902432,
+          "final_temperature": 0.035664446995948729,
+          "best_updates": 18,
+          "last_best_iteration": 1981,
+          "improving_moves": 16,
+          "sa_accepted_moves": 104,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20022,
+            "max_local_steps_in_pass": 19
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 667,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 646,
+              "exchange": 662,
+              "shift": 692,
+              "drone_remove": 0
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 3998,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 2
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3998,
+              "no_candidate": 2,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2000,
+              "no_anchor": 1999,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2016,
+              "no_anchor": 0,
+              "no_candidate": 2,
+              "improving": 13,
+              "sa_accepted": 104,
+              "sa_rejected": 1897
+            },
+            {
+              "op": "N5",
+              "calls": 2003,
+              "no_anchor": 1999,
+              "no_candidate": 3,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 1
+            },
+            {
+              "op": "N6",
+              "calls": 2000,
+              "no_anchor": 1999,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2000,
+              "no_anchor": 0,
+              "no_candidate": 1382,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 618
+            },
+            {
+              "op": "N8",
+              "calls": 2003,
+              "no_anchor": 1999,
+              "no_candidate": 0,
+              "improving": 3,
+              "sa_accepted": 0,
+              "sa_rejected": 1
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 1, 8, 5, 2, 9, 10, 4, 7, 3, 6, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 7,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 80551.568773902429,
+          "initial_objective_min": 1342.5261462317071,
+          "best_objective_s": 50520.087039365797,
+          "best_objective_min": 842.00145065609661,
+          "final_current_objective_s": 50520.087039365797,
+          "final_current_objective_min": 842.00145065609661,
+          "improvement_pct": 37.282305225899471,
+          "iterations": 2000,
+          "t0": 805.51568773902432,
+          "final_temperature": 0.035664446995948729,
+          "best_updates": 11,
+          "last_best_iteration": 42,
+          "improving_moves": 18,
+          "sa_accepted_moves": 112,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20048,
+            "max_local_steps_in_pass": 25
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 640,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 664,
+              "exchange": 667,
+              "shift": 669,
+              "drone_remove": 0
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4006,
+              "no_anchor": 3992,
+              "no_candidate": 0,
+              "improving": 3,
+              "sa_accepted": 3,
+              "sa_rejected": 8
+            },
+            {
+              "op": "N2",
+              "calls": 4003,
+              "no_anchor": 3992,
+              "no_candidate": 11,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2003,
+              "no_anchor": 1999,
+              "no_candidate": 4,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2018,
+              "no_anchor": 0,
+              "no_candidate": 1,
+              "improving": 12,
+              "sa_accepted": 105,
+              "sa_rejected": 1900
+            },
+            {
+              "op": "N5",
+              "calls": 2006,
+              "no_anchor": 1999,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 1,
+              "sa_rejected": 5
+            },
+            {
+              "op": "N6",
+              "calls": 2003,
+              "no_anchor": 1999,
+              "no_candidate": 4,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2003,
+              "no_anchor": 0,
+              "no_candidate": 1401,
+              "improving": 0,
+              "sa_accepted": 3,
+              "sa_rejected": 599
+            },
+            {
+              "op": "N8",
+              "calls": 2006,
+              "no_anchor": 1999,
+              "no_candidate": 0,
+              "improving": 3,
+              "sa_accepted": 0,
+              "sa_rejected": 4
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 1, 8, 5, 2, 9, 10, 4, 7, 3, 6, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 8,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 80551.568773902429,
+          "initial_objective_min": 1342.5261462317071,
+          "best_objective_s": 50520.087039365797,
+          "best_objective_min": 842.00145065609661,
+          "final_current_objective_s": 50520.087039365797,
+          "final_current_objective_min": 842.00145065609661,
+          "improvement_pct": 37.282305225899471,
+          "iterations": 2000,
+          "t0": 805.51568773902432,
+          "final_temperature": 0.035664446995948729,
+          "best_updates": 11,
+          "last_best_iteration": 683,
+          "improving_moves": 13,
+          "sa_accepted_moves": 123,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20030,
+            "max_local_steps_in_pass": 35
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 606,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 628,
+              "exchange": 698,
+              "shift": 674,
+              "drone_remove": 0
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4002,
+              "no_anchor": 3998,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 1,
+              "sa_rejected": 2
+            },
+            {
+              "op": "N2",
+              "calls": 4001,
+              "no_anchor": 3998,
+              "no_candidate": 3,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2001,
+              "no_anchor": 2000,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2013,
+              "no_anchor": 0,
+              "no_candidate": 1,
+              "improving": 7,
+              "sa_accepted": 120,
+              "sa_rejected": 1885
+            },
+            {
+              "op": "N5",
+              "calls": 2006,
+              "no_anchor": 2000,
+              "no_candidate": 4,
+              "improving": 1,
+              "sa_accepted": 1,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N6",
+              "calls": 2001,
+              "no_anchor": 2000,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2001,
+              "no_anchor": 0,
+              "no_candidate": 1392,
+              "improving": 0,
+              "sa_accepted": 1,
+              "sa_rejected": 608
+            },
+            {
+              "op": "N8",
+              "calls": 2005,
+              "no_anchor": 2000,
+              "no_candidate": 0,
+              "improving": 4,
+              "sa_accepted": 0,
+              "sa_rejected": 1
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 1, 8, 5, 2, 9, 10, 4, 7, 3, 6, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 9,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 80551.568773902429,
+          "initial_objective_min": 1342.5261462317071,
+          "best_objective_s": 51442.103393657213,
+          "best_objective_min": 857.36838989428691,
+          "final_current_objective_s": 51442.103393657213,
+          "final_current_objective_min": 857.36838989428691,
+          "improvement_pct": 36.137676550970255,
+          "iterations": 2000,
+          "t0": 805.51568773902432,
+          "final_temperature": 0.035664446995948729,
+          "best_updates": 12,
+          "last_best_iteration": 61,
+          "improving_moves": 12,
+          "sa_accepted_moves": 119,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20018,
+            "max_local_steps_in_pass": 20
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 681,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 669,
+              "exchange": 658,
+              "shift": 670,
+              "drone_remove": 3
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 3984,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 1,
+              "sa_rejected": 15
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3984,
+              "no_candidate": 16,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2000,
+              "no_anchor": 1993,
+              "no_candidate": 7,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2012,
+              "no_anchor": 0,
+              "no_candidate": 2,
+              "improving": 9,
+              "sa_accepted": 116,
+              "sa_rejected": 1885
+            },
+            {
+              "op": "N5",
+              "calls": 2003,
+              "no_anchor": 1992,
+              "no_candidate": 3,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 8
+            },
+            {
+              "op": "N6",
+              "calls": 2000,
+              "no_anchor": 1993,
+              "no_candidate": 7,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2000,
+              "no_anchor": 0,
+              "no_candidate": 1325,
+              "improving": 0,
+              "sa_accepted": 1,
+              "sa_rejected": 674
+            },
+            {
+              "op": "N8",
+              "calls": 2003,
+              "no_anchor": 1992,
+              "no_candidate": 0,
+              "improving": 3,
+              "sa_accepted": 1,
+              "sa_rejected": 7
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 10, 9, 2, 5, 6, 8, 1, 4, 7, 3, 0],
+            "drone_trips": []
+          }
+        }
+      ],
+      "summary": {
+        "runs_ok": 10,
+        "best_objective_s": 50520.087039365797,
+        "best_objective_min": 842.00145065609661,
+        "best_run_index": 0,
+        "mean_best_objective_s": 51010.388589577306,
+        "mean_best_objective_min": 850.17314315962176,
+        "worst_best_objective_s": 53579.069832898138,
+        "worst_best_objective_min": 892.984497214969,
+        "std_best_objective_s": 980.56944594513959,
+        "mean_improvement_pct": 36.673624901388685
+      }
+    },
+    {
+      "dataset_index": 1,
+      "instance_seed": 6711302543829306117,
+      "num_customers": 10,
+      "num_flp_candidates": 1784,
+      "initial": {
+        "feasible": true,
+        "objective_s": 56108.275077649305,
+        "objective_min": 935.13791796082171,
+        "num_trips": 2,
+        "diagnostics": [],
+        "solution": {
+          "truck_route": [0, 121, 9, 1553, 2, 1, 8, 5, 3, 6, 7, 0],
+          "drone_trips": [
+            {
+              "drone": 0,
+              "launch": 121,
+              "customer": 10,
+              "recovery": 9
+            },
+            {
+              "drone": 0,
+              "launch": 1553,
+              "customer": 4,
+              "recovery": 2
+            }
+          ]
+        }
+      },
+      "nodes": [
+        {
+          "id": 0,
+          "type": "depot",
+          "x_m": 30000,
+          "y_m": 30000
+        },
+        {
+          "id": 1,
+          "type": "customer",
+          "x_m": 47826.273045466303,
+          "y_m": 38375.493186327534
+        },
+        {
+          "id": 2,
+          "type": "customer",
+          "x_m": 48051.693562556342,
+          "y_m": 41503.010780033896
+        },
+        {
+          "id": 3,
+          "type": "customer",
+          "x_m": 2880.1611105826973,
+          "y_m": 10871.691970175674
+        },
+        {
+          "id": 4,
+          "type": "customer",
+          "x_m": 41499.944271222739,
+          "y_m": 46477.212312080002
+        },
+        {
+          "id": 5,
+          "type": "customer",
+          "x_m": 16134.670710774315,
+          "y_m": 855.99479878591285
+        },
+        {
+          "id": 6,
+          "type": "customer",
+          "x_m": 12909.174105575268,
+          "y_m": 19449.95228597278
+        },
+        {
+          "id": 7,
+          "type": "customer",
+          "x_m": 3770.1966046001912,
+          "y_m": 50773.689368819258
+        },
+        {
+          "id": 8,
+          "type": "customer",
+          "x_m": 56904.231854377969,
+          "y_m": 4300.2801892311163
+        },
+        {
+          "id": 9,
+          "type": "customer",
+          "x_m": 37114.19642102049,
+          "y_m": 48476.656141041014
+        },
+        {
+          "id": 10,
+          "type": "customer",
+          "x_m": 37887.466113685936,
+          "y_m": 43908.215724173861
+        },
+        {
+          "id": 121,
+          "type": "flp",
+          "x_m": 34268.517852612291,
+          "y_m": 41085.993684624606,
+          "arc_from": 0,
+          "arc_to": 9,
+          "position_ratio": 0.59999999999999998
+        },
+        {
+          "id": 1553,
+          "type": "flp",
+          "x_m": 40239.195604316446,
+          "y_m": 46484.186037896121,
+          "arc_from": 9,
+          "arc_to": 2,
+          "position_ratio": 0.2857142857142857
+        }
+      ],
+      "runs": [
+        {
+          "run_index": 0,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 56108.275077649305,
+          "initial_objective_min": 935.13791796082171,
+          "best_objective_s": 52375.951549875266,
+          "best_objective_min": 872.93252583125445,
+          "final_current_objective_s": 52375.951549875266,
+          "final_current_objective_min": 872.93252583125445,
+          "improvement_pct": 6.6520019063298701,
+          "iterations": 2000,
+          "t0": 561.08275077649307,
+          "final_temperature": 0.024842105908050926,
+          "best_updates": 3,
+          "last_best_iteration": 10,
+          "improving_moves": 5,
+          "sa_accepted_moves": 115,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20012,
+            "max_local_steps_in_pass": 18
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 670,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 683,
+              "exchange": 681,
+              "shift": 634,
+              "drone_remove": 2
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 3978,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 1,
+              "sa_rejected": 21
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3978,
+              "no_candidate": 17,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 5
+            },
+            {
+              "op": "N3",
+              "calls": 2000,
+              "no_anchor": 1990,
+              "no_candidate": 10,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2005,
+              "no_anchor": 0,
+              "no_candidate": 2,
+              "improving": 1,
+              "sa_accepted": 113,
+              "sa_rejected": 1889
+            },
+            {
+              "op": "N5",
+              "calls": 2004,
+              "no_anchor": 1990,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 0,
+              "sa_rejected": 13
+            },
+            {
+              "op": "N6",
+              "calls": 2000,
+              "no_anchor": 1990,
+              "no_candidate": 10,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2000,
+              "no_anchor": 0,
+              "no_candidate": 1053,
+              "improving": 0,
+              "sa_accepted": 1,
+              "sa_rejected": 946
+            },
+            {
+              "op": "N8",
+              "calls": 2003,
+              "no_anchor": 1990,
+              "no_candidate": 0,
+              "improving": 3,
+              "sa_accepted": 0,
+              "sa_rejected": 10
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 10, 9, 4, 2, 1, 8, 5, 3, 6, 7, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 1,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 56108.275077649305,
+          "initial_objective_min": 935.13791796082171,
+          "best_objective_s": 52375.951549875266,
+          "best_objective_min": 872.93252583125445,
+          "final_current_objective_s": 52375.951549875266,
+          "final_current_objective_min": 872.93252583125445,
+          "improvement_pct": 6.6520019063298701,
+          "iterations": 2000,
+          "t0": 561.08275077649307,
+          "final_temperature": 0.024842105908050926,
+          "best_updates": 2,
+          "last_best_iteration": 28,
+          "improving_moves": 4,
+          "sa_accepted_moves": 111,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20004,
+            "max_local_steps_in_pass": 11
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 677,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 660,
+              "exchange": 683,
+              "shift": 656,
+              "drone_remove": 1
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 3998,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 2
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3998,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 1
+            },
+            {
+              "op": "N3",
+              "calls": 2000,
+              "no_anchor": 1999,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2004,
+              "no_anchor": 0,
+              "no_candidate": 0,
+              "improving": 4,
+              "sa_accepted": 111,
+              "sa_rejected": 1889
+            },
+            {
+              "op": "N5",
+              "calls": 2000,
+              "no_anchor": 1999,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 1
+            },
+            {
+              "op": "N6",
+              "calls": 2000,
+              "no_anchor": 1999,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2000,
+              "no_anchor": 0,
+              "no_candidate": 1074,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 926
+            },
+            {
+              "op": "N8",
+              "calls": 2000,
+              "no_anchor": 1999,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 1
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 10, 9, 4, 2, 1, 8, 5, 3, 6, 7, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 2,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 56108.275077649305,
+          "initial_objective_min": 935.13791796082171,
+          "best_objective_s": 52375.951549875266,
+          "best_objective_min": 872.93252583125445,
+          "final_current_objective_s": 52375.951549875266,
+          "final_current_objective_min": 872.93252583125445,
+          "improvement_pct": 6.6520019063298701,
+          "iterations": 2000,
+          "t0": 561.08275077649307,
+          "final_temperature": 0.024842105908050926,
+          "best_updates": 5,
+          "last_best_iteration": 87,
+          "improving_moves": 4,
+          "sa_accepted_moves": 108,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20007,
+            "max_local_steps_in_pass": 15
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 628,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 625,
+              "exchange": 628,
+              "shift": 746,
+              "drone_remove": 1
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 3998,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 1,
+              "sa_rejected": 1
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3998,
+              "no_candidate": 2,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2000,
+              "no_anchor": 2000,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2004,
+              "no_anchor": 0,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 105,
+              "sa_rejected": 1897
+            },
+            {
+              "op": "N5",
+              "calls": 2002,
+              "no_anchor": 2000,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 1,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N6",
+              "calls": 2000,
+              "no_anchor": 2000,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2000,
+              "no_anchor": 0,
+              "no_candidate": 1050,
+              "improving": 0,
+              "sa_accepted": 1,
+              "sa_rejected": 949
+            },
+            {
+              "op": "N8",
+              "calls": 2001,
+              "no_anchor": 2000,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 10, 9, 4, 2, 1, 8, 5, 3, 6, 7, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 3,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 56108.275077649305,
+          "initial_objective_min": 935.13791796082171,
+          "best_objective_s": 52375.951549875266,
+          "best_objective_min": 872.93252583125445,
+          "final_current_objective_s": 52375.951549875266,
+          "final_current_objective_min": 872.93252583125445,
+          "improvement_pct": 6.6520019063298701,
+          "iterations": 2000,
+          "t0": 561.08275077649307,
+          "final_temperature": 0.024842105908050926,
+          "best_updates": 6,
+          "last_best_iteration": 5,
+          "improving_moves": 6,
+          "sa_accepted_moves": 121,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20013,
+            "max_local_steps_in_pass": 23
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 711,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 675,
+              "exchange": 697,
+              "shift": 626,
+              "drone_remove": 2
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 3998,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 2
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3998,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 1
+            },
+            {
+              "op": "N3",
+              "calls": 2000,
+              "no_anchor": 1999,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2006,
+              "no_anchor": 0,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 120,
+              "sa_rejected": 1885
+            },
+            {
+              "op": "N5",
+              "calls": 2005,
+              "no_anchor": 1999,
+              "no_candidate": 0,
+              "improving": 3,
+              "sa_accepted": 1,
+              "sa_rejected": 2
+            },
+            {
+              "op": "N6",
+              "calls": 2000,
+              "no_anchor": 1999,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2000,
+              "no_anchor": 0,
+              "no_candidate": 1022,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 978
+            },
+            {
+              "op": "N8",
+              "calls": 2002,
+              "no_anchor": 1999,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 0,
+              "sa_rejected": 1
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 10, 9, 4, 2, 1, 8, 5, 3, 6, 7, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 4,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 56108.275077649305,
+          "initial_objective_min": 935.13791796082171,
+          "best_objective_s": 52375.951549875266,
+          "best_objective_min": 872.93252583125445,
+          "final_current_objective_s": 52375.951549875266,
+          "final_current_objective_min": 872.93252583125445,
+          "improvement_pct": 6.6520019063298701,
+          "iterations": 2000,
+          "t0": 561.08275077649307,
+          "final_temperature": 0.024842105908050926,
+          "best_updates": 4,
+          "last_best_iteration": 1,
+          "improving_moves": 5,
+          "sa_accepted_moves": 119,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20011,
+            "max_local_steps_in_pass": 20
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 654,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 684,
+              "exchange": 641,
+              "shift": 675,
+              "drone_remove": 0
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 4000,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 4000,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2000,
+              "no_anchor": 2000,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2005,
+              "no_anchor": 0,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 118,
+              "sa_rejected": 1886
+            },
+            {
+              "op": "N5",
+              "calls": 2004,
+              "no_anchor": 2000,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 1,
+              "sa_rejected": 1
+            },
+            {
+              "op": "N6",
+              "calls": 2000,
+              "no_anchor": 2000,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2000,
+              "no_anchor": 0,
+              "no_candidate": 1093,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 907
+            },
+            {
+              "op": "N8",
+              "calls": 2002,
+              "no_anchor": 2000,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 10, 9, 4, 2, 1, 8, 5, 3, 6, 7, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 5,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 56108.275077649305,
+          "initial_objective_min": 935.13791796082171,
+          "best_objective_s": 52375.951549875266,
+          "best_objective_min": 872.93252583125445,
+          "final_current_objective_s": 52375.951549875266,
+          "final_current_objective_min": 872.93252583125445,
+          "improvement_pct": 6.6520019063298701,
+          "iterations": 2000,
+          "t0": 561.08275077649307,
+          "final_temperature": 0.024842105908050926,
+          "best_updates": 4,
+          "last_best_iteration": 2,
+          "improving_moves": 8,
+          "sa_accepted_moves": 144,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20024,
+            "max_local_steps_in_pass": 24
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 628,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 697,
+              "exchange": 654,
+              "shift": 648,
+              "drone_remove": 1
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4002,
+              "no_anchor": 4000,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 1,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N2",
+              "calls": 4001,
+              "no_anchor": 4000,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2001,
+              "no_anchor": 2001,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2008,
+              "no_anchor": 0,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 142,
+              "sa_rejected": 1864
+            },
+            {
+              "op": "N5",
+              "calls": 2006,
+              "no_anchor": 2001,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 0,
+              "sa_rejected": 3
+            },
+            {
+              "op": "N6",
+              "calls": 2001,
+              "no_anchor": 2001,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2001,
+              "no_anchor": 0,
+              "no_candidate": 1079,
+              "improving": 0,
+              "sa_accepted": 1,
+              "sa_rejected": 921
+            },
+            {
+              "op": "N8",
+              "calls": 2004,
+              "no_anchor": 2001,
+              "no_candidate": 0,
+              "improving": 3,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 10, 9, 4, 2, 1, 8, 5, 3, 6, 7, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 6,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 56108.275077649305,
+          "initial_objective_min": 935.13791796082171,
+          "best_objective_s": 52375.951549875266,
+          "best_objective_min": 872.93252583125445,
+          "final_current_objective_s": 52375.951549875266,
+          "final_current_objective_min": 872.93252583125445,
+          "improvement_pct": 6.6520019063298701,
+          "iterations": 2000,
+          "t0": 561.08275077649307,
+          "final_temperature": 0.024842105908050926,
+          "best_updates": 4,
+          "last_best_iteration": 187,
+          "improving_moves": 7,
+          "sa_accepted_moves": 120,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20021,
+            "max_local_steps_in_pass": 19
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 645,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 646,
+              "exchange": 658,
+              "shift": 687,
+              "drone_remove": 9
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 3982,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 18
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3982,
+              "no_candidate": 15,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 3
+            },
+            {
+              "op": "N3",
+              "calls": 2002,
+              "no_anchor": 1994,
+              "no_candidate": 8,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2007,
+              "no_anchor": 0,
+              "no_candidate": 2,
+              "improving": 3,
+              "sa_accepted": 119,
+              "sa_rejected": 1883
+            },
+            {
+              "op": "N5",
+              "calls": 2004,
+              "no_anchor": 1994,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 9
+            },
+            {
+              "op": "N6",
+              "calls": 2002,
+              "no_anchor": 1994,
+              "no_candidate": 8,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2002,
+              "no_anchor": 0,
+              "no_candidate": 1095,
+              "improving": 2,
+              "sa_accepted": 1,
+              "sa_rejected": 904
+            },
+            {
+              "op": "N8",
+              "calls": 2004,
+              "no_anchor": 1994,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 0,
+              "sa_rejected": 8
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 10, 9, 4, 2, 1, 8, 5, 3, 6, 7, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 7,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 56108.275077649305,
+          "initial_objective_min": 935.13791796082171,
+          "best_objective_s": 52375.951549875266,
+          "best_objective_min": 872.93252583125445,
+          "final_current_objective_s": 52375.951549875266,
+          "final_current_objective_min": 872.93252583125445,
+          "improvement_pct": 6.6520019063298701,
+          "iterations": 2000,
+          "t0": 561.08275077649307,
+          "final_temperature": 0.024842105908050926,
+          "best_updates": 5,
+          "last_best_iteration": 9,
+          "improving_moves": 5,
+          "sa_accepted_moves": 110,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20010,
+            "max_local_steps_in_pass": 20
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 640,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 663,
+              "exchange": 668,
+              "shift": 667,
+              "drone_remove": 2
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 3990,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 10
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3990,
+              "no_candidate": 3,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 7
+            },
+            {
+              "op": "N3",
+              "calls": 2000,
+              "no_anchor": 1995,
+              "no_candidate": 5,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2005,
+              "no_anchor": 0,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 109,
+              "sa_rejected": 1895
+            },
+            {
+              "op": "N5",
+              "calls": 2004,
+              "no_anchor": 1995,
+              "no_candidate": 0,
+              "improving": 3,
+              "sa_accepted": 1,
+              "sa_rejected": 5
+            },
+            {
+              "op": "N6",
+              "calls": 2000,
+              "no_anchor": 1995,
+              "no_candidate": 5,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2000,
+              "no_anchor": 0,
+              "no_candidate": 1094,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 906
+            },
+            {
+              "op": "N8",
+              "calls": 2001,
+              "no_anchor": 1995,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 0,
+              "sa_rejected": 5
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 10, 9, 4, 2, 1, 8, 5, 3, 6, 7, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 8,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 56108.275077649305,
+          "initial_objective_min": 935.13791796082171,
+          "best_objective_s": 52375.951549875266,
+          "best_objective_min": 872.93252583125445,
+          "final_current_objective_s": 52375.951549875266,
+          "final_current_objective_min": 872.93252583125445,
+          "improvement_pct": 6.6520019063298701,
+          "iterations": 2000,
+          "t0": 561.08275077649307,
+          "final_temperature": 0.024842105908050926,
+          "best_updates": 6,
+          "last_best_iteration": 48,
+          "improving_moves": 10,
+          "sa_accepted_moves": 111,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20023,
+            "max_local_steps_in_pass": 29
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 606,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 627,
+              "exchange": 698,
+              "shift": 675,
+              "drone_remove": 0
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 4000,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 4000,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2001,
+              "no_anchor": 2001,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2010,
+              "no_anchor": 0,
+              "no_candidate": 0,
+              "improving": 4,
+              "sa_accepted": 111,
+              "sa_rejected": 1895
+            },
+            {
+              "op": "N5",
+              "calls": 2006,
+              "no_anchor": 2001,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 0,
+              "sa_rejected": 3
+            },
+            {
+              "op": "N6",
+              "calls": 2001,
+              "no_anchor": 2001,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2001,
+              "no_anchor": 0,
+              "no_candidate": 1017,
+              "improving": 1,
+              "sa_accepted": 0,
+              "sa_rejected": 983
+            },
+            {
+              "op": "N8",
+              "calls": 2004,
+              "no_anchor": 2001,
+              "no_candidate": 0,
+              "improving": 3,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 10, 9, 4, 2, 1, 8, 5, 3, 6, 7, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 9,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 56108.275077649305,
+          "initial_objective_min": 935.13791796082171,
+          "best_objective_s": 52375.951549875266,
+          "best_objective_min": 872.93252583125445,
+          "final_current_objective_s": 52375.951549875266,
+          "final_current_objective_min": 872.93252583125445,
+          "improvement_pct": 6.6520019063298701,
+          "iterations": 2000,
+          "t0": 561.08275077649307,
+          "final_temperature": 0.024842105908050926,
+          "best_updates": 6,
+          "last_best_iteration": 13,
+          "improving_moves": 7,
+          "sa_accepted_moves": 112,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20014,
+            "max_local_steps_in_pass": 23
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 681,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 670,
+              "exchange": 658,
+              "shift": 669,
+              "drone_remove": 3
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 3984,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 16
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3984,
+              "no_candidate": 10,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 6
+            },
+            {
+              "op": "N3",
+              "calls": 2000,
+              "no_anchor": 1992,
+              "no_candidate": 8,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2007,
+              "no_anchor": 0,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 112,
+              "sa_rejected": 1893
+            },
+            {
+              "op": "N5",
+              "calls": 2005,
+              "no_anchor": 1992,
+              "no_candidate": 1,
+              "improving": 3,
+              "sa_accepted": 0,
+              "sa_rejected": 9
+            },
+            {
+              "op": "N6",
+              "calls": 2000,
+              "no_anchor": 1992,
+              "no_candidate": 8,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2000,
+              "no_anchor": 0,
+              "no_candidate": 1035,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 965
+            },
+            {
+              "op": "N8",
+              "calls": 2002,
+              "no_anchor": 1992,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 0,
+              "sa_rejected": 8
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 10, 9, 4, 2, 1, 8, 5, 3, 6, 7, 0],
+            "drone_trips": []
+          }
+        }
+      ],
+      "summary": {
+        "runs_ok": 10,
+        "best_objective_s": 52375.951549875266,
+        "best_objective_min": 872.93252583125445,
+        "best_run_index": 0,
+        "mean_best_objective_s": 52375.951549875266,
+        "mean_best_objective_min": 872.93252583125445,
+        "worst_best_objective_s": 52375.951549875266,
+        "worst_best_objective_min": 872.93252583125445,
+        "std_best_objective_s": 0,
+        "mean_improvement_pct": 6.6520019063298701
+      }
+    },
+    {
+      "dataset_index": 2,
+      "instance_seed": 490145611534353070,
+      "num_customers": 10,
+      "num_flp_candidates": 1564,
+      "initial": {
+        "feasible": true,
+        "objective_s": 62578.39071693171,
+        "objective_min": 1042.9731786155285,
+        "num_trips": 2,
+        "diagnostics": [],
+        "solution": {
+          "truck_route": [0, 3, 5, 9, 10, 1535, 7, 4, 579, 8, 2, 0],
+          "drone_trips": [
+            {
+              "drone": 0,
+              "launch": 579,
+              "customer": 6,
+              "recovery": 8
+            },
+            {
+              "drone": 0,
+              "launch": 1535,
+              "customer": 1,
+              "recovery": 7
+            }
+          ]
+        }
+      },
+      "nodes": [
+        {
+          "id": 0,
+          "type": "depot",
+          "x_m": 30000,
+          "y_m": 30000
+        },
+        {
+          "id": 1,
+          "type": "customer",
+          "x_m": 15486.674735880675,
+          "y_m": 41127.59760243856
+        },
+        {
+          "id": 2,
+          "type": "customer",
+          "x_m": 50226.244848440467,
+          "y_m": 39259.466332616095
+        },
+        {
+          "id": 3,
+          "type": "customer",
+          "x_m": 31354.989172644571,
+          "y_m": 28305.958768492597
+        },
+        {
+          "id": 4,
+          "type": "customer",
+          "x_m": 17221.415549221594,
+          "y_m": 34908.998662781072
+        },
+        {
+          "id": 5,
+          "type": "customer",
+          "x_m": 17104.661379097495,
+          "y_m": 725.94062971858887
+        },
+        {
+          "id": 6,
+          "type": "customer",
+          "x_m": 44043.891939916655,
+          "y_m": 53010.730841648692
+        },
+        {
+          "id": 7,
+          "type": "customer",
+          "x_m": 15605.785946589283,
+          "y_m": 37538.536596069898
+        },
+        {
+          "id": 8,
+          "type": "customer",
+          "x_m": 51005.149469035256,
+          "y_m": 52993.794581830291
+        },
+        {
+          "id": 9,
+          "type": "customer",
+          "x_m": 4682.3258034822302,
+          "y_m": 18473.200296482049
+        },
+        {
+          "id": 10,
+          "type": "customer",
+          "x_m": 265.18025612155992,
+          "y_m": 42668.003815273514
+        },
+        {
+          "id": 579,
+          "type": "flp",
+          "x_m": 40870.029293091153,
+          "y_m": 47568.35580611552,
+          "arc_from": 4,
+          "arc_to": 8,
+          "position_ratio": 0.69999999999999996
+        },
+        {
+          "id": 1535,
+          "type": "flp",
+          "x_m": 10492.250716433375,
+          "y_m": 39248.359002471101,
+          "arc_from": 10,
+          "arc_to": 7,
+          "position_ratio": 0.66666666666666663
+        }
+      ],
+      "runs": [
+        {
+          "run_index": 0,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 62578.39071693171,
+          "initial_objective_min": 1042.9731786155285,
+          "best_objective_s": 48033.339335710662,
+          "best_objective_min": 800.55565559517765,
+          "final_current_objective_s": 48033.339335710662,
+          "final_current_objective_min": 800.55565559517765,
+          "improvement_pct": 23.242929731150184,
+          "iterations": 2000,
+          "t0": 625.7839071693171,
+          "final_temperature": 0.027706768878458594,
+          "best_updates": 8,
+          "last_best_iteration": 92,
+          "improving_moves": 23,
+          "sa_accepted_moves": 125,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20070,
+            "max_local_steps_in_pass": 23
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 653,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 682,
+              "exchange": 675,
+              "shift": 626,
+              "drone_remove": 17
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4007,
+              "no_anchor": 3932,
+              "no_candidate": 0,
+              "improving": 3,
+              "sa_accepted": 5,
+              "sa_rejected": 67
+            },
+            {
+              "op": "N2",
+              "calls": 4004,
+              "no_anchor": 3932,
+              "no_candidate": 66,
+              "improving": 1,
+              "sa_accepted": 0,
+              "sa_rejected": 5
+            },
+            {
+              "op": "N3",
+              "calls": 2004,
+              "no_anchor": 1974,
+              "no_candidate": 30,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2023,
+              "no_anchor": 0,
+              "no_candidate": 11,
+              "improving": 9,
+              "sa_accepted": 111,
+              "sa_rejected": 1892
+            },
+            {
+              "op": "N5",
+              "calls": 2014,
+              "no_anchor": 1974,
+              "no_candidate": 22,
+              "improving": 4,
+              "sa_accepted": 1,
+              "sa_rejected": 13
+            },
+            {
+              "op": "N6",
+              "calls": 2004,
+              "no_anchor": 1974,
+              "no_candidate": 30,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2004,
+              "no_anchor": 0,
+              "no_candidate": 1332,
+              "improving": 0,
+              "sa_accepted": 8,
+              "sa_rejected": 664
+            },
+            {
+              "op": "N8",
+              "calls": 2010,
+              "no_anchor": 1974,
+              "no_candidate": 0,
+              "improving": 6,
+              "sa_accepted": 0,
+              "sa_rejected": 30
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 3, 4, 7, 1, 10, 9, 5, 2, 8, 6, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 1,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 62578.39071693171,
+          "initial_objective_min": 1042.9731786155285,
+          "best_objective_s": 48033.339335710662,
+          "best_objective_min": 800.55565559517765,
+          "final_current_objective_s": 48033.339335710662,
+          "final_current_objective_min": 800.55565559517765,
+          "improvement_pct": 23.242929731150184,
+          "iterations": 2000,
+          "t0": 625.7839071693171,
+          "final_temperature": 0.027706768878458594,
+          "best_updates": 11,
+          "last_best_iteration": 79,
+          "improving_moves": 24,
+          "sa_accepted_moves": 122,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20099,
+            "max_local_steps_in_pass": 30
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 677,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 659,
+              "exchange": 686,
+              "shift": 654,
+              "drone_remove": 1
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4010,
+              "no_anchor": 3994,
+              "no_candidate": 0,
+              "improving": 5,
+              "sa_accepted": 5,
+              "sa_rejected": 6
+            },
+            {
+              "op": "N2",
+              "calls": 4005,
+              "no_anchor": 3994,
+              "no_candidate": 7,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 4
+            },
+            {
+              "op": "N3",
+              "calls": 2008,
+              "no_anchor": 2005,
+              "no_candidate": 3,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2024,
+              "no_anchor": 0,
+              "no_candidate": 2,
+              "improving": 5,
+              "sa_accepted": 111,
+              "sa_rejected": 1906
+            },
+            {
+              "op": "N5",
+              "calls": 2019,
+              "no_anchor": 2005,
+              "no_candidate": 7,
+              "improving": 2,
+              "sa_accepted": 1,
+              "sa_rejected": 4
+            },
+            {
+              "op": "N6",
+              "calls": 2008,
+              "no_anchor": 2005,
+              "no_candidate": 3,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2008,
+              "no_anchor": 0,
+              "no_candidate": 1306,
+              "improving": 3,
+              "sa_accepted": 5,
+              "sa_rejected": 694
+            },
+            {
+              "op": "N8",
+              "calls": 2017,
+              "no_anchor": 2005,
+              "no_candidate": 0,
+              "improving": 9,
+              "sa_accepted": 0,
+              "sa_rejected": 3
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 3, 4, 7, 1, 10, 9, 5, 2, 8, 6, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 2,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 62578.39071693171,
+          "initial_objective_min": 1042.9731786155285,
+          "best_objective_s": 48033.339335710662,
+          "best_objective_min": 800.55565559517765,
+          "final_current_objective_s": 48033.339335710662,
+          "final_current_objective_min": 800.55565559517765,
+          "improvement_pct": 23.242929731150184,
+          "iterations": 2000,
+          "t0": 625.7839071693171,
+          "final_temperature": 0.027706768878458594,
+          "best_updates": 10,
+          "last_best_iteration": 475,
+          "improving_moves": 14,
+          "sa_accepted_moves": 119,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20033,
+            "max_local_steps_in_pass": 22
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 608,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 623,
+              "exchange": 625,
+              "shift": 735,
+              "drone_remove": 17
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4002,
+              "no_anchor": 3962,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 1,
+              "sa_rejected": 38
+            },
+            {
+              "op": "N2",
+              "calls": 4001,
+              "no_anchor": 3962,
+              "no_candidate": 39,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2002,
+              "no_anchor": 1985,
+              "no_candidate": 17,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2014,
+              "no_anchor": 0,
+              "no_candidate": 4,
+              "improving": 9,
+              "sa_accepted": 115,
+              "sa_rejected": 1886
+            },
+            {
+              "op": "N5",
+              "calls": 2005,
+              "no_anchor": 1985,
+              "no_candidate": 12,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 8
+            },
+            {
+              "op": "N6",
+              "calls": 2002,
+              "no_anchor": 1985,
+              "no_candidate": 17,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2002,
+              "no_anchor": 0,
+              "no_candidate": 1254,
+              "improving": 1,
+              "sa_accepted": 3,
+              "sa_rejected": 744
+            },
+            {
+              "op": "N8",
+              "calls": 2005,
+              "no_anchor": 1985,
+              "no_candidate": 0,
+              "improving": 3,
+              "sa_accepted": 0,
+              "sa_rejected": 17
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 3, 4, 7, 1, 10, 9, 5, 2, 8, 6, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 3,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 62578.39071693171,
+          "initial_objective_min": 1042.9731786155285,
+          "best_objective_s": 48033.339335710662,
+          "best_objective_min": 800.55565559517765,
+          "final_current_objective_s": 48033.339335710662,
+          "final_current_objective_min": 800.55565559517765,
+          "improvement_pct": 23.242929731150184,
+          "iterations": 2000,
+          "t0": 625.7839071693171,
+          "final_temperature": 0.027706768878458594,
+          "best_updates": 8,
+          "last_best_iteration": 110,
+          "improving_moves": 13,
+          "sa_accepted_moves": 126,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20032,
+            "max_local_steps_in_pass": 22
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 672,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 668,
+              "exchange": 688,
+              "shift": 612,
+              "drone_remove": 32
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4002,
+              "no_anchor": 3912,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 2,
+              "sa_rejected": 87
+            },
+            {
+              "op": "N2",
+              "calls": 4001,
+              "no_anchor": 3912,
+              "no_candidate": 83,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 6
+            },
+            {
+              "op": "N3",
+              "calls": 2002,
+              "no_anchor": 1961,
+              "no_candidate": 41,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2013,
+              "no_anchor": 0,
+              "no_candidate": 8,
+              "improving": 8,
+              "sa_accepted": 120,
+              "sa_rejected": 1877
+            },
+            {
+              "op": "N5",
+              "calls": 2005,
+              "no_anchor": 1961,
+              "no_candidate": 23,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 21
+            },
+            {
+              "op": "N6",
+              "calls": 2002,
+              "no_anchor": 1961,
+              "no_candidate": 41,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2002,
+              "no_anchor": 0,
+              "no_candidate": 1280,
+              "improving": 1,
+              "sa_accepted": 4,
+              "sa_rejected": 717
+            },
+            {
+              "op": "N8",
+              "calls": 2005,
+              "no_anchor": 1961,
+              "no_candidate": 0,
+              "improving": 3,
+              "sa_accepted": 0,
+              "sa_rejected": 41
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 3, 4, 7, 1, 10, 9, 5, 2, 8, 6, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 4,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 62578.39071693171,
+          "initial_objective_min": 1042.9731786155285,
+          "best_objective_s": 48033.339335710662,
+          "best_objective_min": 800.55565559517765,
+          "final_current_objective_s": 48033.339335710662,
+          "final_current_objective_min": 800.55565559517765,
+          "improvement_pct": 23.242929731150184,
+          "iterations": 2000,
+          "t0": 625.7839071693171,
+          "final_temperature": 0.027706768878458594,
+          "best_updates": 9,
+          "last_best_iteration": 50,
+          "improving_moves": 24,
+          "sa_accepted_moves": 131,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20084,
+            "max_local_steps_in_pass": 34
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 606,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 666,
+              "exchange": 626,
+              "shift": 668,
+              "drone_remove": 40
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4009,
+              "no_anchor": 3852,
+              "no_candidate": 0,
+              "improving": 5,
+              "sa_accepted": 4,
+              "sa_rejected": 148
+            },
+            {
+              "op": "N2",
+              "calls": 4004,
+              "no_anchor": 3852,
+              "no_candidate": 152,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2005,
+              "no_anchor": 1938,
+              "no_candidate": 67,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2024,
+              "no_anchor": 0,
+              "no_candidate": 17,
+              "improving": 7,
+              "sa_accepted": 113,
+              "sa_rejected": 1887
+            },
+            {
+              "op": "N5",
+              "calls": 2017,
+              "no_anchor": 1938,
+              "no_candidate": 55,
+              "improving": 2,
+              "sa_accepted": 0,
+              "sa_rejected": 22
+            },
+            {
+              "op": "N6",
+              "calls": 2005,
+              "no_anchor": 1938,
+              "no_candidate": 66,
+              "improving": 0,
+              "sa_accepted": 1,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2005,
+              "no_anchor": 0,
+              "no_candidate": 1260,
+              "improving": 0,
+              "sa_accepted": 12,
+              "sa_rejected": 733
+            },
+            {
+              "op": "N8",
+              "calls": 2015,
+              "no_anchor": 1938,
+              "no_candidate": 0,
+              "improving": 10,
+              "sa_accepted": 1,
+              "sa_rejected": 66
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 3, 4, 7, 1, 10, 9, 5, 2, 8, 6, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 5,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 62578.39071693171,
+          "initial_objective_min": 1042.9731786155285,
+          "best_objective_s": 48033.339335710662,
+          "best_objective_min": 800.55565559517765,
+          "final_current_objective_s": 48033.339335710662,
+          "final_current_objective_min": 800.55565559517765,
+          "improvement_pct": 23.242929731150184,
+          "iterations": 2000,
+          "t0": 625.7839071693171,
+          "final_temperature": 0.027706768878458594,
+          "best_updates": 12,
+          "last_best_iteration": 111,
+          "improving_moves": 20,
+          "sa_accepted_moves": 125,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20044,
+            "max_local_steps_in_pass": 28
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 597,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 684,
+              "exchange": 648,
+              "shift": 646,
+              "drone_remove": 22
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4002,
+              "no_anchor": 3918,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 2,
+              "sa_rejected": 81
+            },
+            {
+              "op": "N2",
+              "calls": 4001,
+              "no_anchor": 3918,
+              "no_candidate": 83,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2002,
+              "no_anchor": 1966,
+              "no_candidate": 36,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2020,
+              "no_anchor": 0,
+              "no_candidate": 11,
+              "improving": 11,
+              "sa_accepted": 117,
+              "sa_rejected": 1881
+            },
+            {
+              "op": "N5",
+              "calls": 2009,
+              "no_anchor": 1966,
+              "no_candidate": 23,
+              "improving": 3,
+              "sa_accepted": 0,
+              "sa_rejected": 17
+            },
+            {
+              "op": "N6",
+              "calls": 2002,
+              "no_anchor": 1966,
+              "no_candidate": 36,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2002,
+              "no_anchor": 0,
+              "no_candidate": 1252,
+              "improving": 1,
+              "sa_accepted": 6,
+              "sa_rejected": 743
+            },
+            {
+              "op": "N8",
+              "calls": 2006,
+              "no_anchor": 1966,
+              "no_candidate": 0,
+              "improving": 4,
+              "sa_accepted": 0,
+              "sa_rejected": 36
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 3, 4, 7, 1, 10, 9, 5, 2, 8, 6, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 6,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 62578.39071693171,
+          "initial_objective_min": 1042.9731786155285,
+          "best_objective_s": 48033.339335710662,
+          "best_objective_min": 800.55565559517765,
+          "final_current_objective_s": 48033.339335710662,
+          "final_current_objective_min": 800.55565559517765,
+          "improvement_pct": 23.242929731150184,
+          "iterations": 2000,
+          "t0": 625.7839071693171,
+          "final_temperature": 0.027706768878458594,
+          "best_updates": 5,
+          "last_best_iteration": 6,
+          "improving_moves": 18,
+          "sa_accepted_moves": 130,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20056,
+            "max_local_steps_in_pass": 22
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 602,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 636,
+              "exchange": 650,
+              "shift": 676,
+              "drone_remove": 38
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4004,
+              "no_anchor": 3820,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 3,
+              "sa_rejected": 179
+            },
+            {
+              "op": "N2",
+              "calls": 4002,
+              "no_anchor": 3820,
+              "no_candidate": 182,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2003,
+              "no_anchor": 1919,
+              "no_candidate": 84,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2018,
+              "no_anchor": 0,
+              "no_candidate": 30,
+              "improving": 6,
+              "sa_accepted": 118,
+              "sa_rejected": 1864
+            },
+            {
+              "op": "N5",
+              "calls": 2012,
+              "no_anchor": 1919,
+              "no_candidate": 49,
+              "improving": 1,
+              "sa_accepted": 1,
+              "sa_rejected": 42
+            },
+            {
+              "op": "N6",
+              "calls": 2003,
+              "no_anchor": 1919,
+              "no_candidate": 84,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2003,
+              "no_anchor": 0,
+              "no_candidate": 1306,
+              "improving": 1,
+              "sa_accepted": 8,
+              "sa_rejected": 688
+            },
+            {
+              "op": "N8",
+              "calls": 2011,
+              "no_anchor": 1919,
+              "no_candidate": 0,
+              "improving": 8,
+              "sa_accepted": 0,
+              "sa_rejected": 84
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 3, 4, 7, 1, 10, 9, 5, 2, 8, 6, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 7,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 62578.39071693171,
+          "initial_objective_min": 1042.9731786155285,
+          "best_objective_s": 48033.339335710662,
+          "best_objective_min": 800.55565559517765,
+          "final_current_objective_s": 48033.339335710662,
+          "final_current_objective_min": 800.55565559517765,
+          "improvement_pct": 23.242929731150184,
+          "iterations": 2000,
+          "t0": 625.7839071693171,
+          "final_temperature": 0.027706768878458594,
+          "best_updates": 7,
+          "last_best_iteration": 182,
+          "improving_moves": 21,
+          "sa_accepted_moves": 114,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20064,
+            "max_local_steps_in_pass": 22
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 602,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 640,
+              "exchange": 676,
+              "shift": 656,
+              "drone_remove": 28
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4004,
+              "no_anchor": 3886,
+              "no_candidate": 0,
+              "improving": 3,
+              "sa_accepted": 2,
+              "sa_rejected": 113
+            },
+            {
+              "op": "N2",
+              "calls": 4001,
+              "no_anchor": 3886,
+              "no_candidate": 115,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2004,
+              "no_anchor": 1953,
+              "no_candidate": 51,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2021,
+              "no_anchor": 0,
+              "no_candidate": 10,
+              "improving": 7,
+              "sa_accepted": 101,
+              "sa_rejected": 1903
+            },
+            {
+              "op": "N5",
+              "calls": 2014,
+              "no_anchor": 1953,
+              "no_candidate": 30,
+              "improving": 2,
+              "sa_accepted": 2,
+              "sa_rejected": 27
+            },
+            {
+              "op": "N6",
+              "calls": 2004,
+              "no_anchor": 1953,
+              "no_candidate": 51,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2004,
+              "no_anchor": 0,
+              "no_candidate": 1313,
+              "improving": 1,
+              "sa_accepted": 9,
+              "sa_rejected": 681
+            },
+            {
+              "op": "N8",
+              "calls": 2012,
+              "no_anchor": 1953,
+              "no_candidate": 0,
+              "improving": 8,
+              "sa_accepted": 0,
+              "sa_rejected": 51
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 3, 4, 7, 1, 10, 9, 5, 2, 8, 6, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 8,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 62578.39071693171,
+          "initial_objective_min": 1042.9731786155285,
+          "best_objective_s": 48033.339335710662,
+          "best_objective_min": 800.55565559517765,
+          "final_current_objective_s": 48033.339335710662,
+          "final_current_objective_min": 800.55565559517765,
+          "improvement_pct": 23.242929731150184,
+          "iterations": 2000,
+          "t0": 625.7839071693171,
+          "final_temperature": 0.027706768878458594,
+          "best_updates": 11,
+          "last_best_iteration": 91,
+          "improving_moves": 26,
+          "sa_accepted_moves": 117,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20077,
+            "max_local_steps_in_pass": 22
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 558,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 617,
+              "exchange": 691,
+              "shift": 665,
+              "drone_remove": 27
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4004,
+              "no_anchor": 3858,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 2,
+              "sa_rejected": 142
+            },
+            {
+              "op": "N2",
+              "calls": 4002,
+              "no_anchor": 3858,
+              "no_candidate": 144,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2005,
+              "no_anchor": 1941,
+              "no_candidate": 64,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2026,
+              "no_anchor": 0,
+              "no_candidate": 16,
+              "improving": 11,
+              "sa_accepted": 106,
+              "sa_rejected": 1893
+            },
+            {
+              "op": "N5",
+              "calls": 2015,
+              "no_anchor": 1941,
+              "no_candidate": 43,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 31
+            },
+            {
+              "op": "N6",
+              "calls": 2005,
+              "no_anchor": 1941,
+              "no_candidate": 64,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2005,
+              "no_anchor": 0,
+              "no_candidate": 1278,
+              "improving": 3,
+              "sa_accepted": 9,
+              "sa_rejected": 715
+            },
+            {
+              "op": "N8",
+              "calls": 2015,
+              "no_anchor": 1941,
+              "no_candidate": 0,
+              "improving": 10,
+              "sa_accepted": 0,
+              "sa_rejected": 64
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 3, 4, 7, 1, 10, 9, 5, 2, 8, 6, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 9,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 62578.39071693171,
+          "initial_objective_min": 1042.9731786155285,
+          "best_objective_s": 48033.339335710662,
+          "best_objective_min": 800.55565559517765,
+          "final_current_objective_s": 48033.339335710662,
+          "final_current_objective_min": 800.55565559517765,
+          "improvement_pct": 23.242929731150184,
+          "iterations": 2000,
+          "t0": 625.7839071693171,
+          "final_temperature": 0.027706768878458594,
+          "best_updates": 5,
+          "last_best_iteration": 253,
+          "improving_moves": 19,
+          "sa_accepted_moves": 121,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20048,
+            "max_local_steps_in_pass": 31
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 650,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 658,
+              "exchange": 652,
+              "shift": 665,
+              "drone_remove": 25
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4002,
+              "no_anchor": 3928,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 0,
+              "sa_rejected": 72
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3928,
+              "no_candidate": 72,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2003,
+              "no_anchor": 1971,
+              "no_candidate": 32,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2019,
+              "no_anchor": 0,
+              "no_candidate": 5,
+              "improving": 10,
+              "sa_accepted": 114,
+              "sa_rejected": 1890
+            },
+            {
+              "op": "N5",
+              "calls": 2009,
+              "no_anchor": 1971,
+              "no_candidate": 25,
+              "improving": 0,
+              "sa_accepted": 1,
+              "sa_rejected": 12
+            },
+            {
+              "op": "N6",
+              "calls": 2003,
+              "no_anchor": 1971,
+              "no_candidate": 32,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2003,
+              "no_anchor": 0,
+              "no_candidate": 1280,
+              "improving": 1,
+              "sa_accepted": 6,
+              "sa_rejected": 716
+            },
+            {
+              "op": "N8",
+              "calls": 2009,
+              "no_anchor": 1971,
+              "no_candidate": 0,
+              "improving": 6,
+              "sa_accepted": 0,
+              "sa_rejected": 32
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 3, 4, 7, 1, 10, 9, 5, 2, 8, 6, 0],
+            "drone_trips": []
+          }
+        }
+      ],
+      "summary": {
+        "runs_ok": 10,
+        "best_objective_s": 48033.339335710662,
+        "best_objective_min": 800.55565559517765,
+        "best_run_index": 0,
+        "mean_best_objective_s": 48033.339335710669,
+        "mean_best_objective_min": 800.55565559517777,
+        "worst_best_objective_s": 48033.339335710662,
+        "worst_best_objective_min": 800.55565559517765,
+        "std_best_objective_s": 7.6695327398880897e-12,
+        "mean_improvement_pct": 23.242929731150184
+      }
+    },
+    {
+      "dataset_index": 3,
+      "instance_seed": 181976573153181702,
+      "num_customers": 10,
+      "num_flp_candidates": 1798,
+      "initial": {
+        "feasible": true,
+        "objective_s": 69272.542315261046,
+        "objective_min": 1154.5423719210173,
+        "num_trips": 1,
+        "diagnostics": [],
+        "solution": {
+          "truck_route": [0, 10, 1, 8, 6, 9, 4, 718, 3, 5, 2, 0],
+          "drone_trips": [
+            {
+              "drone": 0,
+              "launch": 718,
+              "customer": 7,
+              "recovery": 3
+            }
+          ]
+        }
+      },
+      "nodes": [
+        {
+          "id": 0,
+          "type": "depot",
+          "x_m": 30000,
+          "y_m": 30000
+        },
+        {
+          "id": 1,
+          "type": "customer",
+          "x_m": 46875.801269110641,
+          "y_m": 55809.908048484365
+        },
+        {
+          "id": 2,
+          "type": "customer",
+          "x_m": 51853.749352616753,
+          "y_m": 13224.679358633937
+        },
+        {
+          "id": 3,
+          "type": "customer",
+          "x_m": 18803.714401194567,
+          "y_m": 3579.19251128733
+        },
+        {
+          "id": 4,
+          "type": "customer",
+          "x_m": 23162.036388143351,
+          "y_m": 25321.314726254899
+        },
+        {
+          "id": 5,
+          "type": "customer",
+          "x_m": 59961.681496210826,
+          "y_m": 8930.5562769725402
+        },
+        {
+          "id": 6,
+          "type": "customer",
+          "x_m": 3585.7855080745439,
+          "y_m": 53666.580866440883
+        },
+        {
+          "id": 7,
+          "type": "customer",
+          "x_m": 21767.756733091162,
+          "y_m": 8554.3616552340172
+        },
+        {
+          "id": 8,
+          "type": "customer",
+          "x_m": 34596.513283719003,
+          "y_m": 49527.696242393395
+        },
+        {
+          "id": 9,
+          "type": "customer",
+          "x_m": 7420.1817494698562,
+          "y_m": 32673.991842525142
+        },
+        {
+          "id": 10,
+          "type": "customer",
+          "x_m": 33365.282676493218,
+          "y_m": 37868.147180648164
+        },
+        {
+          "id": 718,
+          "type": "flp",
+          "x_m": 20256.488396844161,
+          "y_m": 10826.566582943185,
+          "arc_from": 4,
+          "arc_to": 3,
+          "position_ratio": 0.66666666666666663
+        }
+      ],
+      "runs": [
+        {
+          "run_index": 0,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 69272.542315261046,
+          "initial_objective_min": 1154.5423719210173,
+          "best_objective_s": 65474.090359327645,
+          "best_objective_min": 1091.2348393221275,
+          "final_current_objective_s": 65474.090359327645,
+          "final_current_objective_min": 1091.2348393221275,
+          "improvement_pct": 5.4833442356519155,
+          "iterations": 2000,
+          "t0": 692.72542315261046,
+          "final_temperature": 0.030670624437021208,
+          "best_updates": 6,
+          "last_best_iteration": 164,
+          "improving_moves": 11,
+          "sa_accepted_moves": 112,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20040,
+            "max_local_steps_in_pass": 32
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 669,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 683,
+              "exchange": 682,
+              "shift": 632,
+              "drone_remove": 3
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4004,
+              "no_anchor": 3986,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 2,
+              "sa_rejected": 14
+            },
+            {
+              "op": "N2",
+              "calls": 4002,
+              "no_anchor": 3986,
+              "no_candidate": 16,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2003,
+              "no_anchor": 1996,
+              "no_candidate": 7,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2011,
+              "no_anchor": 0,
+              "no_candidate": 1,
+              "improving": 4,
+              "sa_accepted": 106,
+              "sa_rejected": 1900
+            },
+            {
+              "op": "N5",
+              "calls": 2007,
+              "no_anchor": 1996,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 2,
+              "sa_rejected": 9
+            },
+            {
+              "op": "N6",
+              "calls": 2003,
+              "no_anchor": 1996,
+              "no_candidate": 7,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2003,
+              "no_anchor": 0,
+              "no_candidate": 1611,
+              "improving": 1,
+              "sa_accepted": 2,
+              "sa_rejected": 389
+            },
+            {
+              "op": "N8",
+              "calls": 2007,
+              "no_anchor": 1996,
+              "no_candidate": 0,
+              "improving": 4,
+              "sa_accepted": 0,
+              "sa_rejected": 7
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 10, 4, 7, 3, 9, 6, 8, 1, 2, 5, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 1,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 69272.542315261046,
+          "initial_objective_min": 1154.5423719210173,
+          "best_objective_s": 65981.779713742086,
+          "best_objective_min": 1099.6963285623681,
+          "final_current_objective_s": 65981.779713742086,
+          "final_current_objective_min": 1099.6963285623681,
+          "improvement_pct": 4.7504573840275963,
+          "iterations": 2000,
+          "t0": 692.72542315261046,
+          "final_temperature": 0.030670624437021208,
+          "best_updates": 6,
+          "last_best_iteration": 981,
+          "improving_moves": 12,
+          "sa_accepted_moves": 127,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20028,
+            "max_local_steps_in_pass": 24
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 675,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 663,
+              "exchange": 681,
+              "shift": 655,
+              "drone_remove": 1
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4002,
+              "no_anchor": 3994,
+              "no_candidate": 4,
+              "improving": 1,
+              "sa_accepted": 1,
+              "sa_rejected": 2
+            },
+            {
+              "op": "N2",
+              "calls": 4001,
+              "no_anchor": 3994,
+              "no_candidate": 7,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2001,
+              "no_anchor": 1999,
+              "no_candidate": 2,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2012,
+              "no_anchor": 0,
+              "no_candidate": 1,
+              "improving": 6,
+              "sa_accepted": 122,
+              "sa_rejected": 1883
+            },
+            {
+              "op": "N5",
+              "calls": 2006,
+              "no_anchor": 1999,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 2,
+              "sa_rejected": 3
+            },
+            {
+              "op": "N6",
+              "calls": 2001,
+              "no_anchor": 1999,
+              "no_candidate": 2,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2001,
+              "no_anchor": 0,
+              "no_candidate": 1466,
+              "improving": 0,
+              "sa_accepted": 2,
+              "sa_rejected": 533
+            },
+            {
+              "op": "N8",
+              "calls": 2004,
+              "no_anchor": 1999,
+              "no_candidate": 0,
+              "improving": 3,
+              "sa_accepted": 0,
+              "sa_rejected": 2
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 4, 7, 3, 2, 5, 10, 8, 1, 6, 9, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 2,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 69272.542315261046,
+          "initial_objective_min": 1154.5423719210173,
+          "best_objective_s": 65981.779713742086,
+          "best_objective_min": 1099.6963285623681,
+          "final_current_objective_s": 65981.779713742086,
+          "final_current_objective_min": 1099.6963285623681,
+          "improvement_pct": 4.7504573840275963,
+          "iterations": 2000,
+          "t0": 692.72542315261046,
+          "final_temperature": 0.030670624437021208,
+          "best_updates": 4,
+          "last_best_iteration": 166,
+          "improving_moves": 8,
+          "sa_accepted_moves": 123,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20015,
+            "max_local_steps_in_pass": 19
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 627,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 622,
+              "exchange": 630,
+              "shift": 747,
+              "drone_remove": 1
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 4000,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 4000,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2001,
+              "no_anchor": 2001,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2008,
+              "no_anchor": 0,
+              "no_candidate": 0,
+              "improving": 6,
+              "sa_accepted": 123,
+              "sa_rejected": 1879
+            },
+            {
+              "op": "N5",
+              "calls": 2002,
+              "no_anchor": 2001,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N6",
+              "calls": 2001,
+              "no_anchor": 2001,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2001,
+              "no_anchor": 0,
+              "no_candidate": 1451,
+              "improving": 1,
+              "sa_accepted": 0,
+              "sa_rejected": 549
+            },
+            {
+              "op": "N8",
+              "calls": 2002,
+              "no_anchor": 2001,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 4, 7, 3, 2, 5, 10, 8, 1, 6, 9, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 3,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 69272.542315261046,
+          "initial_objective_min": 1154.5423719210173,
+          "best_objective_s": 65981.779713742086,
+          "best_objective_min": 1099.6963285623681,
+          "final_current_objective_s": 65981.779713742086,
+          "final_current_objective_min": 1099.6963285623681,
+          "improvement_pct": 4.7504573840275963,
+          "iterations": 2000,
+          "t0": 692.72542315261046,
+          "final_temperature": 0.030670624437021208,
+          "best_updates": 6,
+          "last_best_iteration": 216,
+          "improving_moves": 8,
+          "sa_accepted_moves": 112,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20008,
+            "max_local_steps_in_pass": 12
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 704,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 676,
+              "exchange": 694,
+              "shift": 625,
+              "drone_remove": 5
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 3992,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 8
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3992,
+              "no_candidate": 8,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2000,
+              "no_anchor": 1996,
+              "no_candidate": 4,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2008,
+              "no_anchor": 0,
+              "no_candidate": 1,
+              "improving": 8,
+              "sa_accepted": 112,
+              "sa_rejected": 1887
+            },
+            {
+              "op": "N5",
+              "calls": 2000,
+              "no_anchor": 1996,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 4
+            },
+            {
+              "op": "N6",
+              "calls": 2000,
+              "no_anchor": 1996,
+              "no_candidate": 4,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2000,
+              "no_anchor": 0,
+              "no_candidate": 1483,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 517
+            },
+            {
+              "op": "N8",
+              "calls": 2000,
+              "no_anchor": 1996,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 4
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 4, 7, 3, 2, 5, 10, 8, 1, 6, 9, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 4,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 69272.542315261046,
+          "initial_objective_min": 1154.5423719210173,
+          "best_objective_s": 65981.779713742086,
+          "best_objective_min": 1099.6963285623681,
+          "final_current_objective_s": 65981.779713742086,
+          "final_current_objective_min": 1099.6963285623681,
+          "improvement_pct": 4.7504573840275963,
+          "iterations": 2000,
+          "t0": 692.72542315261046,
+          "final_temperature": 0.030670624437021208,
+          "best_updates": 9,
+          "last_best_iteration": 1634,
+          "improving_moves": 14,
+          "sa_accepted_moves": 111,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20028,
+            "max_local_steps_in_pass": 22
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 652,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 685,
+              "exchange": 638,
+              "shift": 673,
+              "drone_remove": 4
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4002,
+              "no_anchor": 3984,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 1,
+              "sa_rejected": 16
+            },
+            {
+              "op": "N2",
+              "calls": 4001,
+              "no_anchor": 3984,
+              "no_candidate": 17,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2001,
+              "no_anchor": 1993,
+              "no_candidate": 8,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2014,
+              "no_anchor": 0,
+              "no_candidate": 1,
+              "improving": 9,
+              "sa_accepted": 108,
+              "sa_rejected": 1896
+            },
+            {
+              "op": "N5",
+              "calls": 2005,
+              "no_anchor": 1993,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 1,
+              "sa_rejected": 9
+            },
+            {
+              "op": "N6",
+              "calls": 2001,
+              "no_anchor": 1993,
+              "no_candidate": 8,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2001,
+              "no_anchor": 0,
+              "no_candidate": 1498,
+              "improving": 0,
+              "sa_accepted": 1,
+              "sa_rejected": 502
+            },
+            {
+              "op": "N8",
+              "calls": 2003,
+              "no_anchor": 1993,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 0,
+              "sa_rejected": 8
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 4, 7, 3, 2, 5, 10, 8, 1, 6, 9, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 5,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 69272.542315261046,
+          "initial_objective_min": 1154.5423719210173,
+          "best_objective_s": 65981.779713742086,
+          "best_objective_min": 1099.6963285623681,
+          "final_current_objective_s": 65981.779713742086,
+          "final_current_objective_min": 1099.6963285623681,
+          "improvement_pct": 4.7504573840275963,
+          "iterations": 2000,
+          "t0": 692.72542315261046,
+          "final_temperature": 0.030670624437021208,
+          "best_updates": 8,
+          "last_best_iteration": 1135,
+          "improving_moves": 9,
+          "sa_accepted_moves": 111,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20016,
+            "max_local_steps_in_pass": 20
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 627,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 695,
+              "exchange": 656,
+              "shift": 646,
+              "drone_remove": 3
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 3998,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 2
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3998,
+              "no_candidate": 2,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2001,
+              "no_anchor": 2000,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2009,
+              "no_anchor": 0,
+              "no_candidate": 0,
+              "improving": 7,
+              "sa_accepted": 110,
+              "sa_rejected": 1892
+            },
+            {
+              "op": "N5",
+              "calls": 2002,
+              "no_anchor": 2000,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 1,
+              "sa_rejected": 1
+            },
+            {
+              "op": "N6",
+              "calls": 2001,
+              "no_anchor": 2000,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2001,
+              "no_anchor": 0,
+              "no_candidate": 1490,
+              "improving": 1,
+              "sa_accepted": 0,
+              "sa_rejected": 510
+            },
+            {
+              "op": "N8",
+              "calls": 2002,
+              "no_anchor": 2000,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 0,
+              "sa_rejected": 1
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 4, 7, 3, 2, 5, 10, 8, 1, 6, 9, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 6,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 69272.542315261046,
+          "initial_objective_min": 1154.5423719210173,
+          "best_objective_s": 65474.090359327645,
+          "best_objective_min": 1091.2348393221275,
+          "final_current_objective_s": 65474.090359327645,
+          "final_current_objective_min": 1091.2348393221275,
+          "improvement_pct": 5.4833442356519155,
+          "iterations": 2000,
+          "t0": 692.72542315261046,
+          "final_temperature": 0.030670624437021208,
+          "best_updates": 5,
+          "last_best_iteration": 252,
+          "improving_moves": 8,
+          "sa_accepted_moves": 109,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20008,
+            "max_local_steps_in_pass": 12
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 666,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 646,
+              "exchange": 660,
+              "shift": 693,
+              "drone_remove": 1
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 3998,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 2
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3998,
+              "no_candidate": 2,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2000,
+              "no_anchor": 1999,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2008,
+              "no_anchor": 0,
+              "no_candidate": 0,
+              "improving": 8,
+              "sa_accepted": 109,
+              "sa_rejected": 1891
+            },
+            {
+              "op": "N5",
+              "calls": 2000,
+              "no_anchor": 1999,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 1
+            },
+            {
+              "op": "N6",
+              "calls": 2000,
+              "no_anchor": 1999,
+              "no_candidate": 1,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2000,
+              "no_anchor": 0,
+              "no_candidate": 1588,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 412
+            },
+            {
+              "op": "N8",
+              "calls": 2000,
+              "no_anchor": 1999,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 1
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 10, 4, 7, 3, 9, 6, 8, 1, 2, 5, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 7,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 69272.542315261046,
+          "initial_objective_min": 1154.5423719210173,
+          "best_objective_s": 65981.779713742086,
+          "best_objective_min": 1099.6963285623681,
+          "final_current_objective_s": 65981.779713742086,
+          "final_current_objective_min": 1099.6963285623681,
+          "improvement_pct": 4.7504573840275963,
+          "iterations": 2000,
+          "t0": 692.72542315261046,
+          "final_temperature": 0.030670624437021208,
+          "best_updates": 6,
+          "last_best_iteration": 550,
+          "improving_moves": 9,
+          "sa_accepted_moves": 113,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20009,
+            "max_local_steps_in_pass": 12
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 637,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 663,
+              "exchange": 666,
+              "shift": 668,
+              "drone_remove": 3
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 3990,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 10
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3990,
+              "no_candidate": 10,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2000,
+              "no_anchor": 1995,
+              "no_candidate": 5,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2009,
+              "no_anchor": 0,
+              "no_candidate": 2,
+              "improving": 9,
+              "sa_accepted": 113,
+              "sa_rejected": 1885
+            },
+            {
+              "op": "N5",
+              "calls": 2000,
+              "no_anchor": 1995,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 5
+            },
+            {
+              "op": "N6",
+              "calls": 2000,
+              "no_anchor": 1995,
+              "no_candidate": 5,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2000,
+              "no_anchor": 0,
+              "no_candidate": 1463,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 537
+            },
+            {
+              "op": "N8",
+              "calls": 2000,
+              "no_anchor": 1995,
+              "no_candidate": 0,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 5
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 4, 7, 3, 2, 5, 10, 8, 1, 6, 9, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 8,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 69272.542315261046,
+          "initial_objective_min": 1154.5423719210173,
+          "best_objective_s": 65981.779713742086,
+          "best_objective_min": 1099.6963285623681,
+          "final_current_objective_s": 65981.779713742086,
+          "final_current_objective_min": 1099.6963285623681,
+          "improvement_pct": 4.7504573840275963,
+          "iterations": 2000,
+          "t0": 692.72542315261046,
+          "final_temperature": 0.030670624437021208,
+          "best_updates": 8,
+          "last_best_iteration": 988,
+          "improving_moves": 16,
+          "sa_accepted_moves": 117,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20049,
+            "max_local_steps_in_pass": 24
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 600,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 623,
+              "exchange": 696,
+              "shift": 673,
+              "drone_remove": 8
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4006,
+              "no_anchor": 3970,
+              "no_candidate": 8,
+              "improving": 3,
+              "sa_accepted": 3,
+              "sa_rejected": 22
+            },
+            {
+              "op": "N2",
+              "calls": 4003,
+              "no_anchor": 3970,
+              "no_candidate": 33,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2003,
+              "no_anchor": 1989,
+              "no_candidate": 14,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2016,
+              "no_anchor": 0,
+              "no_candidate": 0,
+              "improving": 8,
+              "sa_accepted": 109,
+              "sa_rejected": 1899
+            },
+            {
+              "op": "N5",
+              "calls": 2008,
+              "no_anchor": 1989,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 1,
+              "sa_rejected": 17
+            },
+            {
+              "op": "N6",
+              "calls": 2003,
+              "no_anchor": 1989,
+              "no_candidate": 14,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2003,
+              "no_anchor": 0,
+              "no_candidate": 1479,
+              "improving": 0,
+              "sa_accepted": 4,
+              "sa_rejected": 520
+            },
+            {
+              "op": "N8",
+              "calls": 2007,
+              "no_anchor": 1989,
+              "no_candidate": 0,
+              "improving": 4,
+              "sa_accepted": 0,
+              "sa_rejected": 14
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 4, 7, 3, 2, 5, 10, 8, 1, 6, 9, 0],
+            "drone_trips": []
+          }
+        },
+        {
+          "run_index": 9,
+          "status": "ok",
+          "stop": "iter-max",
+          "verified": true,
+          "initial_objective_s": 69272.542315261046,
+          "initial_objective_min": 1154.5423719210173,
+          "best_objective_s": 65474.090359327645,
+          "best_objective_min": 1091.2348393221275,
+          "final_current_objective_s": 65474.090359327645,
+          "final_current_objective_min": 1091.2348393221275,
+          "improvement_pct": 5.4833442356519155,
+          "iterations": 2000,
+          "t0": 692.72542315261046,
+          "final_temperature": 0.030670624437021208,
+          "best_updates": 7,
+          "last_best_iteration": 408,
+          "improving_moves": 9,
+          "sa_accepted_moves": 96,
+          "passes": {
+            "completed": 2000,
+            "skipped": 0,
+            "guard_truncated": 0,
+            "guard_triggered": false,
+            "local_steps_total": 20019,
+            "max_local_steps_in_pass": 19
+          },
+          "shakes": {
+            "applied": 2000,
+            "not_applicable_redraws": 668,
+            "infeasible_redraws": 0,
+            "applied_by_kind": {
+              "reverse": 667,
+              "exchange": 656,
+              "shift": 667,
+              "drone_remove": 10
+            }
+          },
+          "operators": [
+            {
+              "op": "N1",
+              "calls": 4000,
+              "no_anchor": 3958,
+              "no_candidate": 30,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 12
+            },
+            {
+              "op": "N2",
+              "calls": 4000,
+              "no_anchor": 3958,
+              "no_candidate": 42,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N3",
+              "calls": 2001,
+              "no_anchor": 1981,
+              "no_candidate": 20,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N4",
+              "calls": 2009,
+              "no_anchor": 0,
+              "no_candidate": 3,
+              "improving": 5,
+              "sa_accepted": 94,
+              "sa_rejected": 1907
+            },
+            {
+              "op": "N5",
+              "calls": 2004,
+              "no_anchor": 1981,
+              "no_candidate": 0,
+              "improving": 1,
+              "sa_accepted": 1,
+              "sa_rejected": 21
+            },
+            {
+              "op": "N6",
+              "calls": 2001,
+              "no_anchor": 1981,
+              "no_candidate": 20,
+              "improving": 0,
+              "sa_accepted": 0,
+              "sa_rejected": 0
+            },
+            {
+              "op": "N7",
+              "calls": 2001,
+              "no_anchor": 0,
+              "no_candidate": 1566,
+              "improving": 1,
+              "sa_accepted": 1,
+              "sa_rejected": 433
+            },
+            {
+              "op": "N8",
+              "calls": 2003,
+              "no_anchor": 1981,
+              "no_candidate": 0,
+              "improving": 2,
+              "sa_accepted": 0,
+              "sa_rejected": 20
+            }
+          ],
+          "num_trips": 0,
+          "best_solution": {
+            "truck_route": [0, 10, 4, 7, 3, 9, 6, 8, 1, 2, 5, 0],
+            "drone_trips": []
+          }
+        }
+      ],
+      "summary": {
+        "runs_ok": 10,
+        "best_objective_s": 65474.090359327645,
+        "best_objective_min": 1091.2348393221275,
+        "best_run_index": 0,
+        "mean_best_objective_s": 65829.472907417745,
+        "mean_best_objective_min": 1097.1578817902957,
+        "worst_best_objective_s": 65981.779713742086,
+        "worst_best_objective_min": 1099.6963285623681,
+        "std_best_objective_s": 245.2372568283117,
+        "mean_improvement_pct": 4.9703234395148916
+      }
+    }
+  ]
+}

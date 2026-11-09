@@ -1,5 +1,8 @@
 # Code Report — `truck-drone-dynamic-routing`
 
+> **Scope note (M10 documentation freeze).** This walkthrough covers the Stage-1 modules and the search infrastructure as they were when it was written. The later static-reproduction components (neighbourhoods N1-N8, shakes, VNS, configuration, runner, CLI) are specified in `docs/static/` (start at `docs/static/INDEX.md`); this report was not extended to them and is not a specification of them.
+
+
 This is a full walkthrough of every file in the repository as it stands today, written so you can genuinely own this code — not just point at it. The codebase has grown a lot since the last version of this report (it was TSP-only; it now has six modules), so this is a full rewrite, not a patch.
 
 You told me you know STL-heavy competitive-programming C++ (vectors, algorithms, bitmask DP) but not the "software engineering" side of C++ — classes, headers, namespaces, inheritance. So **Section 1 is a syntax primer** covering every C++ feature that shows up anywhere in this codebase but wouldn't show up in a CP solution. Read that once, then use it as a reference while reading Sections 2–8, which go module by module through every file. Section 9 is a CMake tutorial. Section 10 is the complexity/"how do I make this cheaper" discussion from before, kept and lightly updated.
@@ -355,3 +358,27 @@ Held-Karp tracks `dp[mask][j]` — cheapest cost to have visited exactly the cus
 ### The newer modules, briefly
 
 None of `model/`, `graph/`, or `flp/` has any concerning complexity — they're all linear (or small-constant) in the number of nodes/arcs. `customer_clustering.hpp`'s K-means is `O(iterations × k × n)`, trivial at this project's scale (≤50 customers). `drone_fleet_capacity.hpp`'s sweep is `O(trips log trips)` for the sort, also trivial. The one place worth watching as instance sizes grow is `initial_solution_builder.hpp`'s F4 loop: for every candidate trip it considers, it builds a full trial `Solution` and calls `evaluate_solution()` (an `O(route length + trip count)` pass) on it from scratch — so one full construction run costs roughly *(number of accepted rounds) × (candidates considered per round) × (cost of one full evaluation)*. At 50 customers this is still fast in absolute terms, but if you ever push to substantially larger instances, incrementally updating a trial's timing instead of fully recomputing it from scratch on every single candidate would be the natural next optimization — not urgent now, but worth knowing about before it becomes the bottleneck.
+
+---
+
+## 11. M1 --- static-reproduction infrastructure (9 Nov 2026)
+
+Everything below is **new** except one moved function. Nothing in `timing/` changed. The point of M1 is to give the eight neighbourhoods, the four shakes, the VNS and the runner a common, tested foundation, without implementing any of them. See `docs/static/` for the specification (`math_spec.md`, `phase_spec_M1.md`), the methodology, the profile and the test evidence.
+
+**`util/rng.hpp`.** The C++ standard library's random *distributions* are allowed to differ between compilers, so the same seed could give different instances on a different machine. To make every experiment reproducible, the generator (xoshiro256**) *and* the conversions from random bits to integers, reals and shuffles are written out here. `derive_seed(base, stream, index)` turns one base seed into independent seeds for the instance, the initial solution, the VNS and the shakes, so changing the number of VNS iterations can never change the instance.
+
+**`config/static_config.hpp`.** One struct, `StaticConfig`, holding the instance, vehicle, FLP-spacing, neighbourhood-window and seed settings, each default labelled `[PAPER]` or `[ASSUMPTION]`, plus `validate()`. VNS settings are added in M7 and file/CLI loading in M8.
+
+**`instance/static_instance.hpp`.** `generate_static_instance(config)` builds a depot plus uniformly random customers and the vehicle parameters. It is deterministic: depot 0, customers 1..c, x drawn before y, so a bigger instance extends a smaller one rather than reshuffling it.
+
+**`flp/flp_arc_index.hpp`.** A lookup, not a generator: which launch points belong to arc (a, b), in order along the arc, and which arc a given launch point belongs to. It is built from the same ownership map the evaluator uses, so the two cannot disagree. After any route change, a neighbourhood asks it which FLPs are available on the arcs the new route traverses.
+
+**`search/drone_assignment.hpp`.** `assign_drone_ids_by_route_order`, moved here unchanged from `init/` (the old name still works). It hands each trip the lowest-numbered drone that is free at its launch.
+
+**`search/route_ops.hpp`.** Bookkeeping that every move needs: the route's *skeleton* (its non-FLP nodes) and *gaps* (the arcs between consecutive skeleton nodes); which FLPs sit in a gap; which FLPs an edit has left on the wrong arc (`flps_off_their_arc`); which trips launch from, serve or recover at a node; removing a node or a trip; the explicit clean-up `drop_unused_flps`; and `lowest_free_drone_for_trip`. The governing rule is *report, don't repair*: removing a customer from a gap invalidates every FLP in that gap (an FLP is usable only while the truck traverses its own arc), and these helpers tell the caller exactly which, instead of fixing anything quietly. Whether the result is feasible is still decided only by `evaluate_solution`.
+
+**`search/candidate_window.hpp`.** The shared meaning of "adjacent" for N1-N8 (decision D1): each customer gets a half-step coordinate along the route skeleton (truck customers at even values, drone customers midway between the two truck nodes of their launch gap), and two are adjacent if they are within `2 w` half-steps. Default `w = 3`.
+
+**Tests.** `test_search_infra` (144 assertions; hand-computed expectations and independent Python vectors) and `test_fuzz_search_infra` (11,262 assertions; random edits of real generated solutions compared with the existing evaluator). Together with the six existing programs: 12,025 assertions, 0 failures, 0 warnings, clean under ASan + UBSan, built and run through CMake as well.
+
+**What the profile showed.** One `evaluate_solution` call at 50 customers costs ~280-335 us, and ~96% of that is one loop in the input validation that walks the whole 39,000-node registry (almost all launch points) to list the customers. That is where the neighbourhoods' time would go. Nothing was changed; `docs/static/performance_profile_M1.md` proposes a behaviour-preserving fix and an ordered-summation fix for approval.

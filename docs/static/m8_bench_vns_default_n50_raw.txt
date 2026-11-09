@@ -1,0 +1,2 @@
+VNS pilot: n=50 endurance x1.00 iter_max=2000 runs=10 |pool|=39574 initial trips=23 drones=2
+Incumbent   T0=1e-02 alpha=0.995  gain% mean 20.54 [min 18.70, max 21.91]  s/run 1.13  per run: shakes 2000.00 (na 525.40, infeas 17.00, skipped 0.00) improving 60.10 SA-acc 41.10 best-updates 42.90 truncated 0.00

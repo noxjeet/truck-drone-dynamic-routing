@@ -50,7 +50,7 @@ No disagreement was found between the audit and the paper. One nuance the audit 
 | I-5 | FLP generation | p8, p9, **p18 "proportional to the truck's driving distance"**, p19; 2 km (p26, p28, p31); eq. (41) ⌊D/d⌋ (p33); Table 4 (p25) | Fixed `points_per_arc` (1, midpoint) on r0 arcs, generated once | DEVIATION (structure) + UNKNOWN (main-experiment d) | Spacing rule per arc: n_ab = ⌊D_ab/d⌋ points at equal ratios, depot arcs included. L_ab is a deterministic function of arc (a,b), so it is effectively static for all arcs. d is configurable with no paper default. | MEDIUM–HIGH (rule) / UNKNOWN (d) | YES (structure); d value NO |
 | I-6 | FLP–arc validity in Phase F | **p9 "If the truck does not pass through arc (i,j), it cannot access the launch point in set L_ij"**; (13)–(15) p13; text p14; Figs. 3 and 8d | F4 replaces j by an FLP of L_{prev,j}; the truck then drives prev→FLP→next. Not checked anywhere. | DEVIATION | Invalid per the paper. Add an evaluator check: FLPs between a and b must belong to L_ab, in ratio order. F4 must draw launch FLPs from arcs of the resulting route (smallest correction: L_{prev,next}). | HIGH | YES |
 | I-7 | Launch from customers or depot | FLP-only: Assumption 4 (p10), condition 1 (p11), (5)(6)(11)(17)(19)(21), Table 1 (p7), p1, p16. Customer/depot launches: Figs. 7, 10a, 11a, 11b, 12a, 12b; N1 text (p20–21); route figures (p29, p30, p32). | FLP-only | PAPER CONTRADICTION | FLP-only everywhere. Customer launches in neighbourhood figures are treated as schematic; the paper defines no timing for them. | MEDIUM–HIGH | YES (affects N1, N5, N6, N7 semantics) |
-| I-8 | Neighbourhood 3 semantics | Text p21 ("adjacent trip"); Fig. 10c (both trips drone 1, orange) | Not implemented; the backup spec's "Reading A" (single-trip retarget) contradicts the figure | PAPER-BASED INTERPRETATION | N3 = exchange the served customers of a trip and an adjacent (consecutive) trip **of the same drone**; launch and recovery nodes and the truck route stay fixed | MEDIUM | NO (decide before implementing N3) |
+| I-8 | Neighbourhood 3 semantics | Text p21 ("adjacent trip"); Fig. 10c (both trips drone 1, orange) | Implemented in M4 (`neighbourhood_n3.hpp`); the backup spec's "Reading A" (single-trip retarget) contradicts the figure | PAPER-BASED INTERPRETATION | N3 = exchange the served customers of a trip and an adjacent (consecutive) trip **of the same drone**; launch and recovery nodes and the truck route stay fixed | MEDIUM | NO (implemented in M4 as proposed; see the M4 addendum) |
 | I-9 | Stale / unused FLPs | (6) p12; text p14 ("prevent the truck from arriving without the drone being launched"); (8)–(9); Fig. 8c→8d; p18 | F4 never leaves idle FLPs; the evaluator accepts them silently | DEVIATION (evaluator scope) | Invariant: every FLP on the route has ≥ 1 launch and appears at most once. Moves must remove an FLP when it loses its last launch. | HIGH | YES (check + invariant) |
 | I-10 | Algorithm 2 drone limit | Alg. 2 lines 3–4, 13–14 (p20); text p19 | Global time-aware fleet check; no per-cluster cap | DEVIATION (from the literal pseudocode) | Literal reading: per cluster, k = 1..D, at most one new trip per drone k, assigned to drone k; feasibility includes that drone's (28) sequencing. Do it together with I-4/I-6 in Phase F. | MEDIUM | NO (starting-solution quality only); recommended alongside I-4/I-6 |
 
@@ -562,8 +562,8 @@ Do not invent values for these. Keep them configurable and labelled ASSUMPTION o
 - How many times launch/recover relocate are repeated ("several times"), and where in the order.
 - The "adjacent" radius for N1–N8.
 - Candidate enumeration size.
-- Launch/recovery re-selection rules in N5 and N7.
-- N8 insertion search range.
+- Launch/recovery re-selection rules in N5 and N7. *(decided in M2/M3: D4 + A3/A7; see the M3 addendum)*
+- N8 insertion search range. *(decided: D5, all valid gaps; see the M3 addendum)*
 
 **Experiments (Phase J/K):**
 - Random seed and run protocol beyond "10 runs per instance".
@@ -640,10 +640,10 @@ Do not invent values for these. Keep them configurable and labelled ASSUMPTION o
 3. **README.md:** only if the module descriptions become inaccurate (timing, FLP policy).
 
 ### D. Can defer until the affected neighbourhood
-- N1: adjacency radius; how often launch/recover relocate repeat and where.
-- N3: same-drone consecutive-trip exchange (I-8). Needs I-4 first.
-- N5 and N7: launch/recovery re-selection details beyond "FLP on a resulting-route arc".
-- N6: exact "adjacent" pairing.
+- N1: adjacency radius; how often launch/recover relocate repeat and where. *(N1/N2 implemented in M5 with assumptions A13--A18, see the M5 addendum; the repetition is VNS integration, M7)*
+- N3: same-drone consecutive-trip exchange (I-8). Needs I-4 first. *(implemented in M4, see the M4 addendum)*
+- N5 and N7: launch/recovery re-selection details beyond "FLP on a resulting-route arc". *(decided in M2/M3, see the M3 addendum)*
+- N6: exact "adjacent" pairing. *(implemented in M4 with assumptions A8--A10; A8 revised and A8--A11 approved at the M4 sign-off, see the M4 addendum)*
 - N8: insertion search.
 - Idle-FLP pruning inside each move (I-9 move responsibility).
 
@@ -657,7 +657,79 @@ Do not invent values for these. Keep them configurable and labelled ASSUMPTION o
 
 ---
 
+## M3 addendum: N7 and N8 (9 Nov 2026) --- the items above marked "N5 and N7" / "N8 insertion search range" are now decided
+
+This register is the reconciliation record; the decisions below were taken in the static-reproduction milestones (`DECISIONS.md` items 33--44, `docs/static/operators_N7_N8.md`). The register's older entries are unchanged.
+
+| Topic | Paper fact | Approved decision | Implementation assumption / limitation | Open |
+|---|---|---|---|---|
+| N7 transformation | p22, Fig. 12a: "randomly selecting a truck service node and then attempting to assign an available drone to construct a drone trip" | D4: best valid FLP on the resulting arcs within the window, recovery at the next truck node; item 15: disturbed trips rejected and named; "available drone" = lowest drone id free over the trip's interval (Issue 4) | **A7**: window measured on the original skeleton (merged arc at $2s_t$), 5 gaps at $w=3$; one `NoReplacementFlp` candidate when no eligible arc has an FLP | A7 centre; Fig. 12a only via its caption |
+| N8 transformation | p22--23, Fig. 12b: "randomly selecting a drone trip and then attempting to assign it to the truck route ... feasibility test on the new route ... optimal order of truck visits" | D5: all valid insertion positions (default unrestricted); D6: only the anchor trip is dissolved, its FLP dropped iff unused | "Optimal order" read as the best position of the one inserted customer; optional `insertion_window` | whether more than one customer's position is meant |
+| Disturbed trips | silent | item 15 (reject, name, never repair); re-anchoring remains N4-only | N8 valid positions are the gaps without remaining launch FLPs | whether N7/N8 should get a bounded re-anchoring alternative (not authorised) |
+| Deviations | none identified | | | |
+
+Measured consequences (no change made): N7 candidates are almost always endurance-infeasible at paper scale (60 km square, 12 m/s, 1,800 s), and disturbed trips dominate N7/N8 at $n=50$ (`operators_N7_N8.md` section 9).
+
+---
+
+## M4 addendum: N3 and N6 (9 Nov 2026) --- Issue 8 (N3) is implemented as proposed; N6 is implemented under explicit assumptions
+
+Decisions: `DECISIONS.md` items 45--53; contracts and evidence: `docs/static/operators_N3_N6.md`. The register's older entries are unchanged except for the "implemented" markers in the I-8 row and in section D.
+
+| Topic | Paper fact | Approved decision | Implementation assumption / limitation | Open |
+|---|---|---|---|---|
+| N3 transformation | p21, Fig. 10c: "repositioning the drone service node of the drone trip ... searching **adjacent trip** of the original drone trip"; trips $\{C1,C4,C3\}$, $\{C3,C2,C5\}$ become $\{C1,C2,C3\}$, $\{C3,C4,C5\}$, route unchanged, both trips drone 1 | D3: consecutive trips of the same drone are exchanged (this Issue 8 proposal, approved in M0) | the exchange of the two served customers *is* the relocation because every trip serves one customer; A11: predecessor then successor of the anchor are both searched; the D1 window is not used by N3; nothing is disturbed, so no repair/re-anchoring applies | whether "adjacent" could mean more than the consecutive pair (the paper is silent); whether only one direction is intended |
+| N6 transformation | p22, Fig. 11b: "randomly selecting a drone trip and searching adjacent drone service node of **other** drone trips"; caption: C2 and C4 exchanged (drone-1 and drone-2 trips) | D1 window 3 (skeleton-counted) as the adjacency measure; item 15 and re-anchoring N4-only | A8: partners are trips of a *different* drone by default (switchable `include_same_drone`; the register's I-8 text already assigns cross-drone exchange to N6); A9: only customers move, launch/recovery/drone ids stay (this register's own reading of N6: Issue 7, "Consequences" table, row "N6 D-D swap"); A10: adjacency = D1 window on the launch-gap half-steps | A8, A9, A10 are readings, not paper facts; Fig. 11b is known only through its caption |
+| Randomised entry | "randomly selecting a drone trip" | strict `<`, first generated wins | A12: one `uniform_index(#trips)` draw | |
+| FLP selection (D4) | | | *not applicable*: no launch or recovery node changes | |
+| Deviations | none identified | | | |
+
+Measured consequences (no change made): with A8, N6 has **zero candidates** on every paper-scale initial solution because all trips fly with drone 0; N3 candidates are mostly endurance-infeasible at paper scale (0 / 0 / 9.1 % feasible at $n=10/20/50$) (`operators_N3_N6.md` sections 8--9).
+
+**M4 sign-off and A8 revision (9 Nov 2026, 12:30 IST).** The user approved M4: **A8 is revised**, so N6's default partner set is *any other trip*, same-drone trips included (`N6Options::include_same_drone = true`; `false` restricts to different drones); N3 and N6 candidates may coincide. **A9, A10 and A11 are approved** as implemented. `DECISIONS.md` item 54. The N6 row above and the "zero candidates" sentence below it describe the *original* A8 default and are superseded: with the revised default N6 has 2 / 8 / 108 candidates (0 / 0 / 4 feasible) on the paper-scale initial solutions at $n=10/20/50$; the restricted variant has none.
+
+---
+
+## M5 addendum: N1 and N2 (9 Nov 2026) --- implemented under explicit assumptions
+
+Decisions: `DECISIONS.md` items 55--65; contracts and evidence: `docs/static/operators_N1_N2.md`. The register's older entries are unchanged except for the section D marker.
+
+| Topic | Paper fact | Approved decision | Implementation assumption / limitation | Open |
+|---|---|---|---|---|
+| N1 transformation | Sec 5.3 p20--21, Fig. 10a: "launch node relocate ... searching adjacent customer nodes and flexible launch nodes of the drone launch node in original drone trip"; caption: the launch moves from truck node C1 to the flexible node of the C1--Depot segment | Issue 7: launches only at FLPs (the "adjacent customer nodes" text is not implemented); D1 window 3 as the adjacency measure; item 15 (no repair); explicit FLP drop (D6 convention) | **A13** candidates = every FLP on the arcs within $w$ gaps of the old launch gap, current launch excluded, shared and unrouted FLPs included; **A15** launch not before the recovery $\Rightarrow$ `InvalidRecovery` (named, unevaluated, unrepaired); **A16** drone id never changes; **A17** old launch FLP dropped iff unused | extent and direction of "adjacent"; Fig. 10a only via its caption |
+| N2 transformation | p21, Fig. 10b: "recover node relocate ... searching adjacent customer nodes of the drone recover node"; caption: the recovery moves from C3 to C4 | D1 window 3; the end depot is a legal recovery node of the model; item 15 | **A14** candidates = skeleton nodes (customers and end depot) within $w$ of the old recovery, ascending, never the start depot; **A15**, **A16** as N1 | same |
+| Randomised entry | "several times" during the local search (Sec 6.1) | D2: twice per pass (VNS, M7, not implemented) | **A18**: one `uniform_index(#trips)` draw; an empty window gives status `Ok` with zero candidates | |
+| FLP selection (D4) | | | *not applicable*: the candidate set is the whole window, no single FLP is selected | |
+| Deviations | the paper's customer launch candidates in N1 | existing Issue 7 FLP-only decision | | recorded in `operators_N1_N2.md` sections 1 and 5 |
+
+**M5 sign-off (9 Nov 2026, 13:19 IST):** A13--A18 approved. The N1 customer-launch omission remains a documented reproduction limitation (no expansion without further paper evidence); the "Deviations" row above is therefore a known limitation, not an open question.
+
+Measured consequences (no change made): at paper scale 80--86 % of evaluated N1 candidates are endurance-infeasible and N2 has at most one feasible candidate per sweep; about half of N1's generated candidates are `InvalidRecovery` (`operators_N1_N2.md` sections 8--9).
+
+---
+
 ## Files
 
 - **Created:** `docs/paper1_decision_register.md` (this file).
 - **Modified:** none.
+
+
+## M6 addendum (9 Nov 2026): shaking operators (signed off 13:56 IST)
+
+The shake items listed above as open ("Shake-selection distribution", "Random_Exchange segment length", "Random_Shift segment length and shift distance", "Random_Drone_Remove reinsertion positions", "handling of trips whose FLP arcs vanish after a shake") are now **implemented as documented implementation assumptions** A19--A29 (`docs/static/shakes.md` section 5, `DECISIONS.md` items 67--70), not as paper facts: uniform choice among the four (D6), segments of interior truck customers with $L_{\max}=D_{\max}=3$ by default (configurable, calibration in M7), FLPs follow their arcs, trips invalidated by the shake are dissolved with counted reasons and never repaired, returned customers go to a uniform free gap (fallback: dissolve the trips of a drawn gap). Measured consequences are in `shakes.md` section 8. **M6 signed off (9 Nov 2026, 13:56 IST): A19--A25 and A27--A29 approved; A26 approved with the clarification that only trips whose launch FLPs the reinsertion genuinely invalidates are dissolved, with the affected trips and the exact reason recorded.**
+
+
+## M7 addendum (9 Nov 2026): VNS driver (signed off 14:34 IST)
+
+The VNS items listed above as open ("iter_max and any secondary stopping criteria", "best-so-far tracking policy", "Algorithm 1 literal defects", "$T_x$ and cooling") are now **implemented as documented implementation assumptions** A30--A38 (`docs/static/vns.md`, `DECISIONS.md` items 72--76), not as paper facts: the printed comparison against $f(x)$ with the shaken solution as search start, SA acceptance, geometric cooling, N1/N2 alternately after the Sec 6.1 order, separate best-so-far, redraw of non-applicable / infeasible shakes, `iter_max` plus optional no-improvement and wall-clock limits, two seed streams by run index. Pilot-based defaults (`iter_max = 2000`, $T_0 = 0.01 f(x_{init})$, $\alpha = 0.995$) are labelled ours (D7). Measured consequences are in `vns.md` section 8. Nothing is signed off; M8 not started.
+
+**M7 signed off (9 Nov 2026, 14:34 IST):** A30--A37 approved; A38 conditionally approved and the reporting condition implemented (`vns.md` section 10).
+
+
+## M8 addendum (9 Nov 2026): runner, writer, configuration, CLI (signed off 15:35 IST)
+
+The earlier M1 follow-up "TSP heuristic seed (42) and k-means constants to come from config in M8" is closed: they are configuration keys with their former values as defaults. The "10-run protocol driver" is the `experiment.runs` / `first_run_index` mechanism (default 10 runs, our default; not a paper fact). The VNS parameters remain labelled assumptions (A30--A38, pilot defaults, D7); M8 changed none of them. New implementation assumptions A39--A44: `docs/static/runner_cli.md` section 8, `DECISIONS.md` items 78--82. Nothing is signed off; M9 not started.
+
+**M8 signed off (9 Nov 2026, 15:35 IST):** A39--A44 approved; closure items recorded in `MILESTONES.md` and `windows_validation.md`.
+
+**M9 validation (9 Nov 2026, 15:35 IST instruction):** results and the separation of exact reproduction / implementation assumptions / unavailable paper data are in `docs/static/validation_vs_paper.md`. New assumptions A45--A47 (comparison unit minutes; 12 instances per size; exact truck-only optimum as reference). Findings that touch paper facts: the paper's Table 3 objective values are 2--3 times ours (unexplained; not caused by depot position or endurance), the paper's FLP counts (Table 4) are 7.5--11 times smaller than our pool, the paper's coordinates and MILP data are unavailable. No decision of M0--M8 was changed. **M9 signed off (9 Nov 2026, 16:13 IST)** as a validation and comparison milestone, not a numerical reproduction; the objective and FLP-count discrepancies remain open findings (`DECISIONS.md` items 89 and 91). M10 froze the documentation (`docs/static/INDEX.md`).

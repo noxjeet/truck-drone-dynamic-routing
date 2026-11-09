@@ -1,0 +1,75 @@
+# N4 Reanchor under the budget-bounded semantics: sweep cost and outcomes vs the budget (CAP env in a scratch copy of bench_operators; the 'c10000' rows below are the budget given in each header). Single runs, same fixtures as operator_bench_raw.txt.
+== max_reanchor_variants=1
+-- n=20
+  N4 Reanchor budget gen (all anchors)      119.84 us  [min 112.50, max 151.69, spread 32.70 %]
+  N4 Reanchor budget full(all anchors)      366.26 us  [min 345.59, max 419.82, spread 20.27 %]
+-- n=50
+  N4 Reanchor budget gen (all anchors)      673.27 us  [min 640.72, max 790.83, spread 22.30 %]
+  N4 Reanchor budget full(all anchors)     1587.43 us  [min 1516.15, max 1916.26, spread 25.20 %]
+== max_reanchor_variants=10
+-- n=20
+  N4 Reanchor budget gen (all anchors)      300.89 us  [min 281.50, max 442.48, spread 53.50 %]
+  N4 Reanchor budget full(all anchors)     2217.29 us  [min 2098.52, max 5653.47, spread 160.33 %]
+-- n=50
+  N4 Reanchor budget gen (all anchors)     1346.33 us  [min 1213.27, max 1479.82, spread 19.80 %]
+  N4 Reanchor budget full(all anchors)     9776.33 us  [min 9272.81, max 11258.61, spread 20.31 %]
+== max_reanchor_variants=30
+-- n=20
+  N4 Reanchor budget gen (all anchors)      503.17 us  [min 489.16, max 550.04, spread 12.10 %]
+  N4 Reanchor budget full(all anchors)     4094.18 us  [min 3977.62, max 4382.98, spread 9.90 %]
+-- n=50
+  N4 Reanchor budget gen (all anchors)     2489.20 us  [min 2338.54, max 3277.96, spread 37.74 %]
+  N4 Reanchor budget full(all anchors)    23598.36 us  [min 22222.09, max 31006.79, spread 37.23 %]
+== max_reanchor_variants=100
+-- n=20
+  N4 Reanchor budget gen (all anchors)      972.08 us  [min 899.85, max 1106.97, spread 21.31 %]
+  N4 Reanchor budget full(all anchors)     7669.96 us  [min 7227.49, max 9042.90, spread 23.67 %]
+-- n=50
+  N4 Reanchor budget gen (all anchors)     6126.93 us  [min 5535.07, max 8259.55, spread 44.47 %]
+  N4 Reanchor budget full(all anchors)    64979.63 us  [min 60275.45, max 67397.06, spread 10.96 %]
+== max_reanchor_variants=300
+-- n=20
+  N4 Reanchor budget gen (all anchors)     1346.69 us  [min 1286.77, max 1477.83, spread 14.19 %]
+  N4 Reanchor budget full(all anchors)    10814.83 us  [min 10221.55, max 13131.84, spread 26.91 %]
+-- n=50
+  N4 Reanchor budget gen (all anchors)    12064.72 us  [min 10799.10, max 17556.08, spread 56.01 %]
+  N4 Reanchor budget full(all anchors)   136884.99 us  [min 125894.68, max 174869.32, spread 35.78 %]
+== max_reanchor_variants=10000
+-- n=20
+  N4 Reanchor budget gen (all anchors)     1412.46 us  [min 1341.86, max 1751.75, spread 29.02 %]
+  N4 Reanchor budget full(all anchors)    11609.75 us  [min 10851.50, max 12493.27, spread 14.14 %]
+-- n=50
+  N4 Reanchor budget gen (all anchors)    23416.52 us  [min 22418.72, max 25976.38, spread 15.19 %]
+  N4 Reanchor budget full(all anchors)   279537.60 us  [min 270890.28, max 322561.84, spread 18.48 %]
+
+# Outcome rows for the same runs (feasible, re-anchored, combinations generated, evaluator calls, cap reached):
+== max_reanchor_variants=1
+-- n=20
+      Reanchor budget  feasible 11 (10.00 %), re-anchored 2 (1.82 %, 2 trips), stale 101 ... combinations generated 63, evaluator calls 72 (0.62 per stale candidate), cap reached in 63 candidates (62.38 % of stale, 57.27 % of all)
+-- n=50
+      Reanchor budget  feasible 2 (0.81 %), re-anchored 0 (0.00 %, 0 trips), stale 244 ... combinations generated 75, evaluator calls 77 (0.31 per stale candidate), cap reached in 75 candidates (30.74 % of stale, 30.49 % of all)
+== max_reanchor_variants=10
+-- n=20
+      Reanchor budget  feasible 21 (19.09 %), re-anchored 12 (10.91 %, 12 trips), stale 101 ... combinations generated 593, evaluator calls 602 (5.87 per stale candidate), cap reached in 51 candidates (50.50 % of stale, 46.36 % of all)
+-- n=50
+      Reanchor budget  feasible 2 (0.81 %), re-anchored 0 (0.00 %, 0 trips), stale 244 ... combinations generated 728, evaluator calls 730 (2.98 per stale candidate), cap reached in 63 candidates (25.82 % of stale, 25.61 % of all)
+== max_reanchor_variants=30
+-- n=20
+      Reanchor budget  feasible 27 (24.55 %), re-anchored 18 (16.36 %, 20 trips), stale 101 ... combinations generated 1169, evaluator calls 1178 (11.57 per stale candidate), cap reached in 17 candidates (16.83 % of stale, 15.45 % of all)
+-- n=50
+      Reanchor budget  feasible 4 (1.63 %), re-anchored 2 (0.81 %, 4 trips), stale 244 ... combinations generated 1910, evaluator calls 1912 (7.83 per stale candidate), cap reached in 58 candidates (23.77 % of stale, 23.58 % of all)
+== max_reanchor_variants=100
+-- n=20
+      Reanchor budget  feasible 27 (24.55 %), re-anchored 18 (16.36 %, 20 trips), stale 101 ... combinations generated 2135, evaluator calls 2144 (21.14 per stale candidate), cap reached in 8 candidates (7.92 % of stale, 7.27 % of all)
+-- n=50
+      Reanchor budget  feasible 5 (2.03 %), re-anchored 3 (1.22 %, 6 trips), stale 244 ... combinations generated 5303, evaluator calls 5305 (21.73 per stale candidate), cap reached in 35 candidates (14.34 % of stale, 14.23 % of all)
+== max_reanchor_variants=300
+-- n=20
+      Reanchor budget  feasible 27 (24.55 %), re-anchored 18 (16.36 %, 20 trips), stale 101 ... combinations generated 3069, evaluator calls 3078 (30.39 per stale candidate), cap reached in 2 candidates (1.98 % of stale, 1.82 % of all)
+-- n=50
+      Reanchor budget  feasible 5 (2.03 %), re-anchored 3 (1.22 %, 6 trips), stale 244 ... combinations generated 11006, evaluator calls 11008 (45.11 per stale candidate), cap reached in 24 candidates (9.84 % of stale, 9.76 % of all)
+== max_reanchor_variants=10000
+-- n=20
+      Reanchor budget  feasible 27 (24.55 %), re-anchored 18 (16.36 %, 20 trips), stale 101 ... combinations generated 3269, evaluator calls 3278 (32.37 per stale candidate), cap reached in 0 candidates (0.00 % of stale, 0.00 % of all)
+-- n=50
+      Reanchor budget  feasible 5 (2.03 %), re-anchored 3 (1.22 %, 6 trips), stale 244 ... combinations generated 23506, evaluator calls 23508 (96.34 per stale candidate), cap reached in 0 candidates (0.00 % of stale, 0.00 % of all)

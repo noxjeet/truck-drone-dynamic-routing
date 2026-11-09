@@ -1,0 +1,66 @@
+[PASS] a 3-run experiment completes without errors
+[PASS] reference pipeline built by hand
+[PASS] the initial solution built from the configuration equals the one built with the default TSPSolverFactory{} (F1/F2 defaults unchanged)
+[PASS] every runner run is bit-identical (trace, best, current, counters) to a direct run_vns call with the same options and run index
+[PASS] every returned best solution passes the runner's own verification and the frozen reference evaluator
+[PASS] F1/F2 configuration values (TSP exact limit / restarts / seed, k-means) are passed to the initial-solution builder
+[PASS] a discriminating heuristic-TSP seed exists for the test (non-vacuity): n = 40, dataset 0, seed 1
+[PASS] initial.tsp_* values reach the TSP factory (the seed changes the initial solution, the runner follows the configured one)
+[PASS] a discriminating k-means setting exists for the test (non-vacuity)
+[PASS] initial.kmeans_* values reach the clustering step
+[PASS] verify_best accepts a feasible solution with its exact objective
+[PASS] ...rejects a stated objective that differs from the evaluator's
+[PASS] ...rejects a solution that serves a customer twice and another not at all
+[PASS] ...names the structural reason when a customer is served by two trips (reported before the evaluator is consulted)
+[PASS] ...rejects a solution with an unserved customer
+[PASS] ...rejects a structurally complete solution that the evaluator declares infeasible
+[PASS] verify_record: verified only when the run started and its best solution passes; the reason is kept
+[PASS] reference, neighbourhood list, shake, N4 budget, cooling and T0 settings are honoured exactly as in a direct call
+[PASS] only N4 and N5 ran (custom list), T0 = 2.5
+[PASS] adjacency window and N1/N2 repeats come from neighbourhood.* (window 1, one repeat each)
+[PASS] run r of a 4-run experiment equals the single-run experiment with first_run_index = r (runs do not influence each other)
+[PASS] different run indices give different trajectories
+[PASS] dataset d of a 2-dataset experiment equals the single experiment with dataset_index = d; the instance seeds differ
+[PASS] two runs of one configuration render byte-identical files; timing.json is the only non-deterministic file
+[PASS] another base seed gives different results
+[PASS] no wall-clock quantity appears in the deterministic outputs
+[PASS] vns.max_seconds > 0 is flagged non-deterministic in the results
+[PASS] results.json is well-formed JSON with the schema tag
+[PASS] structure: 1 dataset, 3 runs, customers, feasible initial solution, config digest = FNV-1a of the resolved configuration
+[PASS] per-run values parse back bit-exactly (objective %.17g, counters, status, stop reason); minutes = seconds / 60 (D10)
+[PASS] best solutions (truck route, drone trips) parse back identical to the in-memory solutions
+[PASS] pass outcomes: completed + skipped + guard_truncated = iterations, guard_triggered false at the defaults, 8 operator rows
+[PASS] dataset summary: min / mean / max of the best objectives
+[PASS] the three runs end at different best objectives (the standard-deviation check is not vacuous)
+[PASS] dataset summary: sample standard deviation (n - 1), index of the best run, mean improvement in percent
+[PASS] runs.csv: header, one row per run, every row has all columns, values equal the result
+[PASS] traces.csv: one row per pass of every run, pass outcome included
+[PASS] timing.json is well-formed
+[PASS] guard-truncated passes are reported in results.json (guard_triggered, guard_truncated, max_local_steps_in_pass) -- never silent
+[PASS] ...and in runs.csv
+[PASS] FNV-1a 64 matches the published test vectors ("", "a", "foobar")
+[PASS] JsonWriter: escaping, non-finite -> null, 64-bit integers, round-trip doubles, inline arrays, nesting
+[PASS] write_experiment writes config, results, runs, traces, timing and manifest
+[PASS] all files present, no temporary files left behind
+[PASS] manifest: sizes and FNV-1a digests match the files on disk; timing.json is marked not-reproducible
+[PASS] config.resolved.cfg is the canonical configuration
+[PASS] an existing results.json is not overwritten without the overwrite flag (and is left untouched)
+[PASS] with overwrite the results are replaced
+[PASS] a stale traces.csv is removed when the new configuration records no traces
+[PASS] an unwritable location is reported, not ignored
+[PASS] version / help
+[PASS] list-keys prints every key with its default
+[PASS] usage errors (unknown command / flag, missing value, missing --out) -> exit 2
+[PASS] bad --set / invalid values / missing config -> exit 2 with the reason, nothing written
+[PASS] check validates and echoes the resolved configuration
+[PASS] precedence: built-in defaults < --config file < --set (later --set wins)
+[PASS] run --quiet: exit 0, no console output, files written
+[PASS] the resolved configuration of a run is accepted as a --config file
+[PASS] REPRODUCIBILITY: re-running from config.resolved.cfg gives byte-identical config, results.json, runs.csv and traces.csv
+[PASS] the manifest digests of the two runs are equal
+[PASS] second run into the same directory without --overwrite -> exit 4
+[PASS] --overwrite replaces the results
+[PASS] without --quiet progress and a summary line are printed
+
+63 passed, 0 failed
+ALL TESTS PASSED

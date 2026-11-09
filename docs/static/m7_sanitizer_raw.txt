@@ -1,0 +1,5 @@
+85 passed, 0 failed
+ALL TESTS PASSED
+improving_moves=5868 sa_accepted_moves=2297 best_updates=1931 runs_with_better_best=256 truncated_passes=42 no_improvement_stops=34 shaken_state_runs=100
+29447 checks, 0 failures
+ALL TESTS PASSED

@@ -1,0 +1,8 @@
+drone-id re-draws accepted=287
+bases=640 with_trips=634 two_drones_used=380 shared_launch_bases=24
+N1: calls(w=0..3)=11232 candidates=231964 accepted=59918 invalid_recovery=83721 improving_calls=3831 endurance=77799 sequencing=9145 fleet=1381 other_eval=0 empty_calls=356 ties=0
+    new_flp_targets=215078 existing_flp_targets=16886 shared_target(used by another trip)=16886 old_dropped=230158 old_kept(shared)=1806 depot_arc_targets=22534 same_gap=66800 other_gap=165164
+N2: calls(w=0..3)=11232 candidates=25986 accepted=5039 invalid_recovery=12191 improving_calls=2861 endurance=5184 sequencing=2996 fleet=576 other_eval=0 empty_calls=2808 ties=424
+    depot_candidates=2410 customer_candidates=23576 window_clipped_calls=4626 depot_recovery_anchors=1316
+3470761 checks, 0 failures
+ALL TESTS PASSED

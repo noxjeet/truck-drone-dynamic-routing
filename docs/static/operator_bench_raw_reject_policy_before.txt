@@ -1,0 +1,45 @@
+# M2 operator benchmark raw output (2026-11-09T00:34Z)
+# g++ 11, 2 cores, CMAKE_BUILD_TYPE=Release flags: -O3 -DNDEBUG -Wall -Wextra -Wpedantic
+# command: bench_operators [10|20|50]   (target: cmake -DTDR_BUILD_BENCH=ON)
+
+operator benchmark, window=3, seeds: base 31415, dataset_index 0; 15 reps, batch >= 20.00 ms
+
+n=10  |pool|=1882  truck customers=7  trips=3  drones=2
+  base evaluate_solution (1 call)             1.70 us  [min 1.50, max 1.88, spread 21.94 %]
+  N4 gen  (sweep over all anchors)           35.03 us  [min 32.04, max 37.80, spread 16.44 %]
+  N4 full (sweep over all anchors)           46.26 us  [min 43.16, max 53.01, spread 21.28 %]
+  N5 gen  (sweep over all trips)             90.45 us  [min 82.17, max 104.85, spread 25.07 %]
+  N5 full (sweep over all trips)           1356.21 us  [min 1176.38, max 1487.83, spread 22.96 %]
+  N4: calls/sweep=7 generated=45 evaluated(full)=6 accepted=6 affected=39
+      generation (net of 7 base evals): 23.15 us per sweep = 0.51 us per generated candidate  -> 1944180.81 candidates/s
+      evaluation (full - gen): 11.23 us per sweep = 1.87 us per evaluated candidate (evaluator alone: 1.70 us per call)
+  N5: calls/sweep=3 generated=610 evaluated(full)=607 accepted=5 affected=3
+      generation (net of 3 base evals): 85.36 us per sweep = 0.14 us per generated candidate  -> 7146277.14 candidates/s
+      evaluation (full - gen): 1265.76 us per sweep = 2.09 us per evaluated candidate (evaluator alone: 1.70 us per call)
+
+n=20  |pool|=6348  truck customers=14  trips=6  drones=2
+  base evaluate_solution (1 call)             3.05 us  [min 2.84, max 3.36, spread 16.98 %]
+  N4 gen  (sweep over all anchors)          112.67 us  [min 101.45, max 125.07, spread 20.96 %]
+  N4 full (sweep over all anchors)          152.12 us  [min 141.18, max 162.59, spread 14.07 %]
+  N5 gen  (sweep over all trips)            182.54 us  [min 169.10, max 199.62, spread 16.72 %]
+  N5 full (sweep over all trips)           2990.94 us  [min 2793.10, max 3470.90, spread 22.66 %]
+  N4: calls/sweep=14 generated=110 evaluated(full)=9 accepted=9 affected=101
+      generation (net of 14 base evals): 69.95 us per sweep = 0.64 us per generated candidate  -> 1572606.44 candidates/s
+      evaluation (full - gen): 39.46 us per sweep = 4.38 us per evaluated candidate (evaluator alone: 3.05 us per call)
+  N5: calls/sweep=6 generated=793 evaluated(full)=781 accepted=21 affected=12
+      generation (net of 6 base evals): 164.24 us per sweep = 0.21 us per generated candidate  -> 4828441.61 candidates/s
+      evaluation (full - gen): 2808.39 us per sweep = 3.60 us per evaluated candidate (evaluator alone: 3.05 us per call)
+
+n=50  |pool|=39574  truck customers=27  trips=23  drones=2
+  base evaluate_solution (1 call)            11.92 us  [min 10.56, max 13.11, spread 21.38 %]
+  N4 gen  (sweep over all anchors)          704.22 us  [min 647.22, max 769.36, spread 17.34 %]
+  N4 full (sweep over all anchors)          716.20 us  [min 639.20, max 805.26, spread 23.19 %]
+  N5 gen  (sweep over all trips)            963.71 us  [min 871.42, max 1101.14, spread 23.84 %]
+  N5 full (sweep over all trips)           5919.50 us  [min 5287.09, max 6578.07, spread 21.81 %]
+  N4: calls/sweep=27 generated=246 evaluated(full)=2 accepted=2 affected=244
+      generation (net of 27 base evals): 382.45 us per sweep = 1.55 us per generated candidate  -> 643227.04 candidates/s
+      evaluation (full - gen): 11.99 us per sweep = 5.99 us per evaluated candidate (evaluator alone: 11.92 us per call)
+  N5: calls/sweep=23 generated=494 evaluated(full)=376 accepted=24 affected=118
+      generation (net of 23 base evals): 689.61 us per sweep = 1.40 us per generated candidate  -> 716344.16 candidates/s
+      evaluation (full - gen): 4955.78 us per sweep = 13.18 us per evaluated candidate (evaluator alone: 11.92 us per call)
+

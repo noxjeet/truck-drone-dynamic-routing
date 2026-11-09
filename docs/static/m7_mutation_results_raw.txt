@@ -1,0 +1,52 @@
+V-01 loop runs iter_max - 1 passes: KILLED by test_vns, test_vns_oracle
+V-02 loop runs iter_max + 1 passes: KILLED by test_vns, test_vns_oracle
+V-03 iterations not recorded: KILLED by test_vns, test_vns_oracle
+V-04 temperature never cooled: KILLED by test_vns, test_vns_oracle
+V-05 cooled twice per pass: KILLED by test_vns, test_vns_oracle
+V-06 temperature floor removed: KILLED by test_vns, test_vns_oracle
+V-07 absolute T0 ignored: KILLED by test_vns, test_vns_oracle
+V-08 T0 not scaled by the initial objective: KILLED by test_vns, test_vns_oracle
+V-09 SA exponent sign flipped: KILLED by test_vns, test_vns_oracle:TIMEOUT
+V-10 SA test strict (<): SURVIVED
+V-11 acceptance draw not taken: KILLED by test_vns, test_vns_oracle
+V-12 improvement test non-strict (<=): KILLED by test_vns_oracle
+V-13 min_improvement ignored: KILLED by test_vns
+V-14 no restart on improvement: KILLED by test_vns, test_vns_oracle
+V-15 restart after SA acceptance too: KILLED by test_vns_oracle
+V-16 no advance after SA acceptance: KILLED by test_vns_oracle
+V-17 accepted candidate not carried forward: KILLED by test_vns, test_vns_oracle
+V-18 incumbent not updated on acceptance: KILLED by test_vns, test_vns_oracle:TIMEOUT
+V-19 best not updated on acceptance: KILLED by test_vns, test_vns_oracle
+V-20 best not updated by the shaken solution: KILLED by test_vns_oracle
+V-21 best stores the incumbent instead of the accepted solution: KILLED by test_vns, test_vns_oracle
+V-22 reference always f(x): KILLED by test_vns_oracle
+V-23 reference always f(w): KILLED by test_vns, test_vns_oracle
+V-24 ShakenState: incumbent not set at the end of the pass: KILLED by test_vns_oracle
+V-25 not-applicable shake ends the attempts: KILLED by test_vns, test_vns_oracle
+V-26 infeasible shake accepted: KILLED by test_vns, test_vns_oracle
+V-27 only one shake attempt: KILLED by test_vns, test_vns_oracle
+V-28 skipped passes not counted: KILLED by test_vns, test_vns_oracle
+V-29 applied shakes not counted: KILLED by test_vns, test_vns_oracle
+V-30 applied shakes by kind not counted: KILLED by test_vns, test_vns_oracle
+V-31 no-candidate calls not counted: KILLED by test_vns, test_vns_oracle
+V-32 operator status ignored: KILLED by test_vns_oracle
+V-33 Vns stream seeded from the Shake stream: KILLED by test_vns_oracle
+V-34 run index ignored in the Vns seed: KILLED by test_vns_oracle
+V-35 run index ignored in the Shake seed: KILLED by test_vns_oracle
+V-36 default list: N5 and N8 swapped: KILLED by test_vns, test_vns_oracle
+V-37 default list: N1 repeats ignored: KILLED by test_vns, test_vns_oracle
+V-38 operator mapping: N5 calls N6: KILLED by test_vns_oracle
+V-40 no-improvement stop one pass late: KILLED by test_vns, test_vns_oracle
+V-41 no-improvement counter never reset: KILLED by test_vns, test_vns_oracle
+V-42 time limit ignored: KILLED by test_vns
+V-43 local-step guard off: KILLED by test_vns:TIMEOUT, test_vns_oracle
+V-44 truncated passes not counted: KILLED by test_vns_oracle
+V-45 infeasible initial solution accepted: KILLED by test_vns
+V-39 N4 options ignored: KILLED by test_vns_oracle
+V-46 invalid cooling rate not reported: KILLED by test_vns
+V-47 trace temperature recorded as 0: KILLED by test_vns, test_vns_oracle
+V-48 improving moves not counted per operator: KILLED by test_vns, test_vns_oracle
+V-49 SA-accepted moves not counted: KILLED by test_vns, test_vns_oracle
+V-50 best update bookkeeping skipped on acceptance (last_best_iteration): KILLED by test_vns_oracle
+V-51 final current not returned: KILLED by test_vns, test_vns_oracle
+V-52 improvement counted as best-improvement flag only when strictly better (best_improved set on every acceptance): KILLED by test_vns_oracle

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+#include <utility>
 #include <vector>
 
 #include "graph/distance.hpp"
@@ -40,7 +42,19 @@ public:
     SpatialNetwork(tdr::model::NodeRegistry nodes,
                    tdr::model::TruckParameters truck,
                    tdr::model::DroneParameters drone)
-        : nodes_(std::move(nodes)), truck_(truck), drone_(drone) {}
+        : nodes_(std::move(nodes)), truck_(truck), drone_(drone) {
+        // [P1, M1 performance follow-up] Immutable construction-time cache of
+        // the customer ids, ascending. The registry above is held by value
+        // and is only reachable through const accessors, so it cannot change
+        // after this point; the cache therefore cannot go stale. Built once
+        // here so that the timing engine does not have to scan the whole
+        // registry (which includes the eager FLP pool, ~39k nodes at n = 50)
+        // on every evaluation. Pure data -- no global or static state.
+        for (const auto& kv : nodes_.all()) {
+            if (kv.second.type == tdr::model::NodeType::Customer) customer_ids_.push_back(kv.first);
+        }
+        std::sort(customer_ids_.begin(), customer_ids_.end());
+    }
 
     // [PAPER] Sec 2.1: straight-line Euclidean distance between two nodes.
     double distance(tdr::model::NodeId a, tdr::model::NodeId b) const {
@@ -60,6 +74,11 @@ public:
     }
 
     const tdr::model::NodeRegistry& nodes() const { return nodes_; }
+
+    // All node ids whose type is Customer, in ascending id order. Computed
+    // once at construction (see the constructor); always equal to a fresh
+    // scan of nodes() sorted ascending.
+    const std::vector<tdr::model::NodeId>& customer_ids() const { return customer_ids_; }
     const tdr::model::TruckParameters& truck_parameters() const { return truck_; }
     const tdr::model::DroneParameters& drone_parameters() const { return drone_; }
 
@@ -98,6 +117,7 @@ private:
     tdr::model::NodeRegistry nodes_;
     tdr::model::TruckParameters truck_;
     tdr::model::DroneParameters drone_;
+    std::vector<tdr::model::NodeId> customer_ids_; // ascending; immutable after construction (P1)
 };
 
 } // namespace tdr::graph

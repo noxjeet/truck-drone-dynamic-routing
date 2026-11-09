@@ -1,0 +1,29 @@
+{
+  "schema": "tdr.static.manifest/1",
+  "tool": "tdr_static 1.1 (M8)",
+  "experiment": "m9_sens_corner_n50",
+  "deterministic": true,
+  "ok": true,
+  "files": [
+    {
+      "name": "config.resolved.cfg",
+      "bytes": 1479,
+      "fnv1a64": "d991b45d6d2badc2"
+    },
+    {
+      "name": "results.json",
+      "bytes": 213451,
+      "fnv1a64": "3715eefcc6af4def"
+    },
+    {
+      "name": "runs.csv",
+      "bytes": 7629,
+      "fnv1a64": "6e6e02e82eb677f7"
+    },
+    {
+      "name": "timing.json",
+      "bytes": 4042,
+      "fnv1a64": "not-reproducible"
+    }
+  ]
+}

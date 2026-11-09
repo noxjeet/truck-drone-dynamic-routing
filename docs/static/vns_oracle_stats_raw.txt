@@ -1,0 +1,4 @@
+runs=309 passes=4032 shakes_applied=3982 (reverse 1147, exchange 1223, shift 1161, drone-remove 451) not_applicable=813 infeasible=88 skipped_passes=50
+improving_moves=5868 sa_accepted_moves=2297 best_updates=1931 runs_with_better_best=256 truncated_passes=42 no_improvement_stops=34 shaken_state_runs=100
+29447 checks, 0 failures
+ALL TESTS PASSED

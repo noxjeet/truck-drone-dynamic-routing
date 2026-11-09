@@ -1,0 +1,53 @@
+N7/N8 operator benchmark, window=3, seeds: base 31415, dataset_index 0; 15 reps, batch >= 20.00 ms
+
+n=10  |pool|=1882  truck customers=7  trips=3  drones=2
+  base evaluate_solution (1 call)             1.26 us  [min 1.23, max 1.40, spread 13.49 %]
+  N7 gen  (sweep over all anchors)           25.52 us  [min 24.80, max 27.88, spread 12.08 %]
+  N7 full (sweep over all anchors)          289.94 us  [min 285.10, max 319.87, spread 11.99 %]
+  N8 gen  (sweep over all trips)              8.33 us  [min 8.10, max 9.36, spread 15.09 %]
+  N8 full (sweep over all trips)             30.92 us  [min 30.21, max 32.98, spread 8.96 %]
+  N7: calls/sweep=7 generated=161 evaluator-calls=157 feasible=0 (0.00 % of generated, 0.00 % of evaluated) duplicates=0
+      rejected (full): affected-trips=4 eval-endurance=157   (accepted + rejected == generated: yes)
+      generation (net of 7 base evals): 16.72 us per sweep = 0.10 us per generated candidate -> 9629471.47 candidates/s
+      evaluation (full - gen): 264.43 us per sweep = 1.68 us per evaluated candidate (evaluator alone: 1.26 us per call)
+      full sweep total per generated candidate: 1.80 us; allocations per full sweep: 10313 (662 KiB total, 64.06 per generated candidate)
+  N8: calls/sweep=3 generated=24 evaluator-calls=18 feasible=18 (75.00 % of generated, 100.00 % of evaluated) duplicates=0
+      rejected (full): affected-trips=6   (accepted + rejected == generated: yes)
+      generation (net of 3 base evals): 4.56 us per sweep = 0.19 us per generated candidate -> 5258021.14 candidates/s
+      evaluation (full - gen): 22.59 us per sweep = 1.25 us per evaluated candidate (evaluator alone: 1.26 us per call)
+      full sweep total per generated candidate: 1.29 us; allocations per full sweep: 1113 (62 KiB total, 46.38 per generated candidate)
+
+n=20  |pool|=6348  truck customers=14  trips=6  drones=2
+  base evaluate_solution (1 call)             2.32 us  [min 2.30, max 2.49, spread 7.95 %]
+  N7 gen  (sweep over all anchors)           58.90 us  [min 58.59, max 65.84, spread 12.30 %]
+  N7 full (sweep over all anchors)          515.80 us  [min 506.48, max 548.25, spread 8.10 %]
+  N8 gen  (sweep over all trips)             34.64 us  [min 33.90, max 34.73, spread 2.40 %]
+  N8 full (sweep over all trips)            187.79 us  [min 186.79, max 198.68, spread 6.34 %]
+  N7: calls/sweep=14 generated=174 evaluator-calls=164 feasible=0 (0.00 % of generated, 0.00 % of evaluated) duplicates=0
+      rejected (full): affected-trips=10 eval-endurance=164   (accepted + rejected == generated: yes)
+      generation (net of 14 base evals): 26.43 us per sweep = 0.15 us per generated candidate -> 6582946.65 candidates/s
+      evaluation (full - gen): 456.91 us per sweep = 2.79 us per evaluated candidate (evaluator alone: 2.32 us per call)
+      full sweep total per generated candidate: 2.96 us; allocations per full sweep: 15186 (1234 KiB total, 87.28 per generated candidate)
+  N8: calls/sweep=6 generated=90 evaluator-calls=60 feasible=60 (66.67 % of generated, 100.00 % of evaluated) duplicates=0
+      rejected (full): affected-trips=30   (accepted + rejected == generated: yes)
+      generation (net of 6 base evals): 20.72 us per sweep = 0.23 us per generated candidate -> 4343075.41 candidates/s
+      evaluation (full - gen): 153.16 us per sweep = 2.55 us per evaluated candidate (evaluator alone: 2.32 us per call)
+      full sweep total per generated candidate: 2.09 us; allocations per full sweep: 5271 (417 KiB total, 58.57 per generated candidate)
+
+n=50  |pool|=39574  truck customers=27  trips=23  drones=2
+  base evaluate_solution (1 call)             8.71 us  [min 8.54, max 9.32, spread 9.05 %]
+  N7 gen  (sweep over all anchors)          286.16 us  [min 280.91, max 307.55, spread 9.31 %]
+  N7 full (sweep over all anchors)          882.03 us  [min 871.54, max 1096.94, spread 25.55 %]
+  N8 gen  (sweep over all trips)            480.30 us  [min 475.96, max 496.69, spread 4.32 %]
+  N8 full (sweep over all trips)           1816.57 us  [min 1788.65, max 1943.89, spread 8.55 %]
+  N7: calls/sweep=27 generated=88 evaluator-calls=63 feasible=0 (0.00 % of generated, 0.00 % of evaluated) duplicates=0
+      rejected (full): affected-trips=25 eval-endurance=63   (accepted + rejected == generated: yes)
+      generation (net of 27 base evals): 50.95 us per sweep = 0.58 us per generated candidate -> 1727131.48 candidates/s
+      evaluation (full - gen): 595.86 us per sweep = 9.46 us per evaluated candidate (evaluator alone: 8.71 us per call)
+      full sweep total per generated candidate: 10.02 us; allocations per full sweep: 16021 (1780 KiB total, 182.06 per generated candidate)
+  N8: calls/sweep=23 generated=644 evaluator-calls=138 feasible=138 (21.43 % of generated, 100.00 % of evaluated) duplicates=0
+      rejected (full): affected-trips=506   (accepted + rejected == generated: yes)
+      generation (net of 23 base evals): 279.93 us per sweep = 0.43 us per generated candidate -> 2300554.41 candidates/s
+      evaluation (full - gen): 1336.27 us per sweep = 9.68 us per evaluated candidate (evaluator alone: 8.71 us per call)
+      full sweep total per generated candidate: 2.82 us; allocations per full sweep: 31768 (3619 KiB total, 49.33 per generated candidate)
+

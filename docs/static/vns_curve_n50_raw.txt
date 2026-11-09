@@ -1,0 +1,5 @@
+VNS pilot: n=50 endurance x1.00 iter_max=1000 runs=3 |pool|=39574 initial trips=23 drones=2
+Incumbent   T0=1e-02 alpha=0.950  s/run 1.55  mean best-gain %:  @50 0.00  @100 0.00  @200 0.00  @500 19.34  @1000 19.74
+Incumbent   T0=1e-02 alpha=0.995  s/run 0.96  mean best-gain %:  @50 0.00  @100 0.00  @200 6.45  @500 18.34  @1000 19.71
+ShakenState T0=1e-02 alpha=0.950  s/run 0.79  mean best-gain %:  @50 1.23  @100 1.23  @200 1.23  @500 1.23  @1000 1.23
+ShakenState T0=1e-02 alpha=0.995  s/run 0.94  mean best-gain %:  @50 1.23  @100 1.23  @200 1.23  @500 1.23  @1000 1.23

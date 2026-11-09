@@ -1,0 +1,5 @@
+21/21 Test #21: test_vns_oracle ..................   Passed    5.70 sec
+
+100% tests passed out of 21
+
+Total Test time (real) =  30.46 sec

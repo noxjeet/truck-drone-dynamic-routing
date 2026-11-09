@@ -1,0 +1,22 @@
+Sensitivity diagnostics, seed set 1 (4 datasets x 10 runs per row); objective in minutes. Rows other than 'default' are NOT the protocol.
+  n                variant | mean initial init trips | mean z_avg  impr % | drone trips in best (mean) runs with 0 trips | N7 feasible cand. % of calls N7 improving | paper mean z_avg ours/paper
+ 10 default (centre, 1800 s) |      1,118.8        2.0 |      905.2   17.88 |                       0.00             40/40 |                         34.5           22 |            2,097       0.43
+ 10           depot corner |      1,177.1        2.5 |      959.5   16.57 |                       0.00             40/40 |                         36.2           36 |            2,097       0.46
+ 10       endurance 3600 s |      1,234.4        4.2 |      902.9   25.77 |                       0.40             27/40 |                         63.8          118 |            2,097       0.43
+ 20 default (centre, 1800 s) |      3,045.5        7.0 |    2,446.3   19.48 |                       0.00             40/40 |                         49.9           56 |            7,500       0.33
+ 20           depot corner |      3,211.0        6.8 |    2,639.5   17.55 |                       0.00             40/40 |                         52.0           41 |            7,500       0.35
+ 20       endurance 3600 s |      3,183.2        8.8 |    2,434.3   23.26 |                       0.50             27/40 |                         87.8          154 |            7,500       0.32
+ 50 default (centre, 1800 s) |     13,006.7       22.8 |    9,857.3   24.21 |                       0.00             40/40 |                         79.2           96 |           20,782       0.47
+ 50           depot corner |     13,098.0       21.8 |   10,445.3   20.23 |                       0.00             40/40 |                         80.0          116 |           20,782       0.50
+ 50       endurance 3600 s |     13,156.9       23.5 |    9,746.7   25.83 |                       0.28             32/40 |                         94.6          194 |           20,782       0.47
+
+Iteration-budget sensitivity (seed set 1; objective in minutes; same instances and run indices; the geometric schedule T(k) = T0 * 0.995^k is identical, the run simply continues past k = 2000, so this is a budget change, not a re-tuning)
+  n ds | 2000: z_best     z_avg | 8000: z_best     z_avg mean last-best iter mean trips | z_avg change
+ 20  0 |      2,410.1   2,526.8 |      2,410.1   2,498.4                1678       0.00 |        -1.1%
+ 20  1 |      2,227.7   2,258.5 |      2,227.7   2,244.6                 976       0.00 |        -0.6%
+ 20  2 |      2,280.8   2,358.3 |      2,280.8   2,339.4                1859       0.00 |        -0.8%
+ 20  3 |      2,515.6   2,641.5 |      2,515.6   2,589.9                2628       0.00 |        -2.0%
+ 50  0 |      9,025.0  10,150.6 |      8,993.2   9,805.0                5331       0.00 |        -3.4%
+ 50  1 |      9,306.7   9,538.6 |      8,542.4   9,350.6                4185       0.00 |        -2.0%
+ 50  2 |     10,238.8  10,608.3 |      9,808.9  10,314.3                6003       0.00 |        -2.8%
+ 50  3 |      8,625.8   9,131.5 |      8,620.9   8,930.4                4898       0.00 |        -2.2%

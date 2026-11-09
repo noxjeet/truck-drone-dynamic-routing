@@ -1,0 +1,5 @@
+24/24 Test #23: test_runner_cli ..................   Passed    1.53 sec
+
+100% tests passed out of 24
+
+Total Test time (real) =  18.85 sec

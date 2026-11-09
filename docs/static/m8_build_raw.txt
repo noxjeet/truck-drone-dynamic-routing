@@ -1,0 +1,1 @@
+fresh Release build, -O3 -DNDEBUG -Wall -Wextra -Wpedantic, bench ON; warnings: 0; targets built: 95

@@ -1,0 +1,49 @@
+M10 checks, 9 Nov 2026 (device VM, fresh Release build tree ~/build_m10: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DTDR_BUILD_BENCH=ON -DCMAKE_CXX_FLAGS='-Wall -Wextra -Wpedantic')
+build warnings: 0
+
+== ctest (fresh build)
+11/24 Test  #8: test_fuzz_search_infra ...........   Passed    0.06 sec
+      Start  7: test_search_infra
+12/24 Test  #7: test_search_infra ................   Passed    0.01 sec
+      Start 10: test_n4_n5
+13/24 Test #10: test_n4_n5 .......................   Passed    0.01 sec
+      Start 14: test_n3_n6
+14/24 Test #14: test_n3_n6 .......................   Passed    0.00 sec
+      Start 16: test_n1_n2
+15/24 Test #16: test_n1_n2 .......................   Passed    0.00 sec
+      Start 12: test_n7_n8
+16/24 Test #12: test_n7_n8 .......................   Passed    0.00 sec
+      Start  5: test_timing
+17/24 Test  #5: test_timing ......................   Passed    0.00 sec
+      Start  2: test_model
+18/24 Test  #2: test_model .......................   Passed    0.00 sec
+      Start  1: test_tsp
+19/24 Test  #1: test_tsp .........................   Passed    0.00 sec
+      Start  6: test_init
+20/24 Test  #6: test_init ........................   Passed    0.00 sec
+      Start  4: test_flp
+21/24 Test  #4: test_flp .........................   Passed    0.00 sec
+      Start 22: test_experiment_config
+22/24 Test #22: test_experiment_config ...........   Passed    0.00 sec
+      Start  3: test_graph
+23/24 Test  #3: test_graph .......................   Passed    0.00 sec
+24/24 Test #23: test_runner_cli ..................   Passed    1.00 sec
+
+100% tests passed out of 24
+
+Total Test time (real) =  19.30 sec
+
+== reproduction of documented commands (byte comparison with recorded results)
+m9_protocol_reproduces: part of ctest above; corner_n10 and iter8000_n20 re-run from the documented --set commands: results.json, runs.csv, config.resolved.cfg identical; m9_analysis/sensitivity/exact_truck_only/feasibility_probe raw outputs regenerate identically
+
+== guard hashes: 15 of 15 OK; HEAD cc37e49
+
+== scripts/m10_doc_check.py --build build
+ok:   694 path mentions in 21 documents all resolve
+ok:   no stale 'awaiting review' headings or decision items
+ok:   configuration_reference.md lists exactly the 48 keys of list-keys
+ok:   24 CTest programs stated and registered
+ok:   23 test programs named in INDEX.md exist and are registered
+ok:   9 protocol configurations and 18 result directories checked
+ok:   assertion total 7,695,737 equals the stated figure
+RESULT: all checks passed

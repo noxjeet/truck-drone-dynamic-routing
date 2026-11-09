@@ -1,0 +1,678 @@
+[PASS] Q base objective (hand-derived 2025, frozen reference) (got 2025.000000, expected 2025.000000)
+[PASS] Q base feasible
+[PASS] P base objective (hand-derived 2650, frozen reference) (got 2650.000000, expected 2650.000000)
+[PASS] P base feasible
+[PASS] F base feasible
+[PASS] fixture sanity: one FLP on each trip arc
+[PASS] default options: L_max = D_max = 3, evaluate_result on (assumption A22)
+[PASS] Q reverse(1,2): status, kind, parameters
+[PASS] Q reverse(1,2): skeleton [0,2,1,3,4,5,0]
+[PASS] Q reverse(1,2): the surviving arc (4,5) keeps its FLP: route [0,2,1,3,4,F45,5,0]
+[PASS] Q reverse(1,2): nothing dissolved, removed, lost, dropped or reinserted; the trip is preserved
+[PASS] Q reverse(1,2): objective 3025 (hand-derived), feasible
+[PASS] Q: base objective reported (2025)
+[PASS] Q reverse(1,2): exactly-once coverage
+[PASS] Q reverse(1,2): no FLP off its arc
+[PASS] Q reverse(1,2): every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] Q reverse(1,2): every input trip is exactly one of preserved / removed / dissolved
+[PASS] Q reverse(1,2): preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] Q reverse(1,2): every dissolved or removed trip's customer is now served by the truck
+[PASS] Q reverse(1,2): FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] Q reverse(1,2): dissolved + removed + preserved == input trips
+[PASS] Q reverse(1,2): verdict and objective equal the frozen reference's
+[PASS] Q: the input solution is unchanged
+[PASS] Q reverse(1,5): the whole interior reversed; arc (4,5) becomes (5,4): launch arc vanished, FLP lost with its arc
+[PASS] Q reverse(1,5): exactly-once coverage
+[PASS] Q reverse(1,5): no FLP off its arc
+[PASS] Q reverse(1,5): every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] Q reverse(1,5): every input trip is exactly one of preserved / removed / dissolved
+[PASS] Q reverse(1,5): preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] Q reverse(1,5): every dissolved or removed trip's customer is now served by the truck
+[PASS] Q reverse(1,5): FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] Q reverse(1,5): dissolved + removed + preserved == input trips
+[PASS] Q reverse(1,5): verdict and objective equal the frozen reference's
+[PASS] Q exchange([1,2],[4,5]): [0,4,5,3,1,2,0]; arc (4,5) is inside a moved segment, so it survives and the trip is preserved
+[PASS] Q exchange([1,2],[4,5]): the FLP travels with its arc
+[PASS] Q exchange([1,2],[4,5]): exactly-once coverage
+[PASS] Q exchange([1,2],[4,5]): no FLP off its arc
+[PASS] Q exchange([1,2],[4,5]): every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] Q exchange([1,2],[4,5]): every input trip is exactly one of preserved / removed / dissolved
+[PASS] Q exchange([1,2],[4,5]): preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] Q exchange([1,2],[4,5]): every dissolved or removed trip's customer is now served by the truck
+[PASS] Q exchange([1,2],[4,5]): FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] Q exchange([1,2],[4,5]): dissolved + removed + preserved == input trips
+[PASS] Q exchange([1,2],[4,5]): verdict and objective equal the frozen reference's
+[PASS] Q exchange([1,2],[3,4]): [0,3,4,1,2,5,0]; arc (4,5) vanished
+[PASS] Q exchange([1,2],[3,4]): exactly-once coverage
+[PASS] Q exchange([1,2],[3,4]): no FLP off its arc
+[PASS] Q exchange([1,2],[3,4]): every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] Q exchange([1,2],[3,4]): every input trip is exactly one of preserved / removed / dissolved
+[PASS] Q exchange([1,2],[3,4]): preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] Q exchange([1,2],[3,4]): every dissolved or removed trip's customer is now served by the truck
+[PASS] Q exchange([1,2],[3,4]): FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] Q exchange([1,2],[3,4]): dissolved + removed + preserved == input trips
+[PASS] Q exchange([1,2],[3,4]): verdict and objective equal the frozen reference's
+[PASS] Q shift(a=1,L=1,+4): node 1 moves to the end [0,2,3,4,5,1,0]; arc (4,5) and the trip survive
+[PASS] Q shift(1,1,+4): exactly-once coverage
+[PASS] Q shift(1,1,+4): no FLP off its arc
+[PASS] Q shift(1,1,+4): every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] Q shift(1,1,+4): every input trip is exactly one of preserved / removed / dissolved
+[PASS] Q shift(1,1,+4): preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] Q shift(1,1,+4): every dissolved or removed trip's customer is now served by the truck
+[PASS] Q shift(1,1,+4): FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] Q shift(1,1,+4): dissolved + removed + preserved == input trips
+[PASS] Q shift(1,1,+4): verdict and objective equal the frozen reference's
+[PASS] Q shift(a=4,L=2,-2): segment [4,5] moves back 2 nodes: [0,1,4,5,2,3,0]; the arc (4,5) survives
+[PASS] Q shift(4,2,-2): exactly-once coverage
+[PASS] Q shift(4,2,-2): no FLP off its arc
+[PASS] Q shift(4,2,-2): every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] Q shift(4,2,-2): every input trip is exactly one of preserved / removed / dissolved
+[PASS] Q shift(4,2,-2): preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] Q shift(4,2,-2): every dissolved or removed trip's customer is now served by the truck
+[PASS] Q shift(4,2,-2): FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] Q shift(4,2,-2): dissolved + removed + preserved == input trips
+[PASS] Q shift(4,2,-2): verdict and objective equal the frozen reference's
+[PASS] Q shift(a=2,L=2,+2): the two jumped nodes go in front: same skeleton [0,1,4,5,2,3,0]
+[PASS] P seed 1 reverse(1,2): T1 dissolved with LaunchArcVanished (record: trip, customer, launch, recovery, drone)
+[PASS] P seed 1 reverse(1,2): T2 preserved; F23 lost with its arc; nothing dropped
+[PASS] P seed 1 reverse(1,2): one reinsertion into one of the 5 free gaps (draw replayed)
+[PASS] P seed 1 reverse(1,2): resulting skeleton as predicted; T2 untouched
+[PASS] P seed 1 reverse(1,2): exactly-once coverage
+[PASS] P seed 1 reverse(1,2): no FLP off its arc
+[PASS] P seed 1 reverse(1,2): every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] P seed 1 reverse(1,2): every input trip is exactly one of preserved / removed / dissolved
+[PASS] P seed 1 reverse(1,2): preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] P seed 1 reverse(1,2): every dissolved or removed trip's customer is now served by the truck
+[PASS] P seed 1 reverse(1,2): FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] P seed 1 reverse(1,2): dissolved + removed + preserved == input trips
+[PASS] P seed 1 reverse(1,2): verdict and objective equal the frozen reference's
+[PASS] P seed 2 reverse(1,2): T1 dissolved with LaunchArcVanished (record: trip, customer, launch, recovery, drone)
+[PASS] P seed 2 reverse(1,2): T2 preserved; F23 lost with its arc; nothing dropped
+[PASS] P seed 2 reverse(1,2): one reinsertion into one of the 5 free gaps (draw replayed)
+[PASS] P seed 2 reverse(1,2): resulting skeleton as predicted; T2 untouched
+[PASS] P seed 2 reverse(1,2): exactly-once coverage
+[PASS] P seed 2 reverse(1,2): no FLP off its arc
+[PASS] P seed 2 reverse(1,2): every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] P seed 2 reverse(1,2): every input trip is exactly one of preserved / removed / dissolved
+[PASS] P seed 2 reverse(1,2): preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] P seed 2 reverse(1,2): every dissolved or removed trip's customer is now served by the truck
+[PASS] P seed 2 reverse(1,2): FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] P seed 2 reverse(1,2): dissolved + removed + preserved == input trips
+[PASS] P seed 2 reverse(1,2): verdict and objective equal the frozen reference's
+[PASS] P seed 3 reverse(1,2): T1 dissolved with LaunchArcVanished (record: trip, customer, launch, recovery, drone)
+[PASS] P seed 3 reverse(1,2): T2 preserved; F23 lost with its arc; nothing dropped
+[PASS] P seed 3 reverse(1,2): one reinsertion into one of the 5 free gaps (draw replayed)
+[PASS] P seed 3 reverse(1,2): resulting skeleton as predicted; T2 untouched
+[PASS] P seed 3 reverse(1,2): exactly-once coverage
+[PASS] P seed 3 reverse(1,2): no FLP off its arc
+[PASS] P seed 3 reverse(1,2): every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] P seed 3 reverse(1,2): every input trip is exactly one of preserved / removed / dissolved
+[PASS] P seed 3 reverse(1,2): preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] P seed 3 reverse(1,2): every dissolved or removed trip's customer is now served by the truck
+[PASS] P seed 3 reverse(1,2): FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] P seed 3 reverse(1,2): dissolved + removed + preserved == input trips
+[PASS] P seed 3 reverse(1,2): verdict and objective equal the frozen reference's
+[PASS] P seed 7 reverse(1,2): T1 dissolved with LaunchArcVanished (record: trip, customer, launch, recovery, drone)
+[PASS] P seed 7 reverse(1,2): T2 preserved; F23 lost with its arc; nothing dropped
+[PASS] P seed 7 reverse(1,2): one reinsertion into one of the 5 free gaps (draw replayed)
+[PASS] P seed 7 reverse(1,2): resulting skeleton as predicted; T2 untouched
+[PASS] P seed 7 reverse(1,2): exactly-once coverage
+[PASS] P seed 7 reverse(1,2): no FLP off its arc
+[PASS] P seed 7 reverse(1,2): every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] P seed 7 reverse(1,2): every input trip is exactly one of preserved / removed / dissolved
+[PASS] P seed 7 reverse(1,2): preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] P seed 7 reverse(1,2): every dissolved or removed trip's customer is now served by the truck
+[PASS] P seed 7 reverse(1,2): FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] P seed 7 reverse(1,2): dissolved + removed + preserved == input trips
+[PASS] P seed 7 reverse(1,2): verdict and objective equal the frozen reference's
+[PASS] P seed 11 reverse(1,2): T1 dissolved with LaunchArcVanished (record: trip, customer, launch, recovery, drone)
+[PASS] P seed 11 reverse(1,2): T2 preserved; F23 lost with its arc; nothing dropped
+[PASS] P seed 11 reverse(1,2): one reinsertion into one of the 5 free gaps (draw replayed)
+[PASS] P seed 11 reverse(1,2): resulting skeleton as predicted; T2 untouched
+[PASS] P seed 11 reverse(1,2): exactly-once coverage
+[PASS] P seed 11 reverse(1,2): no FLP off its arc
+[PASS] P seed 11 reverse(1,2): every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] P seed 11 reverse(1,2): every input trip is exactly one of preserved / removed / dissolved
+[PASS] P seed 11 reverse(1,2): preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] P seed 11 reverse(1,2): every dissolved or removed trip's customer is now served by the truck
+[PASS] P seed 11 reverse(1,2): FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] P seed 11 reverse(1,2): dissolved + removed + preserved == input trips
+[PASS] P seed 11 reverse(1,2): verdict and objective equal the frozen reference's
+[PASS] P exchange([1],[4]): T1 RecoveryNotAfterLaunch (its launch arc survived), T2 LaunchArcVanished, in input-trip order
+[PASS] P exchange([1],[4]): F56 lost with its arc; F23 (arc survived, trip dissolved) dropped as idle; no trip left
+[PASS] P exchange([1],[4]): both customers reinserted (4 then 7) into free gaps (draws replayed); route is FLP-free
+[PASS] P exchange([1],[4]): exactly-once coverage
+[PASS] P exchange([1],[4]): no FLP off its arc
+[PASS] P exchange([1],[4]): every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] P exchange([1],[4]): every input trip is exactly one of preserved / removed / dissolved
+[PASS] P exchange([1],[4]): preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] P exchange([1],[4]): every dissolved or removed trip's customer is now served by the truck
+[PASS] P exchange([1],[4]): FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] P exchange([1],[4]): dissolved + removed + preserved == input trips
+[PASS] P exchange([1],[4]): verdict and objective equal the frozen reference's
+[PASS] P exchange: reason counts
+[PASS] P shift(1,2,+1): [0,3,1,2,5,6,0]: T1 dissolved, T2 preserved
+[PASS] P shift(1,2,+1): customer 4 reinserted as predicted
+[PASS] P shift(1,2,+1): exactly-once coverage
+[PASS] P shift(1,2,+1): no FLP off its arc
+[PASS] P shift(1,2,+1): every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] P shift(1,2,+1): every input trip is exactly one of preserved / removed / dissolved
+[PASS] P shift(1,2,+1): preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] P shift(1,2,+1): every dissolved or removed trip's customer is now served by the truck
+[PASS] P shift(1,2,+1): FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] P shift(1,2,+1): dissolved + removed + preserved == input trips
+[PASS] P shift(1,2,+1): verdict and objective equal the frozen reference's
+[PASS] P reverse(2,4): both trips lose their launch arcs
+[PASS] P reverse(2,4): exactly-once coverage
+[PASS] P reverse(2,4): no FLP off its arc
+[PASS] P reverse(2,4): every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] P reverse(2,4): every input trip is exactly one of preserved / removed / dissolved
+[PASS] P reverse(2,4): preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] P reverse(2,4): every dissolved or removed trip's customer is now served by the truck
+[PASS] P reverse(2,4): FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] P reverse(2,4): dissolved + removed + preserved == input trips
+[PASS] P reverse(2,4): verdict and objective equal the frozen reference's
+[PASS] P shift(3,2,-1): [0,1,3,5,2,6,0] before reinsertion; both trips dissolved, both customers reinserted
+[PASS] P shift(3,2,-1): exactly-once coverage
+[PASS] P shift(3,2,-1): no FLP off its arc
+[PASS] P shift(3,2,-1): every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] P shift(3,2,-1): every input trip is exactly one of preserved / removed / dissolved
+[PASS] P shift(3,2,-1): preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] P shift(3,2,-1): every dissolved or removed trip's customer is now served by the truck
+[PASS] P shift(3,2,-1): FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] P shift(3,2,-1): dissolved + removed + preserved == input trips
+[PASS] P shift(3,2,-1): verdict and objective equal the frozen reference's
+[PASS] P remove drone 0 seed 1: T1 removed by the shake (not 'dissolved'), T2 preserved
+[PASS] P remove drone 0 seed 1: F23 dropped explicitly as idle
+[PASS] P remove drone 0 seed 1: customer 4 reinserted into a free gap (draw replayed), route skeleton otherwise unchanged
+[PASS] P remove drone 0 seed 1: exactly-once coverage
+[PASS] P remove drone 0 seed 1: no FLP off its arc
+[PASS] P remove drone 0 seed 1: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] P remove drone 0 seed 1: every input trip is exactly one of preserved / removed / dissolved
+[PASS] P remove drone 0 seed 1: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] P remove drone 0 seed 1: every dissolved or removed trip's customer is now served by the truck
+[PASS] P remove drone 0 seed 1: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] P remove drone 0 seed 1: dissolved + removed + preserved == input trips
+[PASS] P remove drone 0 seed 1: verdict and objective equal the frozen reference's
+[PASS] P remove drone 0 seed 4: T1 removed by the shake (not 'dissolved'), T2 preserved
+[PASS] P remove drone 0 seed 4: F23 dropped explicitly as idle
+[PASS] P remove drone 0 seed 4: customer 4 reinserted into a free gap (draw replayed), route skeleton otherwise unchanged
+[PASS] P remove drone 0 seed 4: exactly-once coverage
+[PASS] P remove drone 0 seed 4: no FLP off its arc
+[PASS] P remove drone 0 seed 4: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] P remove drone 0 seed 4: every input trip is exactly one of preserved / removed / dissolved
+[PASS] P remove drone 0 seed 4: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] P remove drone 0 seed 4: every dissolved or removed trip's customer is now served by the truck
+[PASS] P remove drone 0 seed 4: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] P remove drone 0 seed 4: dissolved + removed + preserved == input trips
+[PASS] P remove drone 0 seed 4: verdict and objective equal the frozen reference's
+[PASS] P remove drone 0 seed 9: T1 removed by the shake (not 'dissolved'), T2 preserved
+[PASS] P remove drone 0 seed 9: F23 dropped explicitly as idle
+[PASS] P remove drone 0 seed 9: customer 4 reinserted into a free gap (draw replayed), route skeleton otherwise unchanged
+[PASS] P remove drone 0 seed 9: exactly-once coverage
+[PASS] P remove drone 0 seed 9: no FLP off its arc
+[PASS] P remove drone 0 seed 9: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] P remove drone 0 seed 9: every input trip is exactly one of preserved / removed / dissolved
+[PASS] P remove drone 0 seed 9: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] P remove drone 0 seed 9: every dissolved or removed trip's customer is now served by the truck
+[PASS] P remove drone 0 seed 9: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] P remove drone 0 seed 9: dissolved + removed + preserved == input trips
+[PASS] P remove drone 0 seed 9: verdict and objective equal the frozen reference's
+[PASS] P remove drone 1: T2 removed, F56 dropped, 5 free gaps (all but the one holding F23)
+[PASS] P remove drone 1: exactly-once coverage
+[PASS] P remove drone 1: no FLP off its arc
+[PASS] P remove drone 1: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] P remove drone 1: every input trip is exactly one of preserved / removed / dissolved
+[PASS] P remove drone 1: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] P remove drone 1: every dissolved or removed trip's customer is now served by the truck
+[PASS] P remove drone 1: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] P remove drone 1: dissolved + removed + preserved == input trips
+[PASS] P remove drone 1: verdict and objective equal the frozen reference's
+[PASS] P remove a drone without trips: InvalidParameters
+[PASS] F fallback seed 1: exactly-once coverage
+[PASS] F fallback seed 1: no FLP off its arc
+[PASS] F fallback seed 1: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 1: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 1: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 1: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 1: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 1: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 1: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 2: exactly-once coverage
+[PASS] F fallback seed 2: no FLP off its arc
+[PASS] F fallback seed 2: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 2: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 2: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 2: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 2: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 2: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 2: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 3: exactly-once coverage
+[PASS] F fallback seed 3: no FLP off its arc
+[PASS] F fallback seed 3: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 3: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 3: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 3: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 3: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 3: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 3: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 4: exactly-once coverage
+[PASS] F fallback seed 4: no FLP off its arc
+[PASS] F fallback seed 4: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 4: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 4: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 4: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 4: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 4: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 4: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 5: exactly-once coverage
+[PASS] F fallback seed 5: no FLP off its arc
+[PASS] F fallback seed 5: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 5: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 5: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 5: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 5: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 5: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 5: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 6: exactly-once coverage
+[PASS] F fallback seed 6: no FLP off its arc
+[PASS] F fallback seed 6: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 6: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 6: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 6: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 6: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 6: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 6: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 7: exactly-once coverage
+[PASS] F fallback seed 7: no FLP off its arc
+[PASS] F fallback seed 7: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 7: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 7: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 7: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 7: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 7: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 7: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 8: exactly-once coverage
+[PASS] F fallback seed 8: no FLP off its arc
+[PASS] F fallback seed 8: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 8: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 8: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 8: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 8: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 8: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 8: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 9: exactly-once coverage
+[PASS] F fallback seed 9: no FLP off its arc
+[PASS] F fallback seed 9: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 9: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 9: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 9: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 9: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 9: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 9: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 10: exactly-once coverage
+[PASS] F fallback seed 10: no FLP off its arc
+[PASS] F fallback seed 10: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 10: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 10: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 10: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 10: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 10: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 10: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 11: exactly-once coverage
+[PASS] F fallback seed 11: no FLP off its arc
+[PASS] F fallback seed 11: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 11: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 11: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 11: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 11: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 11: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 11: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 12: exactly-once coverage
+[PASS] F fallback seed 12: no FLP off its arc
+[PASS] F fallback seed 12: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 12: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 12: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 12: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 12: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 12: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 12: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 13: exactly-once coverage
+[PASS] F fallback seed 13: no FLP off its arc
+[PASS] F fallback seed 13: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 13: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 13: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 13: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 13: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 13: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 13: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 14: exactly-once coverage
+[PASS] F fallback seed 14: no FLP off its arc
+[PASS] F fallback seed 14: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 14: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 14: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 14: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 14: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 14: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 14: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 15: exactly-once coverage
+[PASS] F fallback seed 15: no FLP off its arc
+[PASS] F fallback seed 15: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 15: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 15: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 15: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 15: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 15: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 15: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 16: exactly-once coverage
+[PASS] F fallback seed 16: no FLP off its arc
+[PASS] F fallback seed 16: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 16: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 16: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 16: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 16: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 16: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 16: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 17: exactly-once coverage
+[PASS] F fallback seed 17: no FLP off its arc
+[PASS] F fallback seed 17: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 17: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 17: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 17: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 17: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 17: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 17: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 18: exactly-once coverage
+[PASS] F fallback seed 18: no FLP off its arc
+[PASS] F fallback seed 18: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 18: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 18: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 18: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 18: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 18: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 18: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 19: exactly-once coverage
+[PASS] F fallback seed 19: no FLP off its arc
+[PASS] F fallback seed 19: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 19: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 19: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 19: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 19: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 19: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 19: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 20: exactly-once coverage
+[PASS] F fallback seed 20: no FLP off its arc
+[PASS] F fallback seed 20: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 20: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 20: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 20: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 20: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 20: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 20: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 21: exactly-once coverage
+[PASS] F fallback seed 21: no FLP off its arc
+[PASS] F fallback seed 21: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 21: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 21: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 21: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 21: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 21: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 21: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 22: exactly-once coverage
+[PASS] F fallback seed 22: no FLP off its arc
+[PASS] F fallback seed 22: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 22: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 22: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 22: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 22: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 22: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 22: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 23: exactly-once coverage
+[PASS] F fallback seed 23: no FLP off its arc
+[PASS] F fallback seed 23: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 23: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 23: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 23: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 23: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 23: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 23: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 24: exactly-once coverage
+[PASS] F fallback seed 24: no FLP off its arc
+[PASS] F fallback seed 24: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 24: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 24: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 24: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 24: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 24: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 24: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 25: exactly-once coverage
+[PASS] F fallback seed 25: no FLP off its arc
+[PASS] F fallback seed 25: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 25: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 25: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 25: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 25: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 25: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 25: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 26: exactly-once coverage
+[PASS] F fallback seed 26: no FLP off its arc
+[PASS] F fallback seed 26: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 26: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 26: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 26: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 26: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 26: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 26: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 27: exactly-once coverage
+[PASS] F fallback seed 27: no FLP off its arc
+[PASS] F fallback seed 27: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 27: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 27: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 27: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 27: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 27: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 27: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 28: exactly-once coverage
+[PASS] F fallback seed 28: no FLP off its arc
+[PASS] F fallback seed 28: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 28: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 28: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 28: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 28: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 28: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 28: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 29: exactly-once coverage
+[PASS] F fallback seed 29: no FLP off its arc
+[PASS] F fallback seed 29: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 29: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 29: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 29: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 29: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 29: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 29: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 30: exactly-once coverage
+[PASS] F fallback seed 30: no FLP off its arc
+[PASS] F fallback seed 30: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 30: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 30: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 30: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 30: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 30: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 30: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 31: exactly-once coverage
+[PASS] F fallback seed 31: no FLP off its arc
+[PASS] F fallback seed 31: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 31: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 31: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 31: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 31: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 31: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 31: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 32: exactly-once coverage
+[PASS] F fallback seed 32: no FLP off its arc
+[PASS] F fallback seed 32: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 32: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 32: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 32: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 32: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 32: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 32: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 33: exactly-once coverage
+[PASS] F fallback seed 33: no FLP off its arc
+[PASS] F fallback seed 33: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 33: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 33: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 33: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 33: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 33: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 33: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 34: exactly-once coverage
+[PASS] F fallback seed 34: no FLP off its arc
+[PASS] F fallback seed 34: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 34: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 34: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 34: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 34: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 34: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 34: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 35: exactly-once coverage
+[PASS] F fallback seed 35: no FLP off its arc
+[PASS] F fallback seed 35: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 35: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 35: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 35: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 35: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 35: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 35: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 36: exactly-once coverage
+[PASS] F fallback seed 36: no FLP off its arc
+[PASS] F fallback seed 36: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 36: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 36: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 36: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 36: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 36: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 36: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 37: exactly-once coverage
+[PASS] F fallback seed 37: no FLP off its arc
+[PASS] F fallback seed 37: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 37: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 37: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 37: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 37: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 37: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 37: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 38: exactly-once coverage
+[PASS] F fallback seed 38: no FLP off its arc
+[PASS] F fallback seed 38: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 38: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 38: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 38: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 38: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 38: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 38: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 39: exactly-once coverage
+[PASS] F fallback seed 39: no FLP off its arc
+[PASS] F fallback seed 39: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 39: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 39: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 39: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 39: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 39: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 39: verdict and objective equal the frozen reference's
+[PASS] F fallback seed 40: exactly-once coverage
+[PASS] F fallback seed 40: no FLP off its arc
+[PASS] F fallback seed 40: every route FLP is a trip's launch and every launch is on the route (rule (6))
+[PASS] F fallback seed 40: every input trip is exactly one of preserved / removed / dissolved
+[PASS] F fallback seed 40: preserved trips are untouched (drone id, launch, customer, recovery) and keep their relative order
+[PASS] F fallback seed 40: every dissolved or removed trip's customer is now served by the truck
+[PASS] F fallback seed 40: FLP accounting: base FLPs = on the route + lost with their arc + dropped (disjoint)
+[PASS] F fallback seed 40: dissolved + removed + preserved == input trips
+[PASS] F fallback seed 40: verdict and objective equal the frozen reference's
+[PASS] F remove drone 0 (its FLP is shared, every gap holds an FLP): fallback draw, ArcSplitByReinsertion dissolves exactly the trips launching in the drawn gap, FLP dropped, second customer into a free gap (40 seeds, replayed)
+[PASS] F fallback: resulting skeletons as predicted (40 seeds)
+[PASS] F fallback: both gaps are drawn over the seeds (non-vacuous)
+[PASS] F (m = 1): explicit reverse(1,2) is InvalidParameters
+[PASS] F (m = 1): the three route shakes are NotApplicable
+[PASS] reverse: a == b, a == 0, a > b, b > m are InvalidParameters
+[PASS] exchange: overlapping, zero-length, beyond the end, unordered segments are InvalidParameters
+[PASS] exchange: adjacent segments are allowed
+[PASS] shift: zero, out-of-range and whole-route moves are InvalidParameters, a legal edge move is not
+[PASS] an infeasible input (omitted customers) is InputInfeasible for every entry point, nothing generated
+[PASS] Random_Drone_Remove without any trip is NotApplicable
+[PASS] an all-truck solution is shaken without any dissolution
+[PASS] evaluate_result = false: same solution, same draws, no judgement
+[PASS] deterministic: same seed, same result
+[PASS] random entries: the result equals the explicit call with the recorded parameters after exactly the documented draws
+[PASS] random entries: the documented number of draws is consumed (RNG state equal after replay)
+[PASS] Random_Reverse over 4000 seeds: all 10 unordered pairs of 5 nodes occur
+[PASS] Random_Exchange: all 13 (a, b, L) combinations of m = 5, L <= 2 occur and no other
+[PASS] Random_Shift: every legal (a, L, delta) with L <= 3 and |delta| <= 3 occurs (36) and both directions
+[PASS] options: max_segment_length = 1 and max_shift = 1 restrict the draws
+[PASS] options: values below 1 act as 1
+[PASS] random drone remove seed 1: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 2: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 3: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 4: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 5: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 6: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 7: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 8: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 9: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 10: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 11: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 12: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 13: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 14: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 15: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 16: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 17: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 18: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 19: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 20: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 21: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 22: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 23: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 24: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 25: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 26: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 27: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 28: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 29: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 30: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 31: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 32: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 33: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 34: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 35: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 36: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 37: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 38: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 39: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 40: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 41: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 42: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 43: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 44: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 45: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 46: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 47: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 48: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 49: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 50: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 51: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 52: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 53: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 54: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 55: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 56: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 57: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 58: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 59: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] random drone remove seed 60: the drone is the uniform_index(#drone ids with trips)-th
+[PASS] Random_Drone_Remove: both drones are drawn
+[PASS] shake(): the first draw selects the kind uniformly among the four (200 seeds, all four occur)
+[PASS] shake() on an all-truck solution: a drawn Random_Drone_Remove is NotApplicable (no redraw, no substitution), the others act
+
+675 passed, 0 failed
+ALL TESTS PASSED

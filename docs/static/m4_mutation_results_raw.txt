@@ -1,0 +1,87 @@
+M4 mutation results (tests/mutation/m4_mutate.py): one injected bug at a time into a COPY of include/ and tests/; the M4 programs test_n3_n6 and test_n3_n6_oracle must fail.
+Final run on the final M4 tests (test_n3_n6 565 assertions, test_n3_n6_oracle 595,093 checks).
+CW-01 neighbour window strict (<): KILLED by test_n3_n6, test_n3_n6_oracle
+CW-02 neighbour window +1 half-step: KILLED by test_n3_n6
+CW-03 neighbours farthest first: KILLED by test_n3_n6, test_n3_n6_oracle
+CW-05 drone customer half-step 2g+2: KILLED by test_n3_n6
+CW-07 neighbours: ties not broken by id (stable on map order): KILLED by test_n3_n6_oracle
+N3-01 predecessor not searched: KILLED by test_n3_n6, test_n3_n6_oracle
+N3-02 successor not searched: KILLED by test_n3_n6, test_n3_n6_oracle
+N3-03 successor before predecessor: KILLED by test_n3_n6, test_n3_n6_oracle
+N3-04 drone sequence ordered by trip index, not launch position: KILLED by test_n3_n6, test_n3_n6_oracle
+N3-05 same-drone filter dropped (all trips in one sequence): KILLED by test_n3_n6, test_n3_n6_oracle
+N3-06 sequence in descending launch order: KILLED by test_n3_n6, test_n3_n6_oracle
+N3-07 successor = LAST trip of the drone (non-consecutive): KILLED by test_n3_n6, test_n3_n6_oracle
+N3-08 predecessor = FIRST trip of the drone (non-consecutive): KILLED by test_n3_n6, test_n3_n6_oracle
+N3-09 the adjacency window wrongly applied (w = 0 -> nothing): KILLED by test_n3_n6, test_n3_n6_oracle
+N3-10 Rng overload always picks trip 0: KILLED by test_n3_n6
+N3-11 Rng overload without the no-trip guard: KILLED by test_n3_n6
+N3-12 sequence uses the recovery position as the launch position: SURVIVED
+N3-13 operator id reported as N6: KILLED by test_n3_n6, test_n3_n6_oracle
+N6-01 same-drone partners not excluded: KILLED by test_n3_n6, test_n3_n6_oracle
+N6-02 include_same_drone ignored (always excluded): KILLED by test_n3_n6, test_n3_n6_oracle
+N6-03 drone filter inverted (only same-drone partners): KILLED by test_n3_n6, test_n3_n6_oracle
+N6-04 window +1: KILLED by test_n3_n6, test_n3_n6_oracle
+N6-05 window -1: KILLED by test_n3_n6, test_n3_n6_oracle
+N6-06 truck customers not skipped: KILLED by test_n3_n6, test_n3_n6_oracle
+N6-07 self-pair allowed: SURVIVED
+N6-08 partners visited farthest first: KILLED by test_n3_n6, test_n3_n6_oracle
+N6-09 partners visited by customer id only: KILLED by test_n3_n6, test_n3_n6_oracle
+N6-10 move kind reported as N3Exchange: KILLED by test_n3_n6, test_n3_n6_oracle
+N6-11 Rng overload always picks trip 0: KILLED by test_n3_n6
+N6-12 Rng overload without the no-trip guard: KILLED by test_n3_n6
+N6-13 default include_same_drone = true: KILLED by test_n3_n6
+N6-14 operator id reported as N3: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-01 tie-break last wins (<=): KILLED by test_n3_n6
+TE-02 customers not exchanged: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-03 launch nodes exchanged too: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-04 recovery nodes exchanged too: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-05 drone ids exchanged too: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-06 evaluate_candidates ignored: KILLED by test_n3_n6
+TE-07 generated not counted: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-08 evaluated not counted: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-09 evaluator rejection counted twice: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-10 evaluator rejection not counted: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-11 evaluator reason overridden to EvalOther: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-12 move.customer taken from the partner trip: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-13 partner_trip not recorded: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-14 replaced_trip not recorded: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-15 infeasible input accepted: KILLED by test_n3_n6
+TE-16 anchor range check skipped: KILLED by test_n3_n6
+TE-17 base objective not reported: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-18 anchor customer not reported: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-19 candidate solution not recorded: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-20 best carries the base solution: KILLED by test_n3_n6
+TE-21 infeasible candidates accepted: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-22 accepted not counted: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-23 anchor trip not reported: KILLED by test_n3_n6, test_n3_n6_oracle
+TE-24 best objective not strict (equal to base accepted as best on ties across candidates): KILLED by test_n3_n6
+CW-04 drone customer half-step 2g (instead of 2g+1): SURVIVED
+CW-06 truck customer half-step 2k+1: SURVIVED
+
+Analysis of the four survivors of the M4 programs (all equivalent for the M4 operators; none is a test gap):
+ N3-12  sorts a drone's trips by (recovery position, launch position, index) instead of (launch, recovery, index). Constraint (28) forbids overlapping trips of one drone, so in a
+        feasible input (the only kind N3 accepts) the launch order and the recovery order of one drone's trips coincide: the two sort keys give the same sequence. EQUIVALENT.
+ N6-07  removes the guard `if (j == trip_index) continue;`. PositionIndex::neighbours never returns the anchor's own customer and one trip serves one customer, so the guard can never
+        fire; it is a defensive check. EQUIVALENT.
+ CW-04 / CW-06 (offsets of the half-step coordinates of drone / truck customers by one half-step) change only the distance between a drone customer and a TRUCK customer, which N6 never
+        uses (truck customers are skipped; drone-drone distances are unchanged by a common offset). They are killed by the earlier suites that use truck-drone adjacency, run with
+        TDR_TESTS=test_n4_n5,test_n4_n5_oracle,test_n7_n8,test_n7_n8_oracle:
+CW-04 drone customer half-step 2g (instead of 2g+1): KILLED by test_n4_n5, test_n4_n5_oracle, test_n7_n8, test_n7_n8_oracle
+CW-06 truck customer half-step 2k+1: KILLED by test_n4_n5, test_n4_n5_oracle
+
+=== Re-run after the A8 default change (9 Nov 2026, M4 sign-off): the 14 N6 mutants on the revised tests (test_n3_n6 587 assertions, test_n3_n6_oracle 613,135 checks) ===
+N6-01 same-drone partners not excluded: KILLED by test_n3_n6, test_n3_n6_oracle
+N6-02 include_same_drone ignored (always excluded): KILLED by test_n3_n6, test_n3_n6_oracle
+N6-03 drone filter inverted (only same-drone partners): KILLED by test_n3_n6, test_n3_n6_oracle
+N6-04 window +1: KILLED by test_n3_n6, test_n3_n6_oracle
+N6-05 window -1: KILLED by test_n3_n6, test_n3_n6_oracle
+N6-06 truck customers not skipped: KILLED by test_n3_n6, test_n3_n6_oracle
+N6-07 self-pair allowed: SURVIVED (equivalent, unchanged: PositionIndex::neighbours never returns the anchor's own customer)
+N6-08 partners visited farthest first: KILLED by test_n3_n6, test_n3_n6_oracle
+N6-09 partners visited by customer id only: KILLED by test_n3_n6, test_n3_n6_oracle
+N6-10 move kind reported as N3Exchange: KILLED by test_n3_n6, test_n3_n6_oracle
+N6-11 Rng overload always picks trip 0: KILLED by test_n3_n6
+N6-12 Rng overload without the no-trip guard: KILLED by test_n3_n6
+N6-13 default include_same_drone = false (A8 default reverted; the old N6-13 flipped the old default): KILLED by test_n3_n6, test_n3_n6_oracle
+N6-14 operator id reported as N3: KILLED by test_n3_n6, test_n3_n6_oracle

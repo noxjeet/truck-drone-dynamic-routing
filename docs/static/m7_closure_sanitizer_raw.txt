@@ -1,0 +1,23 @@
+# M7 closure: full 21-program suite under ASan+UBSan (build_m6san, -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=undefined)
+test_tsp: ALL TESTS PASSED
+test_model: ALL TESTS PASSED
+test_graph: ALL TESTS PASSED
+test_flp: ALL TESTS PASSED
+test_timing: ALL TESTS PASSED
+test_init: ALL TESTS PASSED
+test_search_infra: ALL TESTS PASSED
+test_fuzz_search_infra: ALL TESTS PASSED (11262 assertions)
+test_evaluator_differential: ALL TESTS PASSED (26745 assertions)
+test_n4_n5: ALL TESTS PASSED
+test_n4_n5_oracle: ALL TESTS PASSED
+test_n7_n8: ALL TESTS PASSED
+test_n7_n8_oracle: ALL TESTS PASSED
+test_n3_n6: ALL TESTS PASSED
+test_n3_n6_oracle: ALL TESTS PASSED
+test_n1_n2: ALL TESTS PASSED
+test_n1_n2_oracle: ALL TESTS PASSED
+test_shakes: ALL TESTS PASSED
+test_shakes_oracle: ALL TESTS PASSED
+test_vns: ALL TESTS PASSED
+test_vns_oracle: ALL TESTS PASSED
+sanitizer reports: 0

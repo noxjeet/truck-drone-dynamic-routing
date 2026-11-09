@@ -1,0 +1,71 @@
+N3/N6 operator benchmark, endurance x1.00, window=3, seeds: base 31415, dataset_index 0; 15 reps, batch >= 20.00 ms
+
+n=10  |pool|=1882  trips=3  drones=2
+  distinct drones used by the base trips: 1
+  base evaluate_solution (1 call)             1.28 us  [min 1.22, max 2.02, spread 62.83 %]
+  N3 gen  (sweep over all trips)              4.29 us  [min 4.11, max 5.42, spread 30.34 %]
+  N3 full (sweep over all trips)             10.80 us  [min 10.32, max 20.13, spread 90.86 %]
+  N6 gen  (sweep over all trips)              5.36 us  [min 5.10, max 9.20, spread 76.51 %]
+  N6 full (sweep over all trips)              8.60 us  [min 8.28, max 10.60, spread 26.97 %]
+  N6 restricted gen  (different drones only)        5.14 us  [min 5.03, max 5.73, spread 13.65 %]
+  N6 restricted full (different drones only)        5.19 us  [min 5.06, max 6.08, spread 19.59 %]
+  N3: calls/sweep=3 generated=4 evaluator-calls=4 feasible=0 (0.00 % of generated, 0.00 % of evaluated) duplicates=0
+      rejected (full): eval-endurance=4   (accepted + rejected == generated: yes)
+      generation (net of 3 base evals): 0.44 us per sweep = 0.11 us per generated candidate -> 9129486.40 candidates/s
+      evaluation (full - gen): 6.51 us per sweep = 1.63 us per evaluated candidate (evaluator alone: 1.28 us per call)
+      full sweep total per generated candidate: 2.70 us; allocations per full sweep: 392 (24 KiB total, 98.00 per generated candidate)
+  N6: calls/sweep=3 generated=2 evaluator-calls=2 feasible=0 (0.00 % of generated, 0.00 % of evaluated) duplicates=0
+      rejected (full): eval-endurance=2   (accepted + rejected == generated: yes)
+      generation (net of 3 base evals): 1.51 us per sweep = 0.75 us per generated candidate -> 1326629.69 candidates/s
+      evaluation (full - gen): 3.24 us per sweep = 1.62 us per evaluated candidate (evaluator alone: 1.28 us per call)
+      full sweep total per generated candidate: 4.30 us; allocations per full sweep: 335 (18 KiB total, 167.50 per generated candidate)
+  N6 restricted (variant, include_same_drone=false): calls/sweep=3 generated=0 evaluator-calls=0 feasible=0 (0.00 % of generated, 0.00 % of evaluated) duplicates=0
+      rejected (full): none  (accepted + rejected == generated: yes)
+      full sweep total per generated candidate: 5.19 us; allocations per full sweep: 217 (11 KiB total, 217.00 per generated candidate)
+
+n=20  |pool|=6348  trips=6  drones=2
+  distinct drones used by the base trips: 1
+  base evaluate_solution (1 call)             2.36 us  [min 2.29, max 2.70, spread 17.35 %]
+  N3 gen  (sweep over all trips)             15.80 us  [min 15.38, max 18.24, spread 18.13 %]
+  N3 full (sweep over all trips)             44.46 us  [min 43.06, max 54.48, spread 25.71 %]
+  N6 gen  (sweep over all trips)             19.38 us  [min 18.69, max 19.75, spread 5.48 %]
+  N6 full (sweep over all trips)             44.15 us  [min 42.21, max 48.68, spread 14.65 %]
+  N6 restricted gen  (different drones only)       19.31 us  [min 18.61, max 21.74, spread 16.20 %]
+  N6 restricted full (different drones only)       19.04 us  [min 18.33, max 21.32, spread 15.69 %]
+  N3: calls/sweep=6 generated=10 evaluator-calls=10 feasible=0 (0.00 % of generated, 0.00 % of evaluated) duplicates=0
+      rejected (full): eval-endurance=10   (accepted + rejected == generated: yes)
+      generation (net of 6 base evals): 1.63 us per sweep = 0.16 us per generated candidate -> 6127697.57 candidates/s
+      evaluation (full - gen): 28.66 us per sweep = 2.87 us per evaluated candidate (evaluator alone: 2.36 us per call)
+      full sweep total per generated candidate: 4.45 us; allocations per full sweep: 1292 (103 KiB total, 129.20 per generated candidate)
+  N6: calls/sweep=6 generated=8 evaluator-calls=8 feasible=0 (0.00 % of generated, 0.00 % of evaluated) duplicates=0
+      rejected (full): eval-endurance=8   (accepted + rejected == generated: yes)
+      generation (net of 6 base evals): 5.21 us per sweep = 0.65 us per generated candidate -> 1534593.57 candidates/s
+      evaluation (full - gen): 24.77 us per sweep = 3.10 us per evaluated candidate (evaluator alone: 2.36 us per call)
+      full sweep total per generated candidate: 5.52 us; allocations per full sweep: 1308 (94 KiB total, 163.50 per generated candidate)
+  N6 restricted (variant, include_same_drone=false): calls/sweep=6 generated=0 evaluator-calls=0 feasible=0 (0.00 % of generated, 0.00 % of evaluated) duplicates=0
+      rejected (full): none  (accepted + rejected == generated: yes)
+      full sweep total per generated candidate: 19.04 us; allocations per full sweep: 644 (41 KiB total, 644.00 per generated candidate)
+
+n=50  |pool|=39574  trips=23  drones=2
+  distinct drones used by the base trips: 1
+  base evaluate_solution (1 call)             9.07 us  [min 8.59, max 19.57, spread 121.16 %]
+  N3 gen  (sweep over all trips)            223.85 us  [min 211.10, max 333.89, spread 54.86 %]
+  N3 full (sweep over all trips)            652.53 us  [min 619.96, max 910.50, spread 44.53 %]
+  N6 gen  (sweep over all trips)            279.80 us  [min 263.66, max 290.37, spread 9.55 %]
+  N6 full (sweep over all trips)           1366.42 us  [min 1297.38, max 3034.73, spread 127.15 %]
+  N6 restricted gen  (different drones only)      272.57 us  [min 260.20, max 317.58, spread 21.05 %]
+  N6 restricted full (different drones only)      280.14 us  [min 259.49, max 349.88, spread 32.27 %]
+  N3: calls/sweep=23 generated=44 evaluator-calls=44 feasible=4 (9.09 % of generated, 9.09 % of evaluated) duplicates=0
+      rejected (full): eval-endurance=40   (accepted + rejected == generated: yes)
+      generation (net of 23 base evals): 15.35 us per sweep = 0.35 us per generated candidate -> 2867061.99 candidates/s
+      evaluation (full - gen): 428.68 us per sweep = 9.74 us per evaluated candidate (evaluator alone: 9.07 us per call)
+      full sweep total per generated candidate: 14.83 us; allocations per full sweep: 11387 (1262 KiB total, 258.80 per generated candidate)
+  N6: calls/sweep=23 generated=108 evaluator-calls=108 feasible=4 (3.70 % of generated, 3.70 % of evaluated) duplicates=0
+      rejected (full): eval-endurance=104   (accepted + rejected == generated: yes)
+      generation (net of 23 base evals): 71.30 us per sweep = 0.66 us per generated candidate -> 1514737.09 candidates/s
+      evaluation (full - gen): 1086.62 us per sweep = 10.06 us per evaluated candidate (evaluator alone: 9.07 us per call)
+      full sweep total per generated candidate: 12.65 us; allocations per full sweep: 23833 (2474 KiB total, 220.68 per generated candidate)
+  N6 restricted (variant, include_same_drone=false): calls/sweep=23 generated=0 evaluator-calls=0 feasible=0 (0.00 % of generated, 0.00 % of evaluated) duplicates=0
+      rejected (full): none  (accepted + rejected == generated: yes)
+      full sweep total per generated candidate: 280.14 us; allocations per full sweep: 5349 (454 KiB total, 5349.00 per generated candidate)
+

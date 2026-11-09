@@ -8,7 +8,8 @@ International Transactions in Operational Research, 33, 4072-4109.
 
 ## Scope
 
-This repository currently implements **Stage 1 only**: the static
+This repository currently implements **Stage 1 only** (static reproduction M0--M9 complete; documentation frozen at M10; start at
+`docs/static/INDEX.md` and `docs/static/static_reproduction_summary.md`): the static
 truck-multi-drone routing problem with flexible launch positions, its
 constructive initial solution, and the VNS metaheuristic, targeting the
 synthetic instances Paper 1 describes (10/20/50 customers). The dynamic
@@ -93,9 +94,27 @@ Implemented so far:
   candidates) are explicit, isolated **[ASSUMPTION]**s -- see
   `DECISIONS.md` for the full breakdown.
 
-Everything else described in the implementation plan (the 8 local-search +
-4 shake neighborhoods, the VNS driver, the experiment runner) is designed
-but not yet implemented.
+- `util/`, `config/`, `instance/`, `search/` and `flp/flp_arc_index.hpp` —
+  static-reproduction infrastructure added at milestone M1 (9 Nov 2026):
+  a portable seeded RNG with named seed streams, the centralised
+  `StaticConfig` (every default tagged [PAPER] or [ASSUMPTION]), a
+  deterministic 60 x 60 km instance generator, an arc -> launch-point index
+  over the eager FLP pool, route/trip bookkeeping helpers that report (never
+  silently repair) what an edit invalidates, the shared candidate window for
+  the neighbourhoods, and `assign_drone_ids_by_route_order` (moved from
+  `init/`, behaviour unchanged). None of these decides feasibility; that
+  remains exclusively `timing/`. See `docs/static/` for the mathematical
+  specification, methodology, profile and test evidence.
+
+Also implemented since M2 (all signed off): the 8 local-search neighbourhoods
+(`search/neighbourhood_n1..n8.hpp`), the 4 shakes (`search/shakes.hpp`), the
+VNS driver (`search/vns.hpp`), the configuration / runner / result writer
+(`include/config/experiment_config.hpp`, `include/runner/`) and the command-line tool
+`tdr_static` (`apps/`), and the validation and comparison with the paper (M9,
+`docs/static/validation_vs_paper.md`). **The paper's numbers were not reproduced**
+(objective about 2-3 times smaller than the paper's Table 3, flexible-launch-point
+counts 7.5-11 times larger than Table 4, instance coordinates and MILP data
+unavailable); see the summary. The dynamic extension is on hold and not started.
 
 ## Building
 
@@ -108,16 +127,29 @@ cmake --build .
 ctest --output-on-failure
 ```
 
+Running an experiment (`tdr_static` is built by default; the benchmarks and the M9 probe need `-DTDR_BUILD_BENCH=ON`):
+
+```
+build/tdr_static run --config config/m9/n10_seed1.cfg --out results/my_run
+build/tdr_static list-keys            # all 48 configuration keys with defaults
+```
+
+Every recorded experiment and its analysis is reproduced by `scripts/m9_run_all.sh` and the `scripts/m9_*.py` programs
+(commands: `docs/static/static_reproduction_summary.md`, section 7).
+
 ## Layout
 
 ```
 include/   public headers, mirrors src/ module by module
 src/       implementations
-config/    experiment configuration (data, not code) -- not populated yet
-instances/ generated/saved problem instances -- not populated yet
-results/   experiment output -- not populated yet
+config/    experiment configuration FILES (data, not code): config/m9/ (the M9 protocol)
+           (the configuration *types* are in include/config/)
+instances/ generated/saved problem instances -- not used (instances are regenerated from the seed)
+results/   experiment output: results/m9/ (protocol), results/m9_sensitivity/ (labelled diagnostics)
 tests/     test executables (plain assertions + PASS/FAIL output, no
            external test framework dependency yet)
-scripts/   optional post-processing/plotting helpers (Python), not part
+docs/      decision register, audit, and docs/static/ (static-reproduction
+           specification, methodology, milestone log, profile)
+scripts/   M9/M10 run, analysis and check scripts (bash / Python / CMake script), not part
            of the C++ build
 ```

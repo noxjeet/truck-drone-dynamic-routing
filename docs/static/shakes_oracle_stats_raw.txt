@@ -1,0 +1,11 @@
+Reverse: calls=9600 ok=9600 not_applicable=0
+Exchange: calls=9600 ok=9600 not_applicable=0
+Shift: calls=9600 ok=9600 not_applicable=0
+DroneRemove: calls=9600 ok=6996 not_applicable=2604
+bases=800 with_trips=583
+dissolved: launch-arc-vanished=25278 recovery-not-after-launch=85 arc-split-by-reinsertion=8 removed_by_S4=17517
+reinsertions=42888 fallback_draws=8 shakes_without_dissolution=15092 with=20704
+flps_dropped_idle=17534 flps_lost_with_arcs=25140
+results: feasible=35640 infeasible=156 (endurance=133) improved=12585 equal_objective=0
+728109 checks, 0 failures
+ALL TESTS PASSED

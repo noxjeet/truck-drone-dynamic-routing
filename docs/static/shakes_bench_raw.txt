@@ -1,0 +1,47 @@
+Shake benchmark, endurance x1.00, defaults L_max = D_max = 3, window=3, seeds: base 31415, dataset_index 0; 15 reps, batch >= 20.00 ms, 4000 outcome draws
+
+n=10  |pool|=1882  trips=3  route FLPs=3  route length=12
+  base evaluate_solution (1 call)             1.24 us
+  Random_Reverse       gen      4.03 us   full      5.22 us  (eval share 22.80 %, base evals alone 1.24 us)   allocs/call 217.44
+      outcomes over 4000 applicable draws (0 not applicable): feasible 100.00 % (infeasible 0, of which endurance 0), improving among all 0.03 %, mean objective change of feasible results 23099.54
+      per shake: trips dissolved launch-arc-vanished 1.51, recovery-not-after-launch 0.00, arc-split 0.00, removed 0.00, shakes with no dissolution/removal 4.53 %, reinsertions 1.51 (fallback 0), trips left 1.49, FLPs lost with arcs 1.51, idle FLPs dropped 0.00
+  Random_Exchange      gen      3.97 us   full      5.38 us  (eval share 26.18 %, base evals alone 1.24 us)   allocs/call 214.99
+      outcomes over 4000 applicable draws (0 not applicable): feasible 100.00 % (infeasible 0, of which endurance 0), improving among all 0.00 %, mean objective change of feasible results 33429.09
+      per shake: trips dissolved launch-arc-vanished 1.21, recovery-not-after-launch 0.00, arc-split 0.00, removed 0.00, shakes with no dissolution/removal 7.62 %, reinsertions 1.21 (fallback 0), trips left 1.79, FLPs lost with arcs 1.21, idle FLPs dropped 0.00
+  Random_Shift         gen      4.11 us   full      5.34 us  (eval share 23.09 %, base evals alone 1.24 us)   allocs/call 215.68
+      outcomes over 4000 applicable draws (0 not applicable): feasible 100.00 % (infeasible 0, of which endurance 0), improving among all 0.00 %, mean objective change of feasible results 24525.00
+      per shake: trips dissolved launch-arc-vanished 1.03, recovery-not-after-launch 0.00, arc-split 0.00, removed 0.00, shakes with no dissolution/removal 22.82 %, reinsertions 1.03 (fallback 0), trips left 1.97, FLPs lost with arcs 1.03, idle FLPs dropped 0.00
+  Random_Drone_Remove  gen      3.78 us   full      4.56 us  (eval share 17.14 %, base evals alone 1.24 us)   allocs/call 179.00
+      outcomes over 4000 applicable draws (0 not applicable): feasible 100.00 % (infeasible 0, of which endurance 0), improving among all 0.68 %, mean objective change of feasible results 38524.73
+      per shake: trips dissolved launch-arc-vanished 0.00, recovery-not-after-launch 0.00, arc-split 0.00, removed 3.00, shakes with no dissolution/removal 0.00 %, reinsertions 3.00 (fallback 0), trips left 0.00, FLPs lost with arcs 0.00, idle FLPs dropped 3.00
+
+n=20  |pool|=6348  trips=6  route FLPs=6  route length=22
+  base evaluate_solution (1 call)             2.41 us
+  Random_Reverse       gen      7.51 us   full     10.06 us  (eval share 25.35 %, base evals alone 2.41 us)   allocs/call 321.23
+      outcomes over 4000 applicable draws (0 not applicable): feasible 100.00 % (infeasible 0, of which endurance 0), improving among all 0.10 %, mean objective change of feasible results 79302.34
+      per shake: trips dissolved launch-arc-vanished 2.44, recovery-not-after-launch 0.00, arc-split 0.00, removed 0.00, shakes with no dissolution/removal 2.23 %, reinsertions 2.44 (fallback 0), trips left 3.56, FLPs lost with arcs 2.44, idle FLPs dropped 0.00
+  Random_Exchange      gen      7.16 us   full     10.53 us  (eval share 32.05 %, base evals alone 2.41 us)   allocs/call 308.90
+      outcomes over 4000 applicable draws (0 not applicable): feasible 100.00 % (infeasible 0, of which endurance 0), improving among all 0.03 %, mean objective change of feasible results 85603.28
+      per shake: trips dissolved launch-arc-vanished 1.50, recovery-not-after-launch 0.00, arc-split 0.00, removed 0.00, shakes with no dissolution/removal 10.57 %, reinsertions 1.50 (fallback 0), trips left 4.50, FLPs lost with arcs 1.50, idle FLPs dropped 0.00
+  Random_Shift         gen      6.94 us   full     10.03 us  (eval share 30.83 %, base evals alone 2.41 us)   allocs/call 306.98
+      outcomes over 4000 applicable draws (0 not applicable): feasible 100.00 % (infeasible 0, of which endurance 0), improving among all 0.00 %, mean objective change of feasible results 56604.98
+      per shake: trips dissolved launch-arc-vanished 1.14, recovery-not-after-launch 0.00, arc-split 0.00, removed 0.00, shakes with no dissolution/removal 18.12 %, reinsertions 1.14 (fallback 0), trips left 4.86, FLPs lost with arcs 1.14, idle FLPs dropped 0.00
+  Random_Drone_Remove  gen      7.45 us   full      9.33 us  (eval share 20.20 %, base evals alone 2.41 us)   allocs/call 305.00
+      outcomes over 4000 applicable draws (0 not applicable): feasible 100.00 % (infeasible 0, of which endurance 0), improving among all 0.00 %, mean objective change of feasible results 140553.72
+      per shake: trips dissolved launch-arc-vanished 0.00, recovery-not-after-launch 0.00, arc-split 0.00, removed 6.00, shakes with no dissolution/removal 0.00 %, reinsertions 6.00 (fallback 0), trips left 0.00, FLPs lost with arcs 0.00, idle FLPs dropped 6.00
+
+n=50  |pool|=39574  trips=23  route FLPs=23  route length=52
+  base evaluate_solution (1 call)             9.20 us
+  Random_Reverse       gen     27.77 us   full     37.22 us  (eval share 25.40 %, base evals alone 9.20 us)   allocs/call 770.78
+      outcomes over 4000 applicable draws (0 not applicable): feasible 100.00 % (infeasible 0, of which endurance 0), improving among all 0.05 %, mean objective change of feasible results 523226.26
+      per shake: trips dissolved launch-arc-vanished 9.25, recovery-not-after-launch 0.00, arc-split 0.00, removed 0.00, shakes with no dissolution/removal 0.20 %, reinsertions 9.25 (fallback 0), trips left 13.75, FLPs lost with arcs 9.25, idle FLPs dropped 0.00
+  Random_Exchange      gen     25.27 us   full     37.98 us  (eval share 33.46 %, base evals alone 9.20 us)   allocs/call 673.22
+      outcomes over 4000 applicable draws (0 not applicable): feasible 100.00 % (infeasible 0, of which endurance 0), improving among all 0.03 %, mean objective change of feasible results 288085.00
+      per shake: trips dissolved launch-arc-vanished 3.25, recovery-not-after-launch 0.00, arc-split 0.00, removed 0.00, shakes with no dissolution/removal 0.05 %, reinsertions 3.25 (fallback 0), trips left 19.75, FLPs lost with arcs 3.25, idle FLPs dropped 0.00
+  Random_Shift         gen     24.95 us   full     36.60 us  (eval share 31.83 %, base evals alone 9.20 us)   allocs/call 665.11
+      outcomes over 4000 applicable draws (0 not applicable): feasible 100.00 % (infeasible 0, of which endurance 0), improving among all 0.05 %, mean objective change of feasible results 150486.61
+      per shake: trips dissolved launch-arc-vanished 2.45, recovery-not-after-launch 0.00, arc-split 0.00, removed 0.00, shakes with no dissolution/removal 0.45 %, reinsertions 2.45 (fallback 0), trips left 20.55, FLPs lost with arcs 2.45, idle FLPs dropped 0.00
+  Random_Drone_Remove  gen     28.53 us   full     32.94 us  (eval share 13.39 %, base evals alone 9.20 us)   allocs/call 908.00
+      outcomes over 4000 applicable draws (0 not applicable): feasible 100.00 % (infeasible 0, of which endurance 0), improving among all 0.00 %, mean objective change of feasible results 1439626.61
+      per shake: trips dissolved launch-arc-vanished 0.00, recovery-not-after-launch 0.00, arc-split 0.00, removed 23.00, shakes with no dissolution/removal 0.00 %, reinsertions 23.00 (fallback 0), trips left 0.00, FLPs lost with arcs 0.00, idle FLPs dropped 23.00
+

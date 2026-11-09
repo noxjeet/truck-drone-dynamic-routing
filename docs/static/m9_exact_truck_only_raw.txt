@@ -1,0 +1,16 @@
+formula check: max |route objective - evaluator objective| over all drone-free best solutions = 2.910e-11 s
+exact truck-only optimum (minutes) vs VNS, 10 customers (12 instances, 10 runs each)
+set ds | exact truck-only VNS z_best  VNS z_avg | best gap % avg gap % | runs hitting the optimum
+  1  0 |          842.001    842.001    850.173 |    +0.0000   +0.9705 |                     7/10
+  1  1 |          868.260    872.933    872.933 |    +0.5381   +0.5381 |                     0/10
+  1  2 |          800.556    800.556    800.556 |    -0.0000   +0.0000 |                    10/10
+  1  3 |         1091.235   1091.235   1097.158 |    +0.0000   +0.5428 |                     3/10
+  2  0 |         1135.820   1142.932   1142.932 |    +0.6262   +0.6262 |                     0/10
+  2  1 |          926.378    926.378    932.328 |    +0.0000   +0.6422 |                     9/10
+  2  2 |          809.101    809.101    809.101 |    +0.0000   +0.0000 |                    10/10
+  2  3 |         1053.912   1053.912   1074.249 |    +0.0000   +1.9297 |                     3/10
+  3  0 |          818.750    818.750    818.750 |    -0.0000   +0.0000 |                    10/10
+  3  1 |         1001.913   1001.913   1002.529 |    -0.0000   +0.0615 |                     9/10
+  3  2 |         1021.065   1021.065   1021.065 |    +0.0000   -0.0000 |                    10/10
+  3  3 |          796.518    796.518    828.284 |    +0.0000   +3.9880 |                     1/10
+mean best gap +0.0970 %, mean avg gap +0.7749 %, instances where VNS z_best equals the truck-only optimum: 10/12; instances where VNS z_best is BELOW it (drones helped): 0/12

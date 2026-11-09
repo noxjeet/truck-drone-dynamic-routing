@@ -1,0 +1,422 @@
+[PASS] N1-A base objective (hand-derived 1000, frozen reference) (got 1000.000000, expected 1000.000000)
+[PASS] N1-A base is feasible in the frozen reference
+[PASS] N1-A fixture sanity: 1 / 1 / 3 / 6 FLPs on the arcs (0,1) (1,2) (2,4) (4,0), at x 500, 1500, 2500 / 3000 / 3500
+[PASS] N1-A w=0: status, operator id, anchor trip and customer
+[PASS] N1-A base objective reported (got 1000.000000, expected 1000.000000)
+[PASS] N1-A w=0: candidates F2500, F3500 in arc order; the current launch is excluded
+[PASS] N1-A F2500 objective (hand-derived 975) (got 975.000000, expected 975.000000)
+[PASS] N1-A F3500 objective (hand-derived 1075) (got 1075.000000, expected 1075.000000)
+[PASS] N1-A w=0: best = F2500 (975 < 1000), a strict improvement
+[PASS] N1-A w=0: result route [0,1,2,F2500,4,0]; the old launch F3000 (used by no other trip) is dropped and reported
+[PASS] N1-A w=0: trip = (drone 0, F2500, C3, C4): only the launch changed
+[PASS] N1-A descriptor: old launch F3000, new F2500, gap 2
+[PASS] N1-A w=0: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N1-A w=0: exactly-once customer coverage in every record
+[PASS] N1-A w=0: no FLP leaves its arc in any record (independent check)
+[PASS] N1-A w=0: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N1-A w=0: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N1-A w=0: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N1-A w=0: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N1-A w=0: production objective == frozen reference objective in every evaluated record
+[PASS] N1-A w=0: production verdict == frozen reference verdict in every evaluated record
+[PASS] N1-A w=0: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N1-A w=0: accepted + rejected == generated (one outcome per candidate)
+[PASS] N1-A w=0: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N1-A w=0: no duplicate candidates; one record per generated candidate
+[PASS] N1-A w=0: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N1-A w=1: gap order g1, g2, g3; F1500, F2500, F3500 evaluated; the 6 FLPs after C4 are InvalidRecovery
+[PASS] N1-A F1500 objective (hand-derived 925) (got 925.000000, expected 925.000000)
+[PASS] N1-A w=1: best = F1500 (925)
+[PASS] N1-A InvalidRecovery candidates are named (trip 0), not evaluated, and shown unrepaired (recovery still C4)
+[PASS] N1-A the recovery node is never changed to repair the order
+[PASS] N1-A w=1: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N1-A w=1: exactly-once customer coverage in every record
+[PASS] N1-A w=1: no FLP leaves its arc in any record (independent check)
+[PASS] N1-A w=1: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N1-A w=1: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N1-A w=1: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N1-A w=1: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N1-A w=1: production objective == frozen reference objective in every evaluated record
+[PASS] N1-A w=1: production verdict == frozen reference verdict in every evaluated record
+[PASS] N1-A w=1: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N1-A w=1: accepted + rejected == generated (one outcome per candidate)
+[PASS] N1-A w=1: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N1-A w=1: no duplicate candidates; one record per generated candidate
+[PASS] N1-A w=1: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N1-A w=3: g0 (depot arc) F500 first, then F1500, F2500, F3500, then the invalid six
+[PASS] N1-A F500 objective (hand-derived 875) (got 875.000000, expected 875.000000)
+[PASS] N1-A w=3: best = F500 (875), route [0,F500,1,2,4,0]
+[PASS] N1-A w=3: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N1-A w=3: exactly-once customer coverage in every record
+[PASS] N1-A w=3: no FLP leaves its arc in any record (independent check)
+[PASS] N1-A w=3: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N1-A w=3: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N1-A w=3: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N1-A w=3: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N1-A w=3: production objective == frozen reference objective in every evaluated record
+[PASS] N1-A w=3: production verdict == frozen reference verdict in every evaluated record
+[PASS] N1-A w=3: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N1-A w=3: accepted + rejected == generated (one outcome per candidate)
+[PASS] N1-A w=3: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N1-A w=3: no duplicate candidates; one record per generated candidate
+[PASS] N1-A w=3: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N1-A w=9: the window is clipped to the existing gaps (same candidates as w=3)
+[PASS] N1-A evaluate_candidates=false: 9 generated, none evaluated, none accepted, the 6 structural rejections still counted, no best
+[PASS] N1-A record_candidates=false: no log, same counts and best
+[PASS] N1-A deterministic: repeated calls give identical candidates in identical order
+[PASS] N1-A the input solution is unchanged
+[PASS] N1-B e = 250: F1500 is accepted at (36) = 250 (inclusive bound)
+[PASS] N1-B e=250: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N1-B e=250: exactly-once customer coverage in every record
+[PASS] N1-B e=250: no FLP leaves its arc in any record (independent check)
+[PASS] N1-B e=250: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N1-B e=250: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N1-B e=250: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N1-B e=250: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N1-B e=250: production objective == frozen reference objective in every evaluated record
+[PASS] N1-B e=250: production verdict == frozen reference verdict in every evaluated record
+[PASS] N1-B e=250: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N1-B e=250: accepted + rejected == generated (one outcome per candidate)
+[PASS] N1-B e=250: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N1-B e=250: no duplicate candidates; one record per generated candidate
+[PASS] N1-B e=250: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N1-B e = 249.99: F1500 rejected as EvalEndurance, best = F2500
+[PASS] N1-B a rejected candidate still carries its best-effort objective (925) (got 925.000000, expected 925.000000)
+[PASS] N1-B e=249.99: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N1-B e=249.99: exactly-once customer coverage in every record
+[PASS] N1-B e=249.99: no FLP leaves its arc in any record (independent check)
+[PASS] N1-B e=249.99: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N1-B e=249.99: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N1-B e=249.99: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N1-B e=249.99: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N1-B e=249.99: production objective == frozen reference objective in every evaluated record
+[PASS] N1-B e=249.99: production verdict == frozen reference verdict in every evaluated record
+[PASS] N1-B e=249.99: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N1-B e=249.99: accepted + rejected == generated (one outcome per candidate)
+[PASS] N1-B e=249.99: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N1-B e=249.99: no duplicate candidates; one record per generated candidate
+[PASS] N1-B e=249.99: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N1-B e = 200, w = 3: F500 (350) and F1500 (250) are EvalEndurance, F2500 (150) and F3500 accepted, best 975
+[PASS] N1-B e=200: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N1-B e=200: exactly-once customer coverage in every record
+[PASS] N1-B e=200: no FLP leaves its arc in any record (independent check)
+[PASS] N1-B e=200: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N1-B e=200: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N1-B e=200: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N1-B e=200: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N1-B e=200: production objective == frozen reference objective in every evaluated record
+[PASS] N1-B e=200: production verdict == frozen reference verdict in every evaluated record
+[PASS] N1-B e=200: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N1-B e=200: accepted + rejected == generated (one outcome per candidate)
+[PASS] N1-B e=200: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N1-B e=200: no duplicate candidates; one record per generated candidate
+[PASS] N1-B e=200: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N1-C base objective (hand-derived 1400) (got 1400.000000, expected 1400.000000)
+[PASS] N1-C anchor T1: candidates F2500, F3500 (F3000 is the current launch)
+[PASS] N1-C T1 -> F2500: 1375 (got 1375.000000, expected 1375.000000)
+[PASS] N1-C T1 -> F3500: 1475 (got 1475.000000, expected 1475.000000)
+[PASS] N1-C the new FLP is inserted into its gap in arc (ratio) order; the shared F3000 stays
+[PASS] N1-C the old launch is shared with T2: nothing is dropped
+[PASS] N1-C anchor T1: best F2500 (1375 < 1400)
+[PASS] N1-C anchor T1: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N1-C anchor T1: exactly-once customer coverage in every record
+[PASS] N1-C anchor T1: no FLP leaves its arc in any record (independent check)
+[PASS] N1-C anchor T1: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N1-C anchor T1: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N1-C anchor T1: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N1-C anchor T1: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N1-C anchor T1: production objective == frozen reference objective in every evaluated record
+[PASS] N1-C anchor T1: production verdict == frozen reference verdict in every evaluated record
+[PASS] N1-C anchor T1: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N1-C anchor T1: accepted + rejected == generated (one outcome per candidate)
+[PASS] N1-C anchor T1: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N1-C anchor T1: no duplicate candidates; one record per generated candidate
+[PASS] N1-C anchor T1: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N1-C anchor T2: candidates F2500, F3500
+[PASS] N1-C T2 -> F2500: 1375 (got 1375.000000, expected 1375.000000)
+[PASS] N1-C T2 -> F3500: 1425 (got 1425.000000, expected 1425.000000)
+[PASS] N1-C T2: F3000 is still T1's launch, nothing is dropped
+[PASS] N1-C anchor T2: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N1-C anchor T2: exactly-once customer coverage in every record
+[PASS] N1-C anchor T2: no FLP leaves its arc in any record (independent check)
+[PASS] N1-C anchor T2: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N1-C anchor T2: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N1-C anchor T2: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N1-C anchor T2: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N1-C anchor T2: production objective == frozen reference objective in every evaluated record
+[PASS] N1-C anchor T2: production verdict == frozen reference verdict in every evaluated record
+[PASS] N1-C anchor T2: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N1-C anchor T2: accepted + rejected == generated (one outcome per candidate)
+[PASS] N1-C anchor T2: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N1-C anchor T2: no duplicate candidates; one record per generated candidate
+[PASS] N1-C anchor T2: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N1-D fixture sanity: 3 / 3 / 8 FLPs on arcs (1,3) (3,5) (5,0)
+[PASS] N1-D base objective (hand-derived 1500) (got 1500.000000, expected 1500.000000)
+[PASS] N1-D different drones, anchor T2 (vector index 0), w=1: 5 feasible, 8 InvalidRecovery
+[PASS] N1-D objectives 1375, 1400 (shared F2000), 1425, 1475, 1575 (hand-derived)
+[PASS] N1-D best F1500; launching from T1's F2000 is a legal shared launch (route = base without T2's old F4000)
+[PASS] N1-D different drones: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N1-D different drones: exactly-once customer coverage in every record
+[PASS] N1-D different drones: no FLP leaves its arc in any record (independent check)
+[PASS] N1-D different drones: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N1-D different drones: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N1-D different drones: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N1-D different drones: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N1-D different drones: production objective == frozen reference objective in every evaluated record
+[PASS] N1-D different drones: production verdict == frozen reference verdict in every evaluated record
+[PASS] N1-D different drones: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N1-D different drones: accepted + rejected == generated (one outcome per candidate)
+[PASS] N1-D different drones: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N1-D different drones: no duplicate candidates; one record per generated candidate
+[PASS] N1-D different drones: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N1-D anchor T1 (vector index 1): the anchor is the vector index, not the route order
+[PASS] N1-D anchor T1: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N1-D anchor T1: exactly-once customer coverage in every record
+[PASS] N1-D anchor T1: no FLP leaves its arc in any record (independent check)
+[PASS] N1-D anchor T1: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N1-D anchor T1: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N1-D anchor T1: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N1-D anchor T1: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N1-D anchor T1: production objective == frozen reference objective in every evaluated record
+[PASS] N1-D anchor T1: production verdict == frozen reference verdict in every evaluated record
+[PASS] N1-D anchor T1: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N1-D anchor T1: accepted + rejected == generated (one outcome per candidate)
+[PASS] N1-D anchor T1: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N1-D anchor T1: no duplicate candidates; one record per generated candidate
+[PASS] N1-D anchor T1: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N1-D one drone for both trips: the three g1 launches overlap T1's flight -> EvalDroneSequencing (28); g2 launches stay feasible
+[PASS] N1-D one drone: best = F3500 (1475); the drone id is NOT re-chosen to dodge the violation
+[PASS] N1-D one drone: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N1-D one drone: exactly-once customer coverage in every record
+[PASS] N1-D one drone: no FLP leaves its arc in any record (independent check)
+[PASS] N1-D one drone: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N1-D one drone: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N1-D one drone: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N1-D one drone: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N1-D one drone: production objective == frozen reference objective in every evaluated record
+[PASS] N1-D one drone: production verdict == frozen reference verdict in every evaluated record
+[PASS] N1-D one drone: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N1-D one drone: accepted + rejected == generated (one outcome per candidate)
+[PASS] N1-D one drone: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N1-D one drone: no duplicate candidates; one record per generated candidate
+[PASS] N1-D one drone: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N1-D |U| = 1: the same overlap is EvalFleetCapacity (two drones in flight, the evaluator's classification)
+[PASS] N1-D |U|=1: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N1-D |U|=1: exactly-once customer coverage in every record
+[PASS] N1-D |U|=1: no FLP leaves its arc in any record (independent check)
+[PASS] N1-D |U|=1: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N1-D |U|=1: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N1-D |U|=1: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N1-D |U|=1: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N1-D |U|=1: production objective == frozen reference objective in every evaluated record
+[PASS] N1-D |U|=1: production verdict == frozen reference verdict in every evaluated record
+[PASS] N1-D |U|=1: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N1-D |U|=1: accepted + rejected == generated (one outcome per candidate)
+[PASS] N1-D |U|=1: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N1-D |U|=1: no duplicate candidates; one record per generated candidate
+[PASS] N1-D |U|=1: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N1-E base objective (hand-derived 925) (got 925.000000, expected 925.000000)
+[PASS] N1-E w = 0: the launch arc holds no other FLP -> zero candidates, status Ok
+[PASS] N1-E w = 1: g0 (F500), then g2 (F2500, F3000, F3500)
+[PASS] N1-E objectives 875, 975, 1000, 1075; best F500
+[PASS] N1-E w=1: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N1-E w=1: exactly-once customer coverage in every record
+[PASS] N1-E w=1: no FLP leaves its arc in any record (independent check)
+[PASS] N1-E w=1: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N1-E w=1: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N1-E w=1: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N1-E w=1: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N1-E w=1: production objective == frozen reference objective in every evaluated record
+[PASS] N1-E w=1: production verdict == frozen reference verdict in every evaluated record
+[PASS] N1-E w=1: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N1-E w=1: accepted + rejected == generated (one outcome per candidate)
+[PASS] N1-E w=1: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N1-E w=1: no duplicate candidates; one record per generated candidate
+[PASS] N1-E w=1: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N2-A base objective (hand-derived 1700, frozen reference) (got 1700.000000, expected 1700.000000)
+[PASS] N2-A base is feasible
+[PASS] N2-A w=0: no other node in the window -> zero candidates, status Ok
+[PASS] N2-A base objective reported (got 1700.000000, expected 1700.000000)
+[PASS] N2-A w=1: s2 (C2, before the launch: InvalidRecovery) and s4 (C5, evaluated)
+[PASS] N2-A the invalid candidate is named, not evaluated, shown unrepaired
+[PASS] N2-A recovery at C5: 1600 (hand-derived) (got 1600.000000, expected 1600.000000)
+[PASS] N2-A w=3: ascending C1, C2 (both invalid), C5, end depot; the start depot is not a candidate
+[PASS] N2-A outcomes in order
+[PASS] N2-A C5: 1600 (got 1600.000000, expected 1600.000000)
+[PASS] N2-A end depot: 1600 (the truck does not wait) (got 1600.000000, expected 1600.000000)
+[PASS] N2-A the two objectives are exactly equal (tie)
+[PASS] N2-A tie -> the FIRST generated candidate (C5, not the depot) is kept; 1600 < 1700 is an improvement
+[PASS] N2-A result: route untouched, trip = (drone 0, F3500, C3, C5): only the recovery changed
+[PASS] N2-A nothing is dropped; the end depot is a legal recovery
+[PASS] N2-A w=1: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N2-A w=1: exactly-once customer coverage in every record
+[PASS] N2-A w=1: no FLP leaves its arc in any record (independent check)
+[PASS] N2-A w=1: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N2-A w=1: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N2-A w=1: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N2-A w=1: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N2-A w=1: production objective == frozen reference objective in every evaluated record
+[PASS] N2-A w=1: production verdict == frozen reference verdict in every evaluated record
+[PASS] N2-A w=1: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N2-A w=1: accepted + rejected == generated (one outcome per candidate)
+[PASS] N2-A w=1: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N2-A w=1: no duplicate candidates; one record per generated candidate
+[PASS] N2-A w=1: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N2-A w=3: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N2-A w=3: exactly-once customer coverage in every record
+[PASS] N2-A w=3: no FLP leaves its arc in any record (independent check)
+[PASS] N2-A w=3: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N2-A w=3: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N2-A w=3: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N2-A w=3: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N2-A w=3: production objective == frozen reference objective in every evaluated record
+[PASS] N2-A w=3: production verdict == frozen reference verdict in every evaluated record
+[PASS] N2-A w=3: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N2-A w=3: accepted + rejected == generated (one outcome per candidate)
+[PASS] N2-A w=3: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N2-A w=3: no duplicate candidates; one record per generated candidate
+[PASS] N2-A w=3: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N2-A w=9: the window is clipped to the route (same candidates as w=3)
+[PASS] N2-A evaluate_candidates=false: 4 generated, none evaluated or accepted, the 2 structural rejections counted
+[PASS] N2-A record_candidates=false: no log, same counts and best
+[PASS] N2-A deterministic: repeated calls give identical candidates in identical order
+[PASS] N2-A the input solution is unchanged
+[PASS] N2-B e = 250: C5 accepted at (37) = 250 (inclusive), the depot rejected as EvalEndurance ((36) = 650)
+[PASS] N2-B the rejected depot candidate keeps its best-effort objective (1600) (got 1600.000000, expected 1600.000000)
+[PASS] N2-B e=250: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N2-B e=250: exactly-once customer coverage in every record
+[PASS] N2-B e=250: no FLP leaves its arc in any record (independent check)
+[PASS] N2-B e=250: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N2-B e=250: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N2-B e=250: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N2-B e=250: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N2-B e=250: production objective == frozen reference objective in every evaluated record
+[PASS] N2-B e=250: production verdict == frozen reference verdict in every evaluated record
+[PASS] N2-B e=250: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N2-B e=250: accepted + rejected == generated (one outcome per candidate)
+[PASS] N2-B e=250: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N2-B e=250: no duplicate candidates; one record per generated candidate
+[PASS] N2-B e=250: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N2-B e = 249.99: both evaluated candidates rejected as EvalEndurance, no best
+[PASS] N2-B e=249.99: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N2-B e=249.99: exactly-once customer coverage in every record
+[PASS] N2-B e=249.99: no FLP leaves its arc in any record (independent check)
+[PASS] N2-B e=249.99: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N2-B e=249.99: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N2-B e=249.99: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N2-B e=249.99: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N2-B e=249.99: production objective == frozen reference objective in every evaluated record
+[PASS] N2-B e=249.99: production verdict == frozen reference verdict in every evaluated record
+[PASS] N2-B e=249.99: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N2-B e=249.99: accepted + rejected == generated (one outcome per candidate)
+[PASS] N2-B e=249.99: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N2-B e=249.99: no duplicate candidates; one record per generated candidate
+[PASS] N2-B e=249.99: no feasible candidate -> no best
+[PASS] N2-C different drones, anchor T1 (vector index 1): C1 invalid, C5 accepted
+[PASS] N2-C T1 recovered at C5: 1500 (hand-derived) (got 1500.000000, expected 1500.000000)
+[PASS] N2-C 1500 == base: accepted but no strict improvement
+[PASS] N2-C different drones: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N2-C different drones: exactly-once customer coverage in every record
+[PASS] N2-C different drones: no FLP leaves its arc in any record (independent check)
+[PASS] N2-C different drones: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N2-C different drones: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N2-C different drones: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N2-C different drones: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N2-C different drones: production objective == frozen reference objective in every evaluated record
+[PASS] N2-C different drones: production verdict == frozen reference verdict in every evaluated record
+[PASS] N2-C different drones: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N2-C different drones: accepted + rejected == generated (one outcome per candidate)
+[PASS] N2-C different drones: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N2-C different drones: no duplicate candidates; one record per generated candidate
+[PASS] N2-C different drones: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N2-C w=2: C5 then the end depot, both 1500, the first generated (C5) wins the tie
+[PASS] N2-C w=2: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N2-C w=2: exactly-once customer coverage in every record
+[PASS] N2-C w=2: no FLP leaves its arc in any record (independent check)
+[PASS] N2-C w=2: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N2-C w=2: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N2-C w=2: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N2-C w=2: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N2-C w=2: production objective == frozen reference objective in every evaluated record
+[PASS] N2-C w=2: production verdict == frozen reference verdict in every evaluated record
+[PASS] N2-C w=2: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N2-C w=2: accepted + rejected == generated (one outcome per candidate)
+[PASS] N2-C w=2: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N2-C w=2: no duplicate candidates; one record per generated candidate
+[PASS] N2-C w=2: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N2-C one drone for both trips: recovering T1 at C5 overlaps T2 -> EvalDroneSequencing (28); the drone id is not re-chosen
+[PASS] N2-C one drone: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N2-C one drone: exactly-once customer coverage in every record
+[PASS] N2-C one drone: no FLP leaves its arc in any record (independent check)
+[PASS] N2-C one drone: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N2-C one drone: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N2-C one drone: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N2-C one drone: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N2-C one drone: production objective == frozen reference objective in every evaluated record
+[PASS] N2-C one drone: production verdict == frozen reference verdict in every evaluated record
+[PASS] N2-C one drone: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N2-C one drone: accepted + rejected == generated (one outcome per candidate)
+[PASS] N2-C one drone: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N2-C one drone: no duplicate candidates; one record per generated candidate
+[PASS] N2-C one drone: no feasible candidate -> no best
+[PASS] N2-C |U| = 1: the same overlap is EvalFleetCapacity
+[PASS] N2-C |U|=1: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N2-C |U|=1: exactly-once customer coverage in every record
+[PASS] N2-C |U|=1: no FLP leaves its arc in any record (independent check)
+[PASS] N2-C |U|=1: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N2-C |U|=1: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N2-C |U|=1: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N2-C |U|=1: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N2-C |U|=1: production objective == frozen reference objective in every evaluated record
+[PASS] N2-C |U|=1: production verdict == frozen reference verdict in every evaluated record
+[PASS] N2-C |U|=1: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N2-C |U|=1: accepted + rejected == generated (one outcome per candidate)
+[PASS] N2-C |U|=1: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N2-C |U|=1: no duplicate candidates; one record per generated candidate
+[PASS] N2-C |U|=1: no feasible candidate -> no best
+[PASS] N2-D depot-recovery trip: the only candidate in the window is C4
+[PASS] N2-D recovery at C4: 1400 (hand-derived) (got 1400.000000, expected 1400.000000)
+[PASS] N2-D accepted, not an improvement; the replaced node is the depot
+[PASS] N2-D: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N2-D: exactly-once customer coverage in every record
+[PASS] N2-D: no FLP leaves its arc in any record (independent check)
+[PASS] N2-D: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N2-D: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N2-D: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N2-D: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N2-D: production objective == frozen reference objective in every evaluated record
+[PASS] N2-D: production verdict == frozen reference verdict in every evaluated record
+[PASS] N2-D: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N2-D: accepted + rejected == generated (one outcome per candidate)
+[PASS] N2-D: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N2-D: no duplicate candidates; one record per generated candidate
+[PASS] N2-D: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N2-D w=3: C1 and C2 lie before the launch (InvalidRecovery), C4 is valid
+[PASS] N2-D w=3: every candidate changes exactly one node of exactly the anchor trip (drone id, customer, the other node, all other trips, the skeleton)
+[PASS] N2-D w=3: exactly-once customer coverage in every record
+[PASS] N2-D w=3: no FLP leaves its arc in any record (independent check)
+[PASS] N2-D w=3: the route's FLPs are exactly the trips' launches (no idle FLP, no missing launch; the old launch dropped only if unused) -- independent
+[PASS] N2-D w=3: flps_dropped is the old launch iff no trip uses it any more (N1), empty (N2)
+[PASS] N2-D w=3: move descriptors (kind, anchor trip, customer, drone id, old and new node)
+[PASS] N2-D w=3: InvalidRecovery <=> recovery not after launch on the candidate's route (independent); such candidates are not evaluated
+[PASS] N2-D w=3: production objective == frozen reference objective in every evaluated record
+[PASS] N2-D w=3: production verdict == frozen reference verdict in every evaluated record
+[PASS] N2-D w=3: only InvalidRecovery and evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/FlpArc/FlpUnused = 0)
+[PASS] N2-D w=3: accepted + rejected == generated (one outcome per candidate)
+[PASS] N2-D w=3: every candidate is either evaluated or an InvalidRecovery (never both)
+[PASS] N2-D w=3: no duplicate candidates; one record per generated candidate
+[PASS] N2-D w=3: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N1 trip index == #trips -> InvalidAnchor
+[PASS] N2 trip index out of range -> InvalidAnchor
+[PASS] N1/N2 no trips: index 0 -> InvalidAnchor
+[PASS] N1/N2 Rng overload with no trips -> NoEligibleAnchor
+[PASS] N1/N2 omitted customers: InputInfeasible, nothing generated
+[PASS] N1/N2 duplicated customer: InputInfeasible, nothing generated
+[PASS] N1/N2 input with recovery before launch: InputInfeasible
+[PASS] N1 the same seed gives the same anchor and result
+[PASS] N1/N2 the anchor is the uniform_index(#trips)-th trip (vector index)
+[PASS] N1/N2 exactly one RNG draw is consumed
+[PASS] N1/N2 over 40 seeds both trips are drawn (non-vacuous)
+
+419 passed, 0 failed
+ALL TESTS PASSED

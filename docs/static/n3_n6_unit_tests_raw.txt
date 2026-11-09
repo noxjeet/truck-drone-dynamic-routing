@@ -1,0 +1,590 @@
+[PASS] N3-1 fixture sanity: Fa at x 500, Fb at x 3500
+[PASS] N3-1 base objective (hand-derived 1550, frozen reference) (got 1550.000000, expected 1550.000000)
+[PASS] N3-1 base is feasible in the frozen reference
+[PASS] N3-1 anchor A: status, operator id, anchor trip and customer
+[PASS] N3-1 base objective reported (got 1550.000000, expected 1550.000000)
+[PASS] N3-1 exactly one candidate (A has no predecessor; B is its successor), accepted
+[PASS] N3-1 move descriptor: A (C4) <-> B (C2)
+[PASS] N3-1 exchanged objective (hand-derived 1400) (got 1400.000000, expected 1400.000000)
+[PASS] N3-1 the exchange is a strict improvement (1400 < 1550)
+[PASS] N3-1 result: A = (Fa, C2, C3), B = (Fb, C4, C5); route, FLPs, recoveries, drone ids unchanged
+[PASS] N3-1 anchor A: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N3-1 anchor A: exactly-once customer coverage in every record
+[PASS] N3-1 anchor A: no FLP leaves its arc in any record (independent check)
+[PASS] N3-1 anchor A: move descriptors name the two trips and their original customers
+[PASS] N3-1 anchor A: production objective == frozen reference objective in every evaluated record
+[PASS] N3-1 anchor A: production verdict == frozen reference verdict in every evaluated record
+[PASS] N3-1 anchor A: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N3-1 anchor A: accepted + rejected == generated (one outcome per candidate)
+[PASS] N3-1 anchor A: every candidate is evaluated
+[PASS] N3-1 anchor A: no duplicate candidates; one record per generated candidate
+[PASS] N3-1 anchor A: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N3-1 anchor B: one candidate (its predecessor A)
+[PASS] N3-1 anchor B: move descriptor B (C2) <-> A (C4)
+[PASS] N3-1 anchor B: the same exchange, the same objective (got 1400.000000, expected 1400.000000)
+[PASS] N3-1 anchor B: the same resulting solution
+[PASS] N3-1 anchor B: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N3-1 anchor B: exactly-once customer coverage in every record
+[PASS] N3-1 anchor B: no FLP leaves its arc in any record (independent check)
+[PASS] N3-1 anchor B: move descriptors name the two trips and their original customers
+[PASS] N3-1 anchor B: production objective == frozen reference objective in every evaluated record
+[PASS] N3-1 anchor B: production verdict == frozen reference verdict in every evaluated record
+[PASS] N3-1 anchor B: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N3-1 anchor B: accepted + rejected == generated (one outcome per candidate)
+[PASS] N3-1 anchor B: every candidate is evaluated
+[PASS] N3-1 anchor B: no duplicate candidates; one record per generated candidate
+[PASS] N3-1 anchor B: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N3-1 the input solution is unchanged
+[PASS] N3-2 fixture sanity: F1 x 500, F2 x 3500, F3 x 5500
+[PASS] N3-2 base objective (hand-derived 2675) (got 2675.000000, expected 2675.000000)
+[PASS] N3-2 base feasible in the frozen reference
+[PASS] N3-2 drone 0's sequence is T1, T2, T3 (launch order), not the vector order T3, T1, T2
+[PASS] N3-2 middle trip T2: two candidates, both feasible
+[PASS] N3-2 order: predecessor T1 first, then successor T3 (by drone sequence, not by vector index)
+[PASS] N3-2 T2<->T1 objective (hand-derived 2975) (got 2975.000000, expected 2975.000000)
+[PASS] N3-2 T2<->T3 objective (hand-derived 2875) (got 2875.000000, expected 2875.000000)
+[PASS] N3-2 best = the second candidate (strictly lower), not the first
+[PASS] N3-2 neither exchange improves on 2675
+[PASS] N3-2 T2: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N3-2 T2: exactly-once customer coverage in every record
+[PASS] N3-2 T2: no FLP leaves its arc in any record (independent check)
+[PASS] N3-2 T2: move descriptors name the two trips and their original customers
+[PASS] N3-2 T2: production objective == frozen reference objective in every evaluated record
+[PASS] N3-2 T2: production verdict == frozen reference verdict in every evaluated record
+[PASS] N3-2 T2: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N3-2 T2: accepted + rejected == generated (one outcome per candidate)
+[PASS] N3-2 T2: every candidate is evaluated
+[PASS] N3-2 T2: no duplicate candidates; one record per generated candidate
+[PASS] N3-2 T2: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N3-2 first trip T1: only its successor T2 (the NON-consecutive T3 is never exchanged)
+[PASS] N3-2 T1<->T2 objective 2975 (got 2975.000000, expected 2975.000000)
+[PASS] N3-2 T1: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N3-2 T1: exactly-once customer coverage in every record
+[PASS] N3-2 T1: no FLP leaves its arc in any record (independent check)
+[PASS] N3-2 T1: move descriptors name the two trips and their original customers
+[PASS] N3-2 T1: production objective == frozen reference objective in every evaluated record
+[PASS] N3-2 T1: production verdict == frozen reference verdict in every evaluated record
+[PASS] N3-2 T1: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N3-2 T1: accepted + rejected == generated (one outcome per candidate)
+[PASS] N3-2 T1: every candidate is evaluated
+[PASS] N3-2 T1: no duplicate candidates; one record per generated candidate
+[PASS] N3-2 T1: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N3-2 last trip T3: only its predecessor T2 (T1 is not consecutive)
+[PASS] N3-2 T3<->T2 objective 2875 (got 2875.000000, expected 2875.000000)
+[PASS] N3-2 T3: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N3-2 T3: exactly-once customer coverage in every record
+[PASS] N3-2 T3: no FLP leaves its arc in any record (independent check)
+[PASS] N3-2 T3: move descriptors name the two trips and their original customers
+[PASS] N3-2 T3: production objective == frozen reference objective in every evaluated record
+[PASS] N3-2 T3: production verdict == frozen reference verdict in every evaluated record
+[PASS] N3-2 T3: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N3-2 T3: accepted + rejected == generated (one outcome per candidate)
+[PASS] N3-2 T3: every candidate is evaluated
+[PASS] N3-2 T3: no duplicate candidates; one record per generated candidate
+[PASS] N3-2 T3: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N3-2 the adjacency window (0, 1, 2, 3, 10) has no effect on N3
+[PASS] N3-2 the input solution is unchanged
+[PASS] N3-3 base objective 2675 (drone ids do not change the timing) (got 2675.000000, expected 2675.000000)
+[PASS] N3-3 base feasible in the frozen reference (|U| = 2)
+[PASS] N3-3 drone sequences: drone 0 = T1, T3; drone 1 = T2
+[PASS] N3-3 T1: its only partner is T3 (consecutive on drone 0, although T2 lies between them in the route)
+[PASS] N3-3 T1<->T3 objective (hand-derived 3725) (got 3725.000000, expected 3725.000000)
+[PASS] N3-3 feasible but worse than the base
+[PASS] N3-3 T1: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N3-3 T1: exactly-once customer coverage in every record
+[PASS] N3-3 T1: no FLP leaves its arc in any record (independent check)
+[PASS] N3-3 T1: move descriptors name the two trips and their original customers
+[PASS] N3-3 T1: production objective == frozen reference objective in every evaluated record
+[PASS] N3-3 T1: production verdict == frozen reference verdict in every evaluated record
+[PASS] N3-3 T1: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N3-3 T1: accepted + rejected == generated (one outcome per candidate)
+[PASS] N3-3 T1: every candidate is evaluated
+[PASS] N3-3 T1: no duplicate candidates; one record per generated candidate
+[PASS] N3-3 T1: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N3-3 T3: its only partner is T1 (predecessor on drone 0)
+[PASS] N3-3 T3: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N3-3 T3: exactly-once customer coverage in every record
+[PASS] N3-3 T3: no FLP leaves its arc in any record (independent check)
+[PASS] N3-3 T3: move descriptors name the two trips and their original customers
+[PASS] N3-3 T3: production objective == frozen reference objective in every evaluated record
+[PASS] N3-3 T3: production verdict == frozen reference verdict in every evaluated record
+[PASS] N3-3 T3: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N3-3 T3: accepted + rejected == generated (one outcome per candidate)
+[PASS] N3-3 T3: every candidate is evaluated
+[PASS] N3-3 T3: no duplicate candidates; one record per generated candidate
+[PASS] N3-3 T3: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N3-3 T2 is alone on drone 1: zero candidates, status Ok (a different drone's trip is never a partner)
+[PASS] N3-3 T2: the base objective is still reported (got 2675.000000, expected 2675.000000)
+[PASS] N3-3 every partner of every anchor belongs to the anchor's own drone
+[PASS] N3-3 the input solution is unchanged
+[PASS] N3-4 base objective (hand-derived 2575) (got 2575.000000, expected 2575.000000)
+[PASS] N3-4 two candidates: predecessor, successor
+[PASS] N3-4 T2<->T1 objective 2605 (got 2605.000000, expected 2605.000000)
+[PASS] N3-4 T2<->T3 objective 2605 (got 2605.000000, expected 2605.000000)
+[PASS] N3-4 the two objectives are EXACTLY equal (no tolerance anywhere)
+[PASS] N3-4 tie -> the FIRST generated candidate (predecessor) is kept
+[PASS] N3-4 2605 > 2575: no improvement
+[PASS] N3-4: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N3-4: exactly-once customer coverage in every record
+[PASS] N3-4: no FLP leaves its arc in any record (independent check)
+[PASS] N3-4: move descriptors name the two trips and their original customers
+[PASS] N3-4: production objective == frozen reference objective in every evaluated record
+[PASS] N3-4: production verdict == frozen reference verdict in every evaluated record
+[PASS] N3-4: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N3-4: accepted + rejected == generated (one outcome per candidate)
+[PASS] N3-4: every candidate is evaluated
+[PASS] N3-4: no duplicate candidates; one record per generated candidate
+[PASS] N3-4: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N3-4 the input solution is unchanged
+[PASS] N3-4b predecessor (index 0) and successor (index 2) tie exactly at 2605
+[PASS] N3-4b tie -> the first generated candidate (index 0), not the one with the larger trip index
+[PASS] N3-4b: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N3-4b: exactly-once customer coverage in every record
+[PASS] N3-4b: no FLP leaves its arc in any record (independent check)
+[PASS] N3-4b: move descriptors name the two trips and their original customers
+[PASS] N3-4b: production objective == frozen reference objective in every evaluated record
+[PASS] N3-4b: production verdict == frozen reference verdict in every evaluated record
+[PASS] N3-4b: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N3-4b: accepted + rejected == generated (one outcome per candidate)
+[PASS] N3-4b: every candidate is evaluated
+[PASS] N3-4b: no duplicate candidates; one record per generated candidate
+[PASS] N3-4b: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N3-5 e=260: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N3-5 e=260: exactly-once customer coverage in every record
+[PASS] N3-5 e=260: no FLP leaves its arc in any record (independent check)
+[PASS] N3-5 e=260: move descriptors name the two trips and their original customers
+[PASS] N3-5 e=260: production objective == frozen reference objective in every evaluated record
+[PASS] N3-5 e=260: production verdict == frozen reference verdict in every evaluated record
+[PASS] N3-5 e=260: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N3-5 e=260: accepted + rejected == generated (one outcome per candidate)
+[PASS] N3-5 e=260: every candidate is evaluated
+[PASS] N3-5 e=260: no duplicate candidates; one record per generated candidate
+[PASS] N3-5 e=260: no feasible candidate -> no best
+[PASS] N3-5 the base is feasible at e = 260
+[PASS] N3-5 e = 260: the only candidate is rejected, no best
+[PASS] N3-5 e = 260: rejected as EvalEndurance (and only that)
+[PASS] N3-5 the rejected candidate's best-effort objective is 1700 (hand-derived) (got 1700.000000, expected 1700.000000)
+[PASS] N3-5 e=274: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N3-5 e=274: exactly-once customer coverage in every record
+[PASS] N3-5 e=274: no FLP leaves its arc in any record (independent check)
+[PASS] N3-5 e=274: move descriptors name the two trips and their original customers
+[PASS] N3-5 e=274: production objective == frozen reference objective in every evaluated record
+[PASS] N3-5 e=274: production verdict == frozen reference verdict in every evaluated record
+[PASS] N3-5 e=274: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N3-5 e=274: accepted + rejected == generated (one outcome per candidate)
+[PASS] N3-5 e=274: every candidate is evaluated
+[PASS] N3-5 e=274: no duplicate candidates; one record per generated candidate
+[PASS] N3-5 e=274: no feasible candidate -> no best
+[PASS] N3-5 e = 274.99 < 275: still rejected
+[PASS] N3-5 e=275: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N3-5 e=275: exactly-once customer coverage in every record
+[PASS] N3-5 e=275: no FLP leaves its arc in any record (independent check)
+[PASS] N3-5 e=275: move descriptors name the two trips and their original customers
+[PASS] N3-5 e=275: production objective == frozen reference objective in every evaluated record
+[PASS] N3-5 e=275: production verdict == frozen reference verdict in every evaluated record
+[PASS] N3-5 e=275: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N3-5 e=275: accepted + rejected == generated (one outcome per candidate)
+[PASS] N3-5 e=275: every candidate is evaluated
+[PASS] N3-5 e=275: no duplicate candidates; one record per generated candidate
+[PASS] N3-5 e=275: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N3-5 e = 275 (= (37), inclusive bound): accepted, objective 1700
+[PASS] N3-5 e=3600: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N3-5 e=3600: exactly-once customer coverage in every record
+[PASS] N3-5 e=3600: no FLP leaves its arc in any record (independent check)
+[PASS] N3-5 e=3600: move descriptors name the two trips and their original customers
+[PASS] N3-5 e=3600: production objective == frozen reference objective in every evaluated record
+[PASS] N3-5 e=3600: production verdict == frozen reference verdict in every evaluated record
+[PASS] N3-5 e=3600: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N3-5 e=3600: accepted + rejected == generated (one outcome per candidate)
+[PASS] N3-5 e=3600: every candidate is evaluated
+[PASS] N3-5 e=3600: no duplicate candidates; one record per generated candidate
+[PASS] N3-5 e=3600: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N3-5 e = 3600: accepted with the same objective 1700 -> the rejection at 260 was caused by endurance alone
+[PASS] N3-6 fixture sanity: Fb at x 2500 on L(3,0)
+[PASS] N3-6 base objective 950 (got 950.000000, expected 950.000000)
+[PASS] N3-6 base feasible in the frozen reference
+[PASS] N3-6 A<->B accepted, objective 1000 (hand-derived)
+[PASS] N3-6 the depot recovery of B and all launch nodes are unchanged
+[PASS] N3-6: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N3-6: exactly-once customer coverage in every record
+[PASS] N3-6: no FLP leaves its arc in any record (independent check)
+[PASS] N3-6: move descriptors name the two trips and their original customers
+[PASS] N3-6: production objective == frozen reference objective in every evaluated record
+[PASS] N3-6: production verdict == frozen reference verdict in every evaluated record
+[PASS] N3-6: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N3-6: accepted + rejected == generated (one outcome per candidate)
+[PASS] N3-6: every candidate is evaluated
+[PASS] N3-6: no duplicate candidates; one record per generated candidate
+[PASS] N3-6: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N3-6 the input solution is unchanged
+[PASS] N3-7 lone-trip base objective 475 (got 475.000000, expected 475.000000)
+[PASS] N3-7 a lone trip has no partner: zero candidates, status Ok
+[PASS] N3-7 base objective reported (got 475.000000, expected 475.000000)
+[PASS] N3-7 trip index == #trips -> InvalidAnchor, nothing generated
+[PASS] N3-7 a far out-of-range trip index -> InvalidAnchor
+[PASS] N3-7 no trips: index 0 -> InvalidAnchor
+[PASS] N3-7 Rng overload with no trips -> NoEligibleAnchor
+[PASS] N3-7 omitted customer (C6 unserved) -> InputInfeasible, nothing generated
+[PASS] N3-7 duplicate customer (C2 served by two trips) -> InputInfeasible, nothing generated
+[PASS] N3-7 the input solution is unchanged
+[PASS] N3-8 evaluate_candidates=false: generated, none evaluated, none accepted, no best
+[PASS] N3-8 record_candidates=false: no log, same counts and best
+[PASS] N3-8 deterministic: repeated calls give identical candidates in identical order
+[PASS] N3-8 the same seed gives the same anchor and result
+[PASS] N3-8 the anchor is the uniform_index(#trips)-th trip (vector index)
+[PASS] N3-8 exactly one RNG draw is consumed
+[PASS] N3-8 over 40 seeds every trip is drawn at least once (non-vacuous)
+[PASS] N3-8 the input solution is unchanged
+[PASS] N6-1 anchor T1 w=0: status, operator id, anchor
+[PASS] N6-1 anchor T1 w=0: partner set and order
+[PASS] N6-1 anchor T1 w=0: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-1 anchor T1 w=0: exactly-once customer coverage in every record
+[PASS] N6-1 anchor T1 w=0: no FLP leaves its arc in any record (independent check)
+[PASS] N6-1 anchor T1 w=0: move descriptors name the two trips and their original customers
+[PASS] N6-1 anchor T1 w=0: production objective == frozen reference objective in every evaluated record
+[PASS] N6-1 anchor T1 w=0: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-1 anchor T1 w=0: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-1 anchor T1 w=0: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-1 anchor T1 w=0: every candidate is evaluated
+[PASS] N6-1 anchor T1 w=0: no duplicate candidates; one record per generated candidate
+[PASS] N6-1 anchor T1 w=0: no feasible candidate -> no best
+[PASS] N6-1 anchor T1 w=1: status, operator id, anchor
+[PASS] N6-1 anchor T1 w=1: partner set and order
+[PASS] N6-1 anchor T1 w=1: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-1 anchor T1 w=1: exactly-once customer coverage in every record
+[PASS] N6-1 anchor T1 w=1: no FLP leaves its arc in any record (independent check)
+[PASS] N6-1 anchor T1 w=1: move descriptors name the two trips and their original customers
+[PASS] N6-1 anchor T1 w=1: production objective == frozen reference objective in every evaluated record
+[PASS] N6-1 anchor T1 w=1: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-1 anchor T1 w=1: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-1 anchor T1 w=1: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-1 anchor T1 w=1: every candidate is evaluated
+[PASS] N6-1 anchor T1 w=1: no duplicate candidates; one record per generated candidate
+[PASS] N6-1 anchor T1 w=1: no feasible candidate -> no best
+[PASS] N6-1 anchor T1 w=2: status, operator id, anchor
+[PASS] N6-1 anchor T1 w=2: partner set and order
+[PASS] N6-1 anchor T1 w=2: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-1 anchor T1 w=2: exactly-once customer coverage in every record
+[PASS] N6-1 anchor T1 w=2: no FLP leaves its arc in any record (independent check)
+[PASS] N6-1 anchor T1 w=2: move descriptors name the two trips and their original customers
+[PASS] N6-1 anchor T1 w=2: production objective == frozen reference objective in every evaluated record
+[PASS] N6-1 anchor T1 w=2: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-1 anchor T1 w=2: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-1 anchor T1 w=2: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-1 anchor T1 w=2: every candidate is evaluated
+[PASS] N6-1 anchor T1 w=2: no duplicate candidates; one record per generated candidate
+[PASS] N6-1 anchor T1 w=2: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N6-1 anchor T1 w=3: status, operator id, anchor
+[PASS] N6-1 anchor T1 w=3: partner set and order
+[PASS] N6-1 anchor T1 w=3: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-1 anchor T1 w=3: exactly-once customer coverage in every record
+[PASS] N6-1 anchor T1 w=3: no FLP leaves its arc in any record (independent check)
+[PASS] N6-1 anchor T1 w=3: move descriptors name the two trips and their original customers
+[PASS] N6-1 anchor T1 w=3: production objective == frozen reference objective in every evaluated record
+[PASS] N6-1 anchor T1 w=3: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-1 anchor T1 w=3: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-1 anchor T1 w=3: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-1 anchor T1 w=3: every candidate is evaluated
+[PASS] N6-1 anchor T1 w=3: no duplicate candidates; one record per generated candidate
+[PASS] N6-1 anchor T1 w=3: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N6-1 anchor T1 w=2 +same-drone: status, operator id, anchor
+[PASS] N6-1 anchor T1 w=2 +same-drone: partner set and order
+[PASS] N6-1 anchor T1 w=2 +same-drone: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-1 anchor T1 w=2 +same-drone: exactly-once customer coverage in every record
+[PASS] N6-1 anchor T1 w=2 +same-drone: no FLP leaves its arc in any record (independent check)
+[PASS] N6-1 anchor T1 w=2 +same-drone: move descriptors name the two trips and their original customers
+[PASS] N6-1 anchor T1 w=2 +same-drone: production objective == frozen reference objective in every evaluated record
+[PASS] N6-1 anchor T1 w=2 +same-drone: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-1 anchor T1 w=2 +same-drone: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-1 anchor T1 w=2 +same-drone: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-1 anchor T1 w=2 +same-drone: every candidate is evaluated
+[PASS] N6-1 anchor T1 w=2 +same-drone: no duplicate candidates; one record per generated candidate
+[PASS] N6-1 anchor T1 w=2 +same-drone: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N6-1 anchor T1 w=3 +same-drone: status, operator id, anchor
+[PASS] N6-1 anchor T1 w=3 +same-drone: partner set and order
+[PASS] N6-1 anchor T1 w=3 +same-drone: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-1 anchor T1 w=3 +same-drone: exactly-once customer coverage in every record
+[PASS] N6-1 anchor T1 w=3 +same-drone: no FLP leaves its arc in any record (independent check)
+[PASS] N6-1 anchor T1 w=3 +same-drone: move descriptors name the two trips and their original customers
+[PASS] N6-1 anchor T1 w=3 +same-drone: production objective == frozen reference objective in every evaluated record
+[PASS] N6-1 anchor T1 w=3 +same-drone: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-1 anchor T1 w=3 +same-drone: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-1 anchor T1 w=3 +same-drone: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-1 anchor T1 w=3 +same-drone: every candidate is evaluated
+[PASS] N6-1 anchor T1 w=3 +same-drone: no duplicate candidates; one record per generated candidate
+[PASS] N6-1 anchor T1 w=3 +same-drone: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N6-1 T1<->T2 objective (hand-derived 2975) (got 2975.000000, expected 2975.000000)
+[PASS] N6-1 best = T1<->T2, move descriptor C2 <-> C4
+[PASS] N6-1 +same-drone: T1<->T2 2975 (got 2975.000000, expected 2975.000000)
+[PASS] N6-1 +same-drone: T1<->T3 3725 (hand-derived) (got 3725.000000, expected 3725.000000)
+[PASS] N6-1 +same-drone: best is still T1<->T2
+[PASS] N6-1 fixture sanity: C2's window neighbours (w=3) are C1,C3,C4,C5,C6, three of them truck customers
+[PASS] N6-1 truck customers C1, C3, C5 inside the window are skipped (that is N5)
+[PASS] N6-1 anchor T2 w=0: partner set, nearest first (T3 at dh 2 before T1 at dh 4)
+[PASS] N6-1 anchor T2 w=0: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-1 anchor T2 w=0: exactly-once customer coverage in every record
+[PASS] N6-1 anchor T2 w=0: no FLP leaves its arc in any record (independent check)
+[PASS] N6-1 anchor T2 w=0: move descriptors name the two trips and their original customers
+[PASS] N6-1 anchor T2 w=0: production objective == frozen reference objective in every evaluated record
+[PASS] N6-1 anchor T2 w=0: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-1 anchor T2 w=0: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-1 anchor T2 w=0: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-1 anchor T2 w=0: every candidate is evaluated
+[PASS] N6-1 anchor T2 w=0: no duplicate candidates; one record per generated candidate
+[PASS] N6-1 anchor T2 w=0: no feasible candidate -> no best
+[PASS] N6-1 anchor T2 w=1: partner set, nearest first (T3 at dh 2 before T1 at dh 4)
+[PASS] N6-1 anchor T2 w=1: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-1 anchor T2 w=1: exactly-once customer coverage in every record
+[PASS] N6-1 anchor T2 w=1: no FLP leaves its arc in any record (independent check)
+[PASS] N6-1 anchor T2 w=1: move descriptors name the two trips and their original customers
+[PASS] N6-1 anchor T2 w=1: production objective == frozen reference objective in every evaluated record
+[PASS] N6-1 anchor T2 w=1: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-1 anchor T2 w=1: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-1 anchor T2 w=1: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-1 anchor T2 w=1: every candidate is evaluated
+[PASS] N6-1 anchor T2 w=1: no duplicate candidates; one record per generated candidate
+[PASS] N6-1 anchor T2 w=1: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N6-1 anchor T2 w=2: partner set, nearest first (T3 at dh 2 before T1 at dh 4)
+[PASS] N6-1 anchor T2 w=2: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-1 anchor T2 w=2: exactly-once customer coverage in every record
+[PASS] N6-1 anchor T2 w=2: no FLP leaves its arc in any record (independent check)
+[PASS] N6-1 anchor T2 w=2: move descriptors name the two trips and their original customers
+[PASS] N6-1 anchor T2 w=2: production objective == frozen reference objective in every evaluated record
+[PASS] N6-1 anchor T2 w=2: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-1 anchor T2 w=2: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-1 anchor T2 w=2: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-1 anchor T2 w=2: every candidate is evaluated
+[PASS] N6-1 anchor T2 w=2: no duplicate candidates; one record per generated candidate
+[PASS] N6-1 anchor T2 w=2: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N6-1 anchor T2 w=3: partner set, nearest first (T3 at dh 2 before T1 at dh 4)
+[PASS] N6-1 anchor T2 w=3: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-1 anchor T2 w=3: exactly-once customer coverage in every record
+[PASS] N6-1 anchor T2 w=3: no FLP leaves its arc in any record (independent check)
+[PASS] N6-1 anchor T2 w=3: move descriptors name the two trips and their original customers
+[PASS] N6-1 anchor T2 w=3: production objective == frozen reference objective in every evaluated record
+[PASS] N6-1 anchor T2 w=3: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-1 anchor T2 w=3: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-1 anchor T2 w=3: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-1 anchor T2 w=3: every candidate is evaluated
+[PASS] N6-1 anchor T2 w=3: no duplicate candidates; one record per generated candidate
+[PASS] N6-1 anchor T2 w=3: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N6-1 T2<->T3 objective (hand-derived 2875) (got 2875.000000, expected 2875.000000)
+[PASS] N6-1 T2<->T1 objective (hand-derived 2975) (got 2975.000000, expected 2975.000000)
+[PASS] N6-1 best = T2<->T3 (2875); not an improvement on 2675
+[PASS] N6-1 anchor T3 (restricted): only T2 (T1 is on its own drone)
+[PASS] N6-1 anchor T3 +same-drone: T2 (dh 2) then T1 (dh 6, 3725)
+[PASS] N6-1 anchor T3: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-1 anchor T3: exactly-once customer coverage in every record
+[PASS] N6-1 anchor T3: no FLP leaves its arc in any record (independent check)
+[PASS] N6-1 anchor T3: move descriptors name the two trips and their original customers
+[PASS] N6-1 anchor T3: production objective == frozen reference objective in every evaluated record
+[PASS] N6-1 anchor T3: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-1 anchor T3: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-1 anchor T3: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-1 anchor T3: every candidate is evaluated
+[PASS] N6-1 anchor T3: no duplicate candidates; one record per generated candidate
+[PASS] N6-1 anchor T3: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N6-1 anchor T3 +same-drone: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-1 anchor T3 +same-drone: exactly-once customer coverage in every record
+[PASS] N6-1 anchor T3 +same-drone: no FLP leaves its arc in any record (independent check)
+[PASS] N6-1 anchor T3 +same-drone: move descriptors name the two trips and their original customers
+[PASS] N6-1 anchor T3 +same-drone: production objective == frozen reference objective in every evaluated record
+[PASS] N6-1 anchor T3 +same-drone: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-1 anchor T3 +same-drone: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-1 anchor T3 +same-drone: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-1 anchor T3 +same-drone: every candidate is evaluated
+[PASS] N6-1 anchor T3 +same-drone: no duplicate candidates; one record per generated candidate
+[PASS] N6-1 anchor T3 +same-drone: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N3/N6 for anchor T1: N3 exchanges with T3 (same drone), restricted N6 with T2 (other drone): disjoint
+[PASS] N6-1 the input solution is unchanged
+[PASS] N6-1b the default is include_same_drone = true (any other trip)
+[PASS] N6-1b anchor T1 (default, w=3): T2 (dh 4, other drone) then T3 (dh 6, SAME drone)
+[PASS] N6-1b T1<->T2 2975 (got 2975.000000, expected 2975.000000)
+[PASS] N6-1b T1<->T3 3725 (the same exchange as N3's) (got 3725.000000, expected 3725.000000)
+[PASS] N6-1b best = T1<->T2 (strict <, first generated)
+[PASS] N6-1b anchor T1 default: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-1b anchor T1 default: exactly-once customer coverage in every record
+[PASS] N6-1b anchor T1 default: no FLP leaves its arc in any record (independent check)
+[PASS] N6-1b anchor T1 default: move descriptors name the two trips and their original customers
+[PASS] N6-1b anchor T1 default: production objective == frozen reference objective in every evaluated record
+[PASS] N6-1b anchor T1 default: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-1b anchor T1 default: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-1b anchor T1 default: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-1b anchor T1 default: every candidate is evaluated
+[PASS] N6-1b anchor T1 default: no duplicate candidates; one record per generated candidate
+[PASS] N6-1b anchor T1 default: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N6-1b default == explicit include_same_drone = true, for every anchor and w = 0..3
+[PASS] N6-1b anchor T3 (default): T2 (dh 2) then T1 (dh 6, same drone)
+[PASS] N6-1b restricted: T1 (same drone) dropped
+[PASS] N6-1b N3 and N6 (default) both generate the T1<->T3 exchange: the same solution (overlap accepted)
+[PASS] N6-1b the input solution is unchanged
+[PASS] N6-2 base objective 2575 (got 2575.000000, expected 2575.000000)
+[PASS] N6-2 order: nearest partner (T3) first, then T1
+[PASS] N6-2 the two objectives are exactly equal (2605)
+[PASS] N6-2 tie -> the FIRST generated candidate (T3, the nearer partner; not the lower trip index) is kept
+[PASS] N6-2 2605 > 2575: no improvement
+[PASS] N6-2: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-2: exactly-once customer coverage in every record
+[PASS] N6-2: no FLP leaves its arc in any record (independent check)
+[PASS] N6-2: move descriptors name the two trips and their original customers
+[PASS] N6-2: production objective == frozen reference objective in every evaluated record
+[PASS] N6-2: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-2: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-2: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-2: every candidate is evaluated
+[PASS] N6-2: no duplicate candidates; one record per generated candidate
+[PASS] N6-2: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N6-2 the input solution is unchanged
+[PASS] N6-2b partners T3 (index 0, nearer) then T1 (index 2) tie exactly at 2605
+[PASS] N6-2b tie -> the first generated candidate (index 0)
+[PASS] N6-2b: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-2b: exactly-once customer coverage in every record
+[PASS] N6-2b: no FLP leaves its arc in any record (independent check)
+[PASS] N6-2b: move descriptors name the two trips and their original customers
+[PASS] N6-2b: production objective == frozen reference objective in every evaluated record
+[PASS] N6-2b: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-2b: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-2b: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-2b: every candidate is evaluated
+[PASS] N6-2b: no duplicate candidates; one record per generated candidate
+[PASS] N6-2b: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N6-3 fixture sanity: 1 FLP on L(0,1), 4 on L(1,5)
+[PASS] N6-3 fixture sanity: Fa 500, Fb 1800, Fc 2600
+[PASS] N6-3 base objective (hand-derived 1295) (got 1295.000000, expected 1295.000000)
+[PASS] N6-3 base feasible in the frozen reference (3 drones, 3 trips in flight at once)
+[PASS] N6-3 anchor Ta, w=0: Tb, Tc are in the next gap (dh 2) -> no candidate
+[PASS] N6-3 anchor Ta, w=1: equal distance (dh 2) -> ordered by customer id (C3 = Tb before C4 = Tc), not by trip index
+[PASS] N6-3 Ta<->Tb objective 1295 (got 1295.000000, expected 1295.000000)
+[PASS] N6-3 Ta<->Tc objective 1355 (got 1355.000000, expected 1355.000000)
+[PASS] N6-3 best = Ta<->Tb, equal to the base objective -> not an improvement (strict <)
+[PASS] N6-3 Ta w=1: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-3 Ta w=1: exactly-once customer coverage in every record
+[PASS] N6-3 Ta w=1: no FLP leaves its arc in any record (independent check)
+[PASS] N6-3 Ta w=1: move descriptors name the two trips and their original customers
+[PASS] N6-3 Ta w=1: production objective == frozen reference objective in every evaluated record
+[PASS] N6-3 Ta w=1: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-3 Ta w=1: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-3 Ta w=1: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-3 Ta w=1: every candidate is evaluated
+[PASS] N6-3 Ta w=1: no duplicate candidates; one record per generated candidate
+[PASS] N6-3 Ta w=1: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N6-3 anchor Ta, w=3: equal distance (dh 2) -> ordered by customer id (C3 = Tb before C4 = Tc), not by trip index
+[PASS] N6-3 Ta<->Tb objective 1295 (got 1295.000000, expected 1295.000000)
+[PASS] N6-3 Ta<->Tc objective 1355 (got 1355.000000, expected 1355.000000)
+[PASS] N6-3 best = Ta<->Tb, equal to the base objective -> not an improvement (strict <)
+[PASS] N6-3 Ta w=3: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-3 Ta w=3: exactly-once customer coverage in every record
+[PASS] N6-3 Ta w=3: no FLP leaves its arc in any record (independent check)
+[PASS] N6-3 Ta w=3: move descriptors name the two trips and their original customers
+[PASS] N6-3 Ta w=3: production objective == frozen reference objective in every evaluated record
+[PASS] N6-3 Ta w=3: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-3 Ta w=3: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-3 Ta w=3: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-3 Ta w=3: every candidate is evaluated
+[PASS] N6-3 Ta w=3: no duplicate candidates; one record per generated candidate
+[PASS] N6-3 Ta w=3: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N6-3 anchor Tb, w=0: only Tc (same gap, dh 0 is inside every window)
+[PASS] N6-3 anchor Tb, w=3: Tc (dh 0) before Ta (dh 2)
+[PASS] N6-3 both swaps give exactly 1295
+[PASS] N6-3 tie between candidates -> the first generated (Tc) is kept
+[PASS] N6-3 Tb w=3: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-3 Tb w=3: exactly-once customer coverage in every record
+[PASS] N6-3 Tb w=3: no FLP leaves its arc in any record (independent check)
+[PASS] N6-3 Tb w=3: move descriptors name the two trips and their original customers
+[PASS] N6-3 Tb w=3: production objective == frozen reference objective in every evaluated record
+[PASS] N6-3 Tb w=3: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-3 Tb w=3: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-3 Tb w=3: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-3 Tb w=3: every candidate is evaluated
+[PASS] N6-3 Tb w=3: no duplicate candidates; one record per generated candidate
+[PASS] N6-3 Tb w=3: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N6-3 anchor Tc: Tb (dh 0), Ta (dh 2); 1295 and 1355
+[PASS] N6-3 Tc w=3: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-3 Tc w=3: exactly-once customer coverage in every record
+[PASS] N6-3 Tc w=3: no FLP leaves its arc in any record (independent check)
+[PASS] N6-3 Tc w=3: move descriptors name the two trips and their original customers
+[PASS] N6-3 Tc w=3: production objective == frozen reference objective in every evaluated record
+[PASS] N6-3 Tc w=3: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-3 Tc w=3: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-3 Tc w=3: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-3 Tc w=3: every candidate is evaluated
+[PASS] N6-3 Tc w=3: no duplicate candidates; one record per generated candidate
+[PASS] N6-3 Tc w=3: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N6-3 the input solution is unchanged
+[PASS] N6-4 e = 260: rejected as EvalEndurance, no best
+[PASS] N6-4 best-effort objective 1700 (got 1700.000000, expected 1700.000000)
+[PASS] N6-4 e=260: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-4 e=260: exactly-once customer coverage in every record
+[PASS] N6-4 e=260: no FLP leaves its arc in any record (independent check)
+[PASS] N6-4 e=260: move descriptors name the two trips and their original customers
+[PASS] N6-4 e=260: production objective == frozen reference objective in every evaluated record
+[PASS] N6-4 e=260: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-4 e=260: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-4 e=260: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-4 e=260: every candidate is evaluated
+[PASS] N6-4 e=260: no duplicate candidates; one record per generated candidate
+[PASS] N6-4 e=260: no feasible candidate -> no best
+[PASS] N6-4 w = 1: B is 4 half-steps away -> not adjacent
+[PASS] N6-4 w = 2: B is adjacent (dh 4 <= 4)
+[PASS] N6-4 e = 3600: accepted, 1700 -> the rejection was caused by endurance alone
+[PASS] N6-4 both trips on drone 0: no partner with the restricted option
+[PASS] N6-4 default: the same-drone partner is admitted, the same exchange as N3's, objective 1700
+[PASS] N6-4 same-drone: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-4 same-drone: exactly-once customer coverage in every record
+[PASS] N6-4 same-drone: no FLP leaves its arc in any record (independent check)
+[PASS] N6-4 same-drone: move descriptors name the two trips and their original customers
+[PASS] N6-4 same-drone: production objective == frozen reference objective in every evaluated record
+[PASS] N6-4 same-drone: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-4 same-drone: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-4 same-drone: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-4 same-drone: every candidate is evaluated
+[PASS] N6-4 same-drone: no duplicate candidates; one record per generated candidate
+[PASS] N6-4 same-drone: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N6-4 the input solution is unchanged
+[PASS] N6-5 w = 1: Fb is in gap 2 (h 5), Fa in gap 0 (h 1): dh 4 > 2
+[PASS] N6-5 w = 2: A<->B accepted, objective 1000
+[PASS] N6-5 depot recovery and drone ids unchanged
+[PASS] N6-5: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-5: exactly-once customer coverage in every record
+[PASS] N6-5: no FLP leaves its arc in any record (independent check)
+[PASS] N6-5: move descriptors name the two trips and their original customers
+[PASS] N6-5: production objective == frozen reference objective in every evaluated record
+[PASS] N6-5: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-5: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-5: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-5: every candidate is evaluated
+[PASS] N6-5: no duplicate candidates; one record per generated candidate
+[PASS] N6-5: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N6-5 a lone trip has no partner: zero candidates, status Ok
+[PASS] N6-5 the input solution is unchanged
+[PASS] N6-6 every anchor of a one-drone solution: zero candidates with the restricted option
+[PASS] N6-6 the default gives candidates on a one-drone solution (A8 revised)
+[PASS] N6-6 default, anchor T2: T3 (2875) then T1 (2975): N3's pair, N6's nearest-first order
+[PASS] N6-6: every candidate = the two trips' customers exchanged, nothing else changed (route, launch, recovery, drone ids)
+[PASS] N6-6: exactly-once customer coverage in every record
+[PASS] N6-6: no FLP leaves its arc in any record (independent check)
+[PASS] N6-6: move descriptors name the two trips and their original customers
+[PASS] N6-6: production objective == frozen reference objective in every evaluated record
+[PASS] N6-6: production verdict == frozen reference verdict in every evaluated record
+[PASS] N6-6: only evaluator reasons occur (AffectedTrips/NoFreeDrone/NoReplacementFlp/InvalidRecovery/FlpArc/FlpUnused = 0)
+[PASS] N6-6: accepted + rejected == generated (one outcome per candidate)
+[PASS] N6-6: every candidate is evaluated
+[PASS] N6-6: no duplicate candidates; one record per generated candidate
+[PASS] N6-6: best = the first-generated lowest feasible candidate (strict <)
+[PASS] N6-6 the input solution is unchanged
+[PASS] N6-7 trip index == #trips -> InvalidAnchor
+[PASS] N6-7 no trips: index 0 -> InvalidAnchor
+[PASS] N6-7 Rng overload with no trips -> NoEligibleAnchor
+[PASS] N6-7 omitted customer -> InputInfeasible, nothing generated
+[PASS] N6-7 duplicate customer -> InputInfeasible, nothing generated
+[PASS] N6-7 evaluate_candidates=false: generated, none evaluated, none accepted, no best
+[PASS] N6-7 record_candidates=false: no log, same counts and best
+[PASS] N6-7 deterministic: repeated calls give identical candidates in identical order
+[PASS] N6-7 the same seed gives the same anchor and result
+[PASS] N6-7 the anchor is the uniform_index(#trips)-th trip (vector index)
+[PASS] N6-7 exactly one RNG draw is consumed
+[PASS] N6-7 over 40 seeds every trip is drawn at least once (non-vacuous)
+[PASS] N6-7 the input solution is unchanged
+
+587 passed, 0 failed
+ALL TESTS PASSED

@@ -1,0 +1,63 @@
+M5 mutation results (tests/mutation/m5_mutate.py), 9 Nov 2026. Run in chunks (call time limit); the first N1 chunk's tail was re-run (N1-18..).
+N1-01 window +1 (gap coordinate): KILLED by test_n1_n2, test_n1_n2_oracle
+N1-02 window -1: KILLED by test_n1_n2, test_n1_n2_oracle
+N1-03 window ignored (only the launch gap): KILLED by test_n1_n2, test_n1_n2_oracle
+N1-04 half-step of the launch gap taken as 2g (a truck-customer coordinate): KILLED by test_n1_n2, test_n1_n2_oracle
+N1-05 current launch not excluded: KILLED by test_n1_n2, test_n1_n2_oracle
+N1-06 FLP inserted at the gap start (not ratio order): KILLED by test_n1_n2, test_n1_n2_oracle
+N1-07 FLP inserted at the gap end (not ratio order): KILLED by test_n1_n2, test_n1_n2_oracle
+N1-08 FLP inserted even if already on the route (duplicate entry): KILLED by test_n1_n2, test_n1_n2_oracle
+N1-09 FLP never inserted: KILLED by test_n1_n2, test_n1_n2_oracle
+N1-10 launch not changed: KILLED by test_n1_n2, test_n1_n2_oracle
+N1-11 old launch always dropped (even if shared): KILLED by test_n1_n2, test_n1_n2_oracle
+N1-12 old launch never dropped (idle FLP): KILLED by test_n1_n2, test_n1_n2_oracle
+N1-13 dropped FLP not reported: KILLED by test_n1_n2, test_n1_n2_oracle
+N1-14 recovery changed to repair the order: KILLED by test_n1_n2, test_n1_n2_oracle
+N1-15 InvalidRecovery check off by one (recovery == next skeleton node rejected): KILLED by test_n1_n2, test_n1_n2_oracle
+N1-16 InvalidRecovery check off by one (recovery before launch allowed at the boundary): KILLED by test_n1_n2, test_n1_n2_oracle
+N1-17 InvalidRecovery never raised (evaluator sees the violation): KILLED by test_n1_n2, test_n1_n2_oracle
+N1-18 gap order reversed: KILLED by test_n1_n2, test_n1_n2_oracle
+N1-19 move kind reported as N2: KILLED by test_n1_n2, test_n1_n2_oracle
+N1-20 replaced_node not recorded: KILLED by test_n1_n2, test_n1_n2_oracle
+N1-21 drone id not recorded: KILLED by test_n1_n2, test_n1_n2_oracle
+N1-22 operator id reported as N2: KILLED by test_n1_n2, test_n1_n2_oracle
+N1-23 Rng overload always picks trip 0: KILLED by test_n1_n2, test_n1_n2_oracle
+N1-24 Rng overload without the no-trip guard: KILLED by test_n1_n2
+N1-25 drone id changed (trip moved to drone 0): KILLED by test_n1_n2, test_n1_n2_oracle
+N1-26 depot-arc gap (g = 0) skipped: KILLED by test_n1_n2, test_n1_n2_oracle
+N2-01 window +1: KILLED by test_n1_n2, test_n1_n2_oracle
+N2-02 window -1: KILLED by test_n1_n2, test_n1_n2_oracle
+N2-03 start depot allowed as recovery (s from 0): KILLED by test_n1_n2, test_n1_n2_oracle
+N2-04 end depot excluded: KILLED by test_n1_n2, test_n1_n2_oracle
+N2-05 current recovery not excluded: KILLED by test_n1_n2, test_n1_n2_oracle
+N2-06 order descending: KILLED by test_n1_n2, test_n1_n2_oracle
+N2-07 recovery not changed: KILLED by test_n1_n2, test_n1_n2_oracle
+N2-08 drone id changed (trip moved to drone 0): KILLED by test_n1_n2, test_n1_n2_oracle
+N2-09 InvalidRecovery off by one (recovery at gap+1 rejected): KILLED by test_n1_n2, test_n1_n2_oracle
+N2-10 InvalidRecovery off by one (recovery at the launch gap start allowed): KILLED by test_n1_n2, test_n1_n2_oracle
+N2-11 InvalidRecovery never raised: KILLED by test_n1_n2, test_n1_n2_oracle
+N2-12 move kind reported as N1: KILLED by test_n1_n2, test_n1_n2_oracle
+N2-13 replaced_node not recorded: KILLED by test_n1_n2, test_n1_n2_oracle
+N2-14 operator id reported as N1: KILLED by test_n1_n2, test_n1_n2_oracle
+N2-15 Rng overload always picks trip 0: KILLED by test_n1_n2, test_n1_n2_oracle
+N2-16 Rng overload without the no-trip guard: KILLED by test_n1_n2
+N2-17 an FLP is dropped/changed in the route (route not preserved): KILLED by test_n1_n2, test_n1_n2_oracle
+TR-01 tie-break last wins (<=): KILLED by test_n1_n2, test_n1_n2_oracle
+TR-02 evaluate_candidates ignored: KILLED by test_n1_n2
+TR-03 generated not counted (judge): KILLED by test_n1_n2, test_n1_n2_oracle
+TR-04 generated not counted (invalid recovery): KILLED by test_n1_n2, test_n1_n2_oracle
+TR-05 evaluated not counted: KILLED by test_n1_n2, test_n1_n2_oracle
+TR-06 invalid recovery not counted as rejected: KILLED by test_n1_n2, test_n1_n2_oracle
+TR-07 invalid recovery recorded with another reason: KILLED by test_n1_n2, test_n1_n2_oracle
+TR-08 invalid recovery trip not named: KILLED by test_n1_n2, test_n1_n2_oracle
+TR-09 evaluator rejection not counted: KILLED by test_n1_n2, test_n1_n2_oracle
+TR-10 evaluator reason overridden to EvalOther: KILLED by test_n1_n2, test_n1_n2_oracle
+TR-11 infeasible candidates accepted: KILLED by test_n1_n2, test_n1_n2_oracle
+TR-12 accepted not counted: KILLED by test_n1_n2, test_n1_n2_oracle
+TR-13 best carries the base solution: KILLED by test_n1_n2, test_n1_n2_oracle
+TR-14 dropped FLPs not reported in the record: KILLED by test_n1_n2, test_n1_n2_oracle
+TR-15 candidate solution not recorded: KILLED by test_n1_n2, test_n1_n2_oracle
+TR-16 launch gap located one too early: KILLED by test_n1_n2, test_n1_n2_oracle
+TR-17 recovery located at the launch position (search from lp instead of lp+1): KILLED by test_n1_n2, test_n1_n2_oracle
+RO-01 FLP ratio order reversed in the insertion position: KILLED by test_n1_n2, test_n1_n2_oracle
+CW-01 gap window strict (<): KILLED by test_n1_n2, test_n1_n2_oracle

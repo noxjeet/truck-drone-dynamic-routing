@@ -1,0 +1,44 @@
+# M2 mutation runs (tests/mutation/m2_mutate.py), in the order they were executed. 35 mutants.
+# Run 1 (parts 1-2, first versions of the tests): 5 mutants were NOT detected -- N4-08, N5-11 (tie-break `<=`: no tie fixture), N4-13 (an EQUIVALENT mutant:
+#   double swap then direct assignment gives the same route; replaced by "partner order reversed"), CW-01 (window `<` vs `<=`: operators only use even half-steps,
+#   where the two coincide), MT-02 (fleet-capacity branch of classify_evaluation is pre-empted inside the operators); CW-01/CW-02 also hit a pattern-count
+#   error (the predicate occurs twice in candidate_window.hpp) and were re-run with "replace every occurrence".
+# Tests added in response: exact-tie fixtures for N4 and N5, direct classify_evaluation tests (sequencing / fleet capacity / trip order), odd-half-step window tests.
+# Runs 3-4 (parts 3-4) are the re-runs after those tests: every mutant is detected.
+N4-06 incident gaps not excluded: KILLED by test_n4_n5, test_n4_n5_oracle
+N4-07 wrong gap mapping after removal: KILLED by test_n4_n5, test_n4_n5_oracle
+N4-08 tie-break last wins (<=): SURVIVED
+N4-09 trips silently dissolved: KILLED by test_n4_n5, test_n4_n5_oracle
+N4-10 affected rejection not counted: KILLED by test_n4_n5
+N4-11 affected trip list empty: KILLED by test_n4_n5, test_n4_n5_oracle
+N4-12 relocate lands before the gap FLPs (insertion pos -> gap start): KILLED by test_n4_n5, test_n4_n5_oracle
+N4-13 exchange partners incl. all (no truck filter on swap): SURVIVED
+N4-14 evaluate_candidates ignored: KILLED by test_n4_n5
+N5-01 partner window +1: KILLED by test_n4_n5, test_n4_n5_oracle
+N5-02 launch window +1: KILLED by test_n4_n5, test_n4_n5_oracle
+N5-03 launch window -1: KILLED by test_n4_n5, test_n4_n5_oracle
+N5-04 launch window centre shifted (+1 half-step): KILLED by test_n4_n5, test_n4_n5_oracle
+N5-05 wrong recovery node (x instead of y): KILLED by test_n4_n5, test_n4_n5_oracle
+N5-06 unused FLPs not dropped: KILLED by test_n4_n5, test_n4_n5_oracle
+N5-07 affected check skipped: KILLED by test_n4_n5, test_n4_n5_oracle
+N5-08 trips recovering at t ignored: KILLED by test_n4_n5
+N5-09 foreign-FLP trips ignored: KILLED by test_n4_n5, test_n4_n5_oracle
+N5-10 free-drone search bypassed (always drone 0): KILLED by test_n4_n5, test_n4_n5_oracle
+N5-11 tie-break last wins (<=): SURVIVED
+N5-12 old trip not dissolved: KILLED by test_n4_n5, test_n4_n5_oracle
+N5-13 role swap wrong (t stays): KILLED by test_n4_n5, test_n4_n5_oracle
+N5-14 on-route FLP reuse disabled (duplicate insert): KILLED by test_n4_n5_oracle
+N5-15 NoFreeDrone not counted: KILLED by test_n4_n5
+RO-01 FLP inserted in reverse ratio order: KILLED by test_n4_n5, test_n4_n5_oracle
+RO-02 FLP insertion ignores existing FLPs: KILLED by test_n4_n5, test_n4_n5_oracle
+CW-01 window boundary strict (<): PATTERN COUNT 2
+CW-02 window boundary +1 half-step: PATTERN COUNT 2
+MT-01 trip-order reason disabled (cascade reported): KILLED by test_n4_n5
+MT-02 fleet check before endurance swapped off: SURVIVED
+N4-08 tie-break last wins (<=): KILLED by test_n4_n5
+N4-13 exchange partner order reversed: KILLED by test_n4_n5, test_n4_n5_oracle
+N5-11 tie-break last wins (<=): KILLED by test_n4_n5
+CW-01 window boundary strict (<): SURVIVED
+CW-02 window boundary +1 half-step: KILLED by test_n4_n5, test_n4_n5_oracle
+MT-02 fleet check before endurance swapped off: KILLED by test_n4_n5
+CW-01 window boundary strict (<): KILLED by test_n4_n5
