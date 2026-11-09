@@ -67,3 +67,6 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+# DM6 wall-clock timing output (machine-dependent; kept locally, never committed)
+/docs/dynamic/dm6_results/E1_baseline_W2/runtime.csv
